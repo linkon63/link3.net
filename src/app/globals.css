@@ -603,6 +603,27 @@ a:hover .explore-btn .explore-arrow {
   box-shadow: 0 10px 24px -4px rgba(30, 91, 52, 0.32) !important;
 }
 
+/* About Section Button Group Alignment */
+.about-btn-group {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .about-btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .about-btn-group a {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+}
+
 .also-produced-tag:active {
   transform: translateY(-1px) scale(0.98) !important;
 }

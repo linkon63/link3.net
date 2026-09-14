@@ -1161,9 +1161,9 @@ export default function Home() {
         <p style={{ "fontSize": "16px", "lineHeight": "1.65", "color": "#4A4E48", "margin": "0 0 18px", "maxWidth": "520px", "textWrap": "pretty" }}>Prasine works with a network of cooperative factories selected for the product types they do best — knits, wovens, sweaters, denim, outerwear and more — and manages the order on the buyer's behalf from development through shipment.</p>
         <p style={{ "fontSize": "16px", "lineHeight": "1.65", "color": "#4A4E48", "margin": "0 0 26px", "maxWidth": "520px", "textWrap": "pretty" }}>Our factories are certified by multiple internationally recognized organizations. A commitment to worker safety has enabled 100% certification by the RMG Sustainability Council (Accord) and Nirapon (Alliance).</p>
         <div style={{ "marginBottom": "30px" }}></div>
-        <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap" }}>
-          <a href="#quote" className="prasine-btn" style={{ padding: "16px 28px" }}>Explore Our Factory Network</a>
-          <a href="#quote" className="prasine-btn-outline" style={{ padding: "16px 28px" }}>Discuss Your Requirements</a>
+        <div className="about-btn-group">
+          <a href="#quote" className="prasine-btn" style={{ padding: "16px 28px", textAlign: "center", justifyContent: "center" }}>Explore Our Factory Network</a>
+          <a href="#quote" className="prasine-btn-outline" style={{ padding: "16px 28px", textAlign: "center", justifyContent: "center" }}>Discuss Your Requirements</a>
         </div>
       </div>
     </div>
