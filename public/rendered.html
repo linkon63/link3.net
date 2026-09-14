@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/assets/9fb78550-7f33-4a05-95bf-30288a413127.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/8089efbf-f83f-4eb3-900f-e0597fd75bdb.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/45be89e3-345b-4a00-8317-ee8d57fc5327.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/4be79fff-5e3b-4789-a62c-ce6c80a0ee33.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/8089efbf-f83f-4eb3-900f-e0597fd75bdb.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/45be89e3-345b-4a00-8317-ee8d57fc5327.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/4be79fff-5e3b-4789-a62c-ce6c80a0ee33.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/8089efbf-f83f-4eb3-900f-e0597fd75bdb.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/45be89e3-345b-4a00-8317-ee8d57fc5327.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/4be79fff-5e3b-4789-a62c-ce6c80a0ee33.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/8089efbf-f83f-4eb3-900f-e0597fd75bdb.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/45be89e3-345b-4a00-8317-ee8d57fc5327.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/4be79fff-5e3b-4789-a62c-ce6c80a0ee33.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/907aad15-f448-4397-b936-dd4690d27f33.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/42f3a770-9e48-468a-a8d0-e85d67ac2961.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/907aad15-f448-4397-b936-dd4690d27f33.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/42f3a770-9e48-468a-a8d0-e85d67ac2961.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/907aad15-f448-4397-b936-dd4690d27f33.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/assets/42f3a770-9e48-468a-a8d0-e85d67ac2961.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<script src="/assets/792b553c-bea5-4ae6-acfe-2f46d9b055e2.js"></script>
+<script src="/assets/a2e853d1-b68c-4bba-9d12-32fcf213798b.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #FBFAF7; -webkit-font-smoothing: antialiased; }
+  a { color: #1E5B34; text-decoration: none; }
+  a:hover { color: #B8863B; }
+  ::selection { background: #DDE7D6; }
+  @keyframes prasine-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes prasine-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (min-width: 760px) { [data-mobile-cta] { display: none !important; } }
+  @media (max-width: 1079px) { [data-desktop-nav] { display: none !important; } }
+  @media (max-width: 1000px) { [data-hero-grid] { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; } [data-hero-offset] { padding-top: 0 !important; } }
+  input, textarea, button { font-family: inherit; }
+  html { scroll-behavior: smooth; }
+</style>
+</helmet>
+
+<div style="font-family: 'Instrument Sans', Helvetica, Arial, sans-serif; color: #1B1D1A; background: #FBFAF7; overflow-x: hidden;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(251,250,247,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #E7E4DC;">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 14px 28px; display: flex; align-items: center; gap: 28px; justify-content: space-between;">
+      <a href="#top" style="display: flex; align-items: center; flex-shrink: 0;">
+        <img src="/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png" alt="Prasine International Ltd." style="height: 54px; width: auto; display: block; mix-blend-mode: multiply;">
+      </a>
+      <nav style="display: flex; align-items: center; gap: 30px; flex-wrap: wrap; justify-content: flex-end;">
+        <div data-desktop-nav="1" style="display: flex; align-items: center; gap: 30px;">
+            <a href="#top" style="font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase; color: #1B1D1A; font-weight: 500;">Home</a>
+            <a href="#about" style="font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase; color: #1B1D1A; font-weight: 500;">About Us</a>
+            <a href="#capabilities" style="font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase; color: #1B1D1A; font-weight: 500;">Our Services</a>
+            <a href="#products" style="font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase; color: #1B1D1A; font-weight: 500;">Production Gallery</a>
+            <a href="#quality" style="font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase; color: #1B1D1A; font-weight: 500;">Quality and Compliance</a>
+        </div>
+        <a href="#quote" style="background: #1E5B34; color: #FBFAF7; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 13px 22px; display: inline-block; transition: background 0.25s ease;" style-hover="background: #164326; color: #FBFAF7;">Request a Quote</a>
+      </nav>
+    </div>
+  </header>
+
+  <section id="top" style="background: linear-gradient(165deg, #FDF6EC 0%, #FBFAF7 46%, #F4F6F1 100%);">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 0 28px;">
+    <div data-reveal="1" style="padding: 64px 0 0;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 22px;">
+        <div style="display: grid; grid-template-columns: repeat(2, 7px); grid-template-rows: repeat(2, 7px); gap: 3px; flex-shrink: 0;">
+          <div style="background: #3E8E4A; border-radius: 1px;"></div>
+          <div style="background: #7FBF4D; border-radius: 1px;"></div>
+          <div style="background: #7FBF4D; border-radius: 1px;"></div>
+          <div style="background: #3E8E4A; border-radius: 1px;"></div>
+        </div>
+        <span style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #B8863B; font-weight: 600;">Apparel Sourcing &amp; Manufacturing · Bangladesh</span>
+      </div>
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap;">
+        <h1 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(40px, 6.4vw, 92px); line-height: 0.96; letter-spacing: -0.035em; text-transform: uppercase; margin: 0; max-width: 15ch; text-wrap: balance;">Masters of apparel <span style="color: #1E5B34;">manufacturing</span></h1>
+        <div style="display: flex; gap: 14px; padding-bottom: 14px; flex-shrink: 0;">
+          <div style="display: grid; grid-template-columns: repeat(2, 13px); grid-template-rows: repeat(2, 13px); gap: 4px;">
+            <div style="background: #1E5B34; border-radius: 1px;"></div><div style="background: #3E8E4A; border-radius: 1px;"></div><div style="background: #3E8E4A; border-radius: 1px;"></div><div style="background: #1E5B34; border-radius: 1px;"></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, 13px); grid-template-rows: repeat(2, 13px); gap: 4px;">
+            <div style="background: #7FBF4D; border-radius: 1px;"></div><div style="background: #B8863B; border-radius: 1px;"></div><div style="background: #B8863B; border-radius: 1px;"></div><div style="background: #7FBF4D; border-radius: 1px;"></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, 13px); grid-template-rows: repeat(2, 13px); gap: 4px;">
+            <div style="background: #D6CFC0; border-radius: 1px;"></div><div style="background: #C9C5BA; border-radius: 1px;"></div><div style="background: #C9C5BA; border-radius: 1px;"></div><div style="background: #D6CFC0; border-radius: 1px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-hero-grid="1" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: start; padding: 44px 0 56px;">
+      <div data-reveal="1" style="min-width: 0;">
+        <div style="height: 460px; position: relative; overflow: hidden; border-radius: 0;">
+          <image-slot fit="{{ imageFit }}" id="hero-main" shape="rect" src="/assets/a0f0581d-2baf-4976-936f-db7c98965d0a.webp" placeholder="Editorial apparel / finished garment shot"></image-slot>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 36px; padding-top: 40px;">
+          <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+            <div style="min-width: 0;">
+              <div style="font-family: 'Archivo', Helvetica, sans-serif; font-size: clamp(30px, 3vw, 44px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: #1B1D1A;">{{ s.v }}</div>
+              <div style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #6B6F68; margin-top: 10px;">{{ s.l }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div data-reveal="1" data-hero-offset="1" style="min-width: 0;">
+        <div style="position: relative;">
+          <div style="height: 460px; position: relative; overflow: hidden; border-radius: 0;">
+            <image-slot fit="{{ imageFit }}" id="hero-fabric" shape="rect" src="/assets/6fa84e0a-d4f8-4ddd-ad5b-a964b43de2e8.webp" placeholder="Fabric texture close-up" style="width: 623px; height: 467px"></image-slot>
+          </div>
+          <div style="position: absolute; top: -46px; right: -34px; width: 116px; height: 116px; border-radius: 50%; background: #14331F; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(20,51,31,0.28);">
+            <div style="position: absolute; inset: 0; animation: prasine-spin 18s linear infinite;">
+              <svg sc-camel-view-box="0 0 116 116" style="width: 100%; height: 100%; display: block;">
+                <defs><path id="prasine-badge-arc" d="M 58,58 m -43,0 a 43,43 0 1,1 86,0 a 43,43 0 1,1 -86,0"></path></defs>
+                <text fill="#C79A4A" style="font-family: 'Instrument Sans', sans-serif; font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 600;">
+                  <textPath href="#prasine-badge-arc" sc-camel-start-offset="0%">Ethical · Compliant · On Time · </textPath>
+                </text>
+              </svg>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(2, 10px); grid-template-rows: repeat(2, 10px); gap: 3px;">
+              <div style="background: #3E8E4A; border-radius: 1px;"></div><div style="background: #7FBF4D; border-radius: 1px;"></div><div style="background: #7FBF4D; border-radius: 1px;"></div><div style="background: #3E8E4A; border-radius: 1px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; padding-top: 26px;">
+          <div style="width: 34px; height: 1px; background: #C9C5BA;"></div>
+          <span style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #8A8E86;">AQL 1.5 / 2.5 inspection</span>
+        </div>
+        <p style="font-size: 16px; line-height: 1.6; color: #4A4E48; margin: 22px 0 26px; text-wrap: pretty;">From fabric sourcing and product development to manufacturing, quality assurance and shipment — end-to-end apparel solutions for global buyers.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="#quote" style="background: #1E5B34; color: #FBFAF7; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 16px 26px; transition: background 0.25s ease;" style-hover="background: #164326; color: #FBFAF7;">Request a Quote</a>
+          <a href="#products" style="border: 1px solid #C9C5BA; color: #1B1D1A; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 16px 26px; transition: border-color 0.25s ease;" style-hover="border-color: #1B1D1A; color: #1B1D1A;">Our Products</a>
+        </div>
+      </div>
+
+    </div>
+    </div>
+  </section>
+
+  <section id="who-we-are" style="max-width: 1320px; margin: 0 auto; padding: 88px 28px 0;">
+    <div data-reveal="1" style="display: flex; align-items: baseline; justify-content: center; gap: 16px; border-bottom: 1px solid #E7E4DC; padding-bottom: 22px; margin-bottom: 48px; text-align: center;">
+      
+      <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(24px, 2.8vw, 36px); line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; margin: 0;">Apparel development &amp; custom garment manufacturing</h2>
+    </div>
+    <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 56px; align-items: start;">
+      <div style="display: grid; grid-template-columns: 1fr; gap: 12px; min-width: 0;">
+        <div style="height: 380px; position: relative; min-width: 0; overflow: hidden;">
+          
+        <image-slot fit="contain" id="who-main" shape="rect" placeholder="Team / studio / production floor" style="width: 634px; height: 318px" src="/assets/0fa502cf-e7bf-4e9c-becb-382ae1582786.webp"></image-slot></div>
+      </div>
+      <div style="min-width: 0;">
+        <p style="font-size: 17px; line-height: 1.62; color: #4A4E48; margin: 0 0 34px; max-width: 520px; text-wrap: pretty;">A Bangladesh-based buying house and garment manufacturer, developing and producing apparel for global brands since 2019.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 26px; padding-bottom: 32px; border-bottom: 1px solid #E7E4DC; margin-bottom: 32px;">
+          <div style="min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="calendar-days" style="width: 22px; height: 22px; color: #1E5B34; stroke-width: 1.5;"></i>
+              <span style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em;">2019</span>
+            </div>
+            <div style="font-size: 13px; color: #6B6F68; margin-top: 6px;">In the industry since</div>
+          </div>
+          <div style="min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="boxes" style="width: 22px; height: 22px; color: #1E5B34; stroke-width: 1.5;"></i>
+              <span style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em;">Small → Large</span>
+            </div>
+            <div style="font-size: 13px; color: #6B6F68; margin-top: 6px;">Order quantities</div>
+          </div>
+          <div style="min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="badge-check" style="width: 22px; height: 22px; color: #1E5B34; stroke-width: 1.5;"></i>
+              <span style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em;">AQL 1.5 / 2.5</span>
+            </div>
+            <div style="font-size: 13px; color: #6B6F68; margin-top: 6px;">Inspection standard</div>
+          </div>
+        </div>
+        <div style="display: grid; gap: 18px; margin-bottom: 30px;">
+          <div style="display: grid; grid-template-columns: 24px 1fr; gap: 14px; align-items: start;">
+            <i data-lucide="building-2" style="width: 20px; height: 20px; color: #B8863B; stroke-width: 1.5; margin-top: 3px;"></i>
+            <p style="font-size: 15px; line-height: 1.6; color: #4A4E48; margin: 0;"><strong style="font-weight: 600; color: #1B1D1A;">Who we are</strong> — an apparel buying house and garment manufacturer based in Dhaka, Bangladesh.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: 24px 1fr; gap: 14px; align-items: start;">
+            <i data-lucide="shirt" style="width: 20px; height: 20px; color: #B8863B; stroke-width: 1.5; margin-top: 3px;"></i>
+            <p style="font-size: 15px; line-height: 1.6; color: #4A4E48; margin: 0;"><strong style="font-weight: 600; color: #1B1D1A;">What we do</strong> — knit &amp; woven, sweaters, denim, sleepwear, intimates, sportswear, swimwear, outerwear, kidswear, workwear, leather / PU and accessories.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: 24px 1fr; gap: 14px; align-items: start;">
+            <i data-lucide="workflow" style="width: 20px; height: 20px; color: #B8863B; stroke-width: 1.5; margin-top: 3px;"></i>
+            <p style="font-size: 15px; line-height: 1.6; color: #4A4E48; margin: 0;"><strong style="font-weight: 600; color: #1B1D1A;">How we do it</strong> — fabric sourcing › development › sampling › manufacturing › inspection › compliance › shipment.</p>
+          </div>
+        </div>
+        <a href="#capabilities" style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: #1E5B34; border-bottom: 1px solid #C9C5BA; padding-bottom: 3px;" style-hover="color: #B8863B; border-color: #B8863B;">Learn More →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" style="background: #F3F1EA; margin-top: 88px; padding: 88px 0;">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 0 28px;">
+      <div data-reveal="1" style="text-align: center; max-width: 640px; margin: 0 auto 52px;">
+        
+        <div style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #B8863B; font-weight: 600; margin-bottom: 18px;">Full Service</div>
+        <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.04; letter-spacing: -0.02em; text-transform: uppercase; margin: 0 0 18px;">From source to shipment</h2>
+        <p style="font-size: 16px; line-height: 1.62; color: #4A4E48; margin: 0 auto 30px; max-width: 480px; text-wrap: pretty;">One accountable partner from the first fabric enquiry to the loaded container.</p>
+        <a href="#quote" style="border: 1px solid #1B1D1A; color: #1B1D1A; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 15px 26px; display: inline-block; transition: background 0.25s ease, color 0.25s ease;" style-hover="background: #1B1D1A; color: #F3F1EA;">Discuss Your Requirements</a>
+      </div>
+      <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(390px, 1fr)); gap: 22px; align-items: stretch;">
+        <sc-for list="{{ steps }}" as="st" hint-placeholder-count="6">
+          <div style="background: #FFFFFF; padding: 40px 36px 44px; min-width: 0; transition: transform 0.3s ease, box-shadow 0.3s ease;" style-hover="transform: translateY(-4px); box-shadow: 0 14px 34px rgba(27,29,26,0.07);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">
+              <i data-lucide="{{ st.icon }}" style="width: 34px; height: 34px; color: #1E5B34; stroke-width: 1.5;"></i>
+              <span style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 12px; letter-spacing: 0.14em; color: #C0BCB1; font-weight: 600;">{{ st.n }}</span>
+            </div>
+            <h3 style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.005em; text-transform: uppercase; margin: 0 0 12px;">{{ st.t }}</h3>
+            <p style="font-size: 15px; line-height: 1.6; color: #6B6F68; margin: 0; text-wrap: pretty;">{{ st.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="margin-top: 88px; border-top: 1px solid #E7E4DC; border-bottom: 1px solid #E7E4DC; padding: 44px 0; overflow: hidden;">
+    <div style="max-width: 1320px; margin: 0 auto 28px; padding: 0 28px; text-align: center; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A8E86;">Brands we produce for</div>
+    <div style="position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);">
+      <div style="display: flex; width: max-content; animation: prasine-marquee 42s linear infinite;" style-hover="animation-play-state: paused;">
+        <sc-for list="{{ clientsLoop }}" as="cl" hint-placeholder-count="26">
+          <div style="width: 190px; height: 62px; display: flex; align-items: center; justify-content: center; padding: 0 22px; flex-shrink: 0;">
+            <img data-src="{{ cl.src }}" alt="{{ cl.alt }}" title="{{ cl.alt }}" style="max-width: 100%; max-height: 62px; object-fit: contain; display: block; filter: grayscale(1); opacity: 0.62; transition: filter 0.3s ease, opacity 0.3s ease;" style-hover="filter: grayscale(0); opacity: 1;">
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="products" style="max-width: 1320px; margin: 0 auto; padding: 96px 28px 0;">
+    <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; align-items: end; margin-bottom: 48px;">
+      <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.05; letter-spacing: -0.02em; text-transform: uppercase; margin: 0;">Apparel, developed<br>for your market</h2>
+      <p style="font-size: 16px; line-height: 1.62; color: #4A4E48; margin: 0; max-width: 460px; text-wrap: pretty;">From everyday essentials to performance wear and outerwear, we source and manufacture a diverse range of apparel for global buyers.</p>
+    </div>
+    <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 22px;">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+        <a href="#quote" style="display: block; color: #1B1D1A; transition: opacity 0.3s ease;" style-hover="color: #1B1D1A; opacity: 0.86;">
+          <div style="position: relative; height: 340px; overflow: hidden; background: #EFEDE6;">
+            <image-slot fit="{{ imageFit }}" id="{{ p.slot }}" shape="rect" src="{{ p.src }}" placeholder="{{ p.ph }}"></image-slot>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 18px 2px 6px; border-bottom: 1px solid #E7E4DC;">
+            <h3 style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.005em; text-transform: uppercase; margin: 0;">{{ p.t }}</h3>
+            <span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #1E5B34; font-weight: 600; white-space: nowrap;">Explore →</span>
+          </div>
+          <p style="font-size: 14px; line-height: 1.55; color: #6B6F68; margin: 12px 2px 0;">{{ p.d }}</p>
+        </a>
+      </sc-for>
+    </div>
+    <div data-reveal="1" style="margin-top: 46px; border-top: 1px solid #E7E4DC; padding-top: 26px;">
+      <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #6B6F68; margin-bottom: 18px;">Also produced</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <sc-for list="{{ moreProducts }}" as="m" hint-placeholder-count="6">
+          <a href="#quote" style="border: 1px solid #DCD8CE; padding: 11px 18px; font-size: 13px; letter-spacing: 0.04em; color: #1B1D1A; transition: border-color 0.25s ease, background 0.25s ease;" style-hover="border-color: #1E5B34; background: #F1F4EE; color: #1B1D1A;">{{ m }}</a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width: 1320px; margin: 0 auto; padding: 96px 28px 0;">
+    <div data-reveal="1" style="margin-bottom: 48px;">
+      <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.05; letter-spacing: -0.02em; text-transform: uppercase; margin: 0;">Built around what buyers need</h2>
+    </div>
+    <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0 44px; border-top: 1px solid #1B1D1A;">
+      <sc-for list="{{ values }}" as="v" hint-placeholder-count="4">
+        <div style="padding: 34px 44px 44px 0; border-right: 1px solid #E7E4DC; min-width: 0;">
+          <i data-lucide="{{ v.icon }}" style="width: 32px; height: 32px; color: #1E5B34; stroke-width: 1.5; margin-bottom: 24px;"></i>
+          <h3 style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 17px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; margin: 0 0 12px;">{{ v.t }}</h3>
+          <p style="font-size: 15px; line-height: 1.6; color: #6B6F68; margin: 0; text-wrap: pretty;">{{ v.d }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="quality" style="background: #14231A; color: #F2F0E9; margin-top: 88px; padding: 92px 0;">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 0 28px;">
+      <div data-reveal="1" style="margin-bottom: 56px;">
+        <div style="max-width: 720px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 22px;">
+            <div style="display: grid; grid-template-columns: repeat(2, 7px); grid-template-rows: repeat(2, 7px); gap: 3px; flex-shrink: 0;">
+            <div style="background: #7FBF4D; border-radius: 1px;"></div>
+            <div style="background: #C9A25E; border-radius: 1px;"></div>
+            <div style="background: #C9A25E; border-radius: 1px;"></div>
+            <div style="background: #7FBF4D; border-radius: 1px;"></div>
+          </div>
+            <span style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #C9A25E; font-weight: 600;">Quality &amp; Compliance</span>
+          </div>
+          <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.04; letter-spacing: -0.02em; text-transform: uppercase; margin: 0 0 20px;">Quality is built into every stage</h2>
+          <p style="font-size: 16px; line-height: 1.65; color: #B9BFB4; max-width: 560px; margin: 0 0 26px; text-wrap: pretty;">From fabric arrival to the final random check we inspect at every step, so issues are found early and corrected while production can still absorb them.</p>
+          <p style="font-size: 14px; line-height: 1.6; color: #8D9389; max-width: 560px; margin: 0 0 30px;">On buyer request we work with third-party institutes including SGS, ITS and Hohenstein, and guide factories towards compliance.</p>
+          <a href="#quote" style="border: 1px solid #4A5A4E; color: #F2F0E9; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 16px 28px; display: inline-block; transition: background 0.25s ease, border-color 0.25s ease;" style-hover="background: #1E5B34; border-color: #1E5B34; color: #F2F0E9;">Explore Quality &amp; Compliance</a>
+        </div>
+      </div>
+
+      <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 16px; align-items: stretch;">
+        <sc-for list="{{ qc }}" as="q" hint-placeholder-count="7">
+          <div style="background: #1B2E22; border: 1px solid #2C4234; padding: 30px 26px 32px; min-width: 0; transition: border-color 0.3s ease, transform 0.3s ease;" style-hover="border-color: #C9A25E; transform: translateY(-3px);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px;">
+              <i data-lucide="{{ q.icon }}" style="width: 30px; height: 30px; color: #C9A25E; stroke-width: 1.5;"></i>
+              <span style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 12px; letter-spacing: 0.14em; color: #5E7064; font-weight: 600;">{{ q.n }}</span>
+            </div>
+            <h3 style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; margin: 0 0 10px; line-height: 1.25;">{{ q.t }}</h3>
+            <p style="font-size: 14px; line-height: 1.55; color: #97A099; margin: 0; text-wrap: pretty;">{{ q.d }}</p>
+          </div>
+        </sc-for>
+        <div style="background: #C9A25E; color: #14231A; padding: 30px 26px 32px; min-width: 0; display: flex; flex-direction: column;">
+          <div style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 30px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">AQL 1.5 / 2.5</div>
+          <p style="font-size: 14px; line-height: 1.55; color: #33422F; margin: 0 0 20px;">Acceptable quality levels applied to inspection across production stages.</p>
+          <div style="display: grid; gap: 9px; margin-top: auto;">
+            <span style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;">Quality</span>
+            <span style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;">Safety</span>
+            <span style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;">Compliance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" style="max-width: 1320px; margin: 0 auto; padding: 96px 28px 0;">
+    <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 56px; align-items: center;">
+      <div style="height: 440px; position: relative; min-width: 0; overflow: hidden;">
+        <image-slot fit="{{ imageFit }}" id="factory" shape="rect" src="/assets/beeb822d-d97f-41b6-80dc-7947fbaab3e5.webp" placeholder="Factory floor / production line"></image-slot>
+      </div>
+      <div>
+        <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.05; letter-spacing: -0.02em; text-transform: uppercase; margin: 0 0 22px;">Production partners you can trust</h2>
+        <p style="font-size: 16px; line-height: 1.65; color: #4A4E48; margin: 0 0 18px; max-width: 520px; text-wrap: pretty;">Prasine works with a network of cooperative factories selected for the product types they do best — knits, wovens, sweaters, denim, outerwear and more — and manages the order on the buyer's behalf from development through shipment.</p>
+        <p style="font-size: 16px; line-height: 1.65; color: #4A4E48; margin: 0 0 26px; max-width: 520px; text-wrap: pretty;">Our factories are certified by multiple internationally recognized organizations. A commitment to worker safety has enabled 100% certification by the RMG Sustainability Council (Accord) and Nirapon (Alliance).</p>
+        <div style="margin-bottom: 30px;"></div>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="#quote" style="background: #1E5B34; color: #FBFAF7; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 16px 28px; transition: background 0.25s ease;" style-hover="background: #164326; color: #FBFAF7;">Explore Our Factory Network</a>
+          <a href="#quote" style="border: 1px solid #C9C5BA; color: #1B1D1A; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 16px 28px; transition: border-color 0.25s ease;" style-hover="border-color: #1B1D1A; color: #1B1D1A;">Discuss Your Requirements</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications" style="max-width: 1320px; margin: 0 auto; padding: 96px 28px 0;">
+    <div data-reveal="1" style="text-align: center; margin-bottom: 56px;">
+      <div style="display: grid; grid-template-columns: repeat(2, 9px); grid-template-rows: repeat(2, 9px); gap: 4px; width: max-content; margin: 0 auto 22px;"><div style="background: #3E8E4A; border-radius: 1px;"></div><div style="background: #7FBF4D; border-radius: 1px;"></div><div style="background: #7FBF4D; border-radius: 1px;"></div><div style="background: #B8863B; border-radius: 1px;"></div></div>
+      <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.08; letter-spacing: -0.02em; text-transform: uppercase; margin: 0 0 14px;">Our Certifications</h2>
+      <p style="font-size: 16px; line-height: 1.62; color: #6B6F68; margin: 0 auto; max-width: 560px; text-wrap: pretty;">Standards held across our cooperative factory network, covering quality systems, worker safety, chemical compliance and responsible materials.</p>
+    </div>
+    <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 52px 32px;">
+      <sc-for list="{{ certs }}" as="c" hint-placeholder-count="16">
+        <div style="height: 92px; display: flex; align-items: center; justify-content: center; min-width: 0;">
+          <img data-src="{{ c.src }}" alt="{{ c.alt }}" title="{{ c.alt }}" style="max-width: 100%; max-height: 92px; object-fit: contain; display: block;">
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="sustainability" style="background: #F1F4EE; margin-top: 96px; padding: 92px 0;">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 0 28px;">
+      <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px; align-items: end; margin-bottom: 52px;">
+        <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.05; letter-spacing: -0.02em; text-transform: uppercase; margin: 0;">Making apparel with a more responsible approach</h2>
+        <p style="font-size: 16px; line-height: 1.65; color: #4A4E48; margin: 0; max-width: 440px; text-wrap: pretty;">A steady direction rather than a claim: better materials, less waste, safer workplaces, reviewed order by order.</p>
+      </div>
+      <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-bottom: 40px;">
+        <div style="height: 300px; position: relative; min-width: 0; overflow: hidden;">
+          <image-slot fit="{{ imageFit }}" id="sus-1" shape="rect" src="/assets/e11a0eec-032f-41fd-830b-b8d83cc39f7f.webp" placeholder="Organic cotton / raw material"></image-slot>
+        </div>
+        <div style="height: 300px; position: relative; min-width: 0; overflow: hidden;">
+          <image-slot fit="{{ imageFit }}" id="sus-2" shape="rect" src="/assets/37390a98-6dd0-4c7a-88c0-b3fa2387ed02.webp" placeholder="Natural fabric texture"></image-slot>
+        </div>
+        <div style="display: grid; gap: 0; align-content: start; border-top: 1px solid #CBD5C4;">
+          <sc-for list="{{ sustain }}" as="su" hint-placeholder-count="5">
+            <div style="padding: 15px 0; border-bottom: 1px solid #CBD5C4; font-size: 16px; letter-spacing: 0.01em; display: flex; align-items: center; gap: 14px;">
+              <span style="width: 7px; height: 7px; background: #1E5B34; display: inline-block; flex-shrink: 0;"></span>
+              {{ su }}
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <a data-reveal="1" href="#quote" style="border: 1px solid #1E5B34; color: #1E5B34; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 16px 28px; display: inline-block; transition: background 0.25s ease, color 0.25s ease;" style-hover="background: #1E5B34; color: #F1F4EE;">Our Approach to Sustainability</a>
+    </div>
+  </section>
+
+  <section style="max-width: 1320px; margin: 0 auto; padding: 96px 28px 0;">
+    <div data-reveal="1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 56px; align-items: start;">
+      <div>
+        <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.05; letter-spacing: -0.02em; text-transform: uppercase; margin: 0 0 22px;">Trusted by global apparel buyers</h2>
+        <p style="font-size: 17px; line-height: 1.65; color: #4A4E48; margin: 0; max-width: 520px; text-wrap: pretty;">Active in the apparel industry since 2019, Prasine International operates as both a buying house and a garment manufacturing partner, handling roughly US$20M in annual turnover with a team of 35 across sourcing, merchandising and quality.</p>
+      </div>
+      <div style="border-top: 1px solid #1B1D1A;">
+        <sc-for list="{{ credibility }}" as="c" hint-placeholder-count="4">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding: 18px 0; border-bottom: 1px solid #E7E4DC;">
+            <span style="font-size: 15px; color: #4A4E48;">{{ c.l }}</span>
+            <span style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; text-align: right;">{{ c.v }}</span>
+          </div>
+        </sc-for>
+        <p style="font-size: 13px; line-height: 1.6; color: #8A8E86; margin: 20px 0 0;">Buyer references and factory certification documents are shared directly on request.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="quote" style="background: #1B1D1A; color: #F2F0E9; margin-top: 96px; padding: 92px 0; position: relative; overflow: hidden;">
+    <div aria-hidden="true" style="position: absolute; top: -60px; right: -60px; display: grid; grid-template-columns: repeat(2, 150px); grid-template-rows: repeat(2, 150px); gap: 22px; pointer-events: none;"><div style="background: rgba(126,191,77,0.05); border-radius: 6px;"></div><div style="background: rgba(126,191,77,0.03); border-radius: 6px;"></div><div style="background: rgba(126,191,77,0.03); border-radius: 6px;"></div><div style="background: rgba(184,134,59,0.05); border-radius: 6px;"></div></div>
+    <div style="position: relative; max-width: 1320px; margin: 0 auto; padding: 0 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 60px; align-items: start;">
+      <div data-reveal="1">
+        <h2 style="font-family: 'Archivo', Helvetica, sans-serif; font-weight: 600; font-size: clamp(34px, 4vw, 56px); line-height: 1.02; letter-spacing: -0.025em; text-transform: uppercase; margin: 0 0 24px;">Ready to develop your next product?</h2>
+        <p style="font-size: 17px; line-height: 1.65; color: #A9ADA4; max-width: 460px; margin: 0 0 36px; text-wrap: pretty;">Tell us what you're looking to manufacture and our team will get back to you.</p>
+        <div style="border-top: 1px solid #34372F; padding-top: 26px; display: grid; gap: 14px; max-width: 460px;">
+          <div style="display: flex; gap: 16px; font-size: 15px; color: #D7D4CB;"><span style="color: #7F8379; min-width: 74px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;">Email</span><a href="mailto:shameem@prasineint.com" style="color: #D7D4CB;" style-hover="color: #C9A25E;">shameem@prasineint.com</a></div>
+          <div style="display: flex; gap: 16px; font-size: 15px; color: #D7D4CB;"><span style="color: #7F8379; min-width: 74px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;">WhatsApp</span><a href="tel:+8801707691256" style="color: #D7D4CB;" style-hover="color: #C9A25E;">+8801707-691256</a></div>
+        </div>
+      </div>
+
+      <div data-reveal="1" style="background: #FBFAF7; color: #1B1D1A; padding: 38px 34px 34px;">
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 40px 0; text-align: left;">
+            <div style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 24px; font-weight: 600; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 14px;">Thank you — enquiry received</div>
+            <p style="font-size: 15px; line-height: 1.6; color: #4A4E48; margin: 0;">Our sourcing team will reply to your business email shortly.</p>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <h3 style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 22px; font-weight: 600; letter-spacing: 0.01em; text-transform: uppercase; margin: 0 0 28px;">Request a Quote</h3>
+
+            <div style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #6B6F68; margin-bottom: 12px;">What are you looking to manufacture?</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px;">
+              <sc-for list="{{ categoryChips }}" as="ch" hint-placeholder-count="12">
+                <button type="button" sc-camel-on-click="{{ ch.toggle }}" style="{{ ch.style }}">{{ ch.label }}</button>
+              </sc-for>
+            </div>
+
+            <div style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #6B6F68; margin-bottom: 12px;">Estimated order quantity</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px;">
+              <sc-for list="{{ qtyChips }}" as="q" hint-placeholder-count="4">
+                <button type="button" sc-camel-on-click="{{ q.select }}" style="{{ q.style }}">{{ q.label }}</button>
+              </sc-for>
+            </div>
+
+            <div style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #6B6F68; margin-bottom: 10px;">Tell us about your requirement</div>
+            <textarea rows="4" placeholder="Product type, fabric, target price, quantity, delivery window…" style="width: 100%; border: 1px solid #DCD8CE; background: #FFFFFF; padding: 13px 14px; font-size: 15px; color: #1B1D1A; resize: vertical; margin-bottom: 22px; outline: none;" style-focus="border-color: #1E5B34;"></textarea>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 26px;">
+              <input placeholder="Name" style="border: 1px solid #DCD8CE; background: #FFFFFF; padding: 13px 14px; font-size: 15px; outline: none;" style-focus="border-color: #1E5B34;">
+              <input placeholder="Company" style="border: 1px solid #DCD8CE; background: #FFFFFF; padding: 13px 14px; font-size: 15px; outline: none;" style-focus="border-color: #1E5B34;">
+              <input placeholder="Business email" style="border: 1px solid #DCD8CE; background: #FFFFFF; padding: 13px 14px; font-size: 15px; outline: none;" style-focus="border-color: #1E5B34;">
+              <input placeholder="Phone / WhatsApp" style="border: 1px solid #DCD8CE; background: #FFFFFF; padding: 13px 14px; font-size: 15px; outline: none;" style-focus="border-color: #1E5B34;">
+              <input placeholder="Country" style="border: 1px solid #DCD8CE; background: #FFFFFF; padding: 13px 14px; font-size: 15px; outline: none; grid-column: 1 / -1;" style-focus="border-color: #1E5B34;">
+            </div>
+
+            <div style="display: flex; gap: 14px; flex-wrap: wrap; align-items: center;">
+              <button type="button" sc-camel-on-click="{{ submit }}" style="background: #1E5B34; color: #FBFAF7; border: none; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 17px 32px; cursor: pointer; transition: background 0.25s ease;" style-hover="background: #164326;">Request a Quote</button>
+              <a href="mailto:shameem@prasineint.com" style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: #1B1D1A; border-bottom: 1px solid #C9C5BA; padding-bottom: 3px;" style-hover="color: #1E5B34; border-color: #1E5B34;">Talk to Our Team</a>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background: #FBFAF7; padding: 72px 0 40px;">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 0 28px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 48px; padding-bottom: 48px; border-bottom: 1px solid #E7E4DC;">
+        <div>
+          <img src="/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png" alt="Prasine International Ltd." style="height: 74px; width: auto; display: block; mix-blend-mode: multiply; margin-bottom: 18px;">
+          <p style="font-size: 14px; line-height: 1.6; color: #6B6F68; margin: 0; max-width: 260px;">Apparel buying house and garment manufacturing partner, active in the industry since 2019.</p>
+        </div>
+        <div>
+          <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A8E86; margin-bottom: 18px;">Navigate</div>
+          <div style="display: grid; gap: 11px;">
+            <a href="#top" style="font-size: 15px; color: #1B1D1A;">Home</a>
+            <a href="#about" style="font-size: 15px; color: #1B1D1A;">About Us</a>
+            <a href="#capabilities" style="font-size: 15px; color: #1B1D1A;">Our Services</a>
+            <a href="#products" style="font-size: 15px; color: #1B1D1A;">Production Gallery</a>
+            <a href="#quality" style="font-size: 15px; color: #1B1D1A;">Quality and Compliance</a>
+            <a href="#quote" style="font-size: 15px; color: #1B1D1A;">Request a Quote</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A8E86; margin-bottom: 18px;">Offices</div>
+          <p style="font-size: 15px; line-height: 1.65; color: #4A4E48; margin: 0 0 16px;"><span style="display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E86; margin-bottom: 4px;">Corporate</span>House #13, 3rd Floor, Road #17/A,<br>Sector #12, Uttara,<br>Dhaka-1230, Bangladesh</p>
+          <p style="font-size: 15px; line-height: 1.65; color: #4A4E48; margin: 0;"><span style="display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E86; margin-bottom: 4px;">Chittagong</span>House #53, 5th Floor, Road #05,<br>O/R Nizam Road,<br>Chattogram-4212, Bangladesh</p>
+        </div>
+        <div>
+          <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A8E86; margin-bottom: 18px;">Contact</div>
+          <div style="display: grid; gap: 11px;">
+            <a href="mailto:shameem@prasineint.com" style="font-size: 15px;">shameem@prasineint.com</a>
+            <a href="tel:+8801707691256" style="font-size: 15px;">+8801707-691256</a>
+            <span style="font-size: 13px; color: #8A8E86;">Phone / WhatsApp</span>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding-top: 26px;">
+        <span style="font-family: 'Archivo', Helvetica, sans-serif; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #1B1D1A;">Prasine International Ltd.</span>
+        <span style="display: flex; align-items: center; gap: 12px; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: #B8863B;"><span style="display: grid; grid-template-columns: repeat(2, 6px); grid-template-rows: repeat(2, 6px); gap: 2px;"><span style="background: #3E8E4A; border-radius: 1px;"></span><span style="background: #7FBF4D; border-radius: 1px;"></span><span style="background: #7FBF4D; border-radius: 1px;"></span><span style="background: #B8863B; border-radius: 1px;"></span></span>Fashioning You</span>
+      </div>
+    </div>
+  </footer>
+
+  <div data-mobile-cta="1" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: rgba(251,250,247,0.96); backdrop-filter: blur(10px); border-top: 1px solid #E7E4DC; padding: 12px 16px; display: flex; gap: 12px;">
+      <a href="#quote" style="flex: 1; text-align: center; background: #1E5B34; color: #FBFAF7; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 16px 18px;">Request a Quote</a>
+  </div>
+  <div data-mobile-cta="1" style="height: 76px;"></div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000},&quot;imageFit&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cover&quot;,&quot;contain&quot;],&quot;default&quot;:&quot;cover&quot;,&quot;tsType&quot;:&quot;'cover' | 'contain'&quot;,&quot;section&quot;:&quot;Imagery&quot;}}">
+class Component extends DCLogic {
+  state = { cats: [], qty: null, submitted: false };
+
+  componentDidMount() {
+    this._revealAll = false;
+    const show = (el) => { el.style.opacity = '1'; el.style.transform = 'none'; el.setAttribute('data-revealed', '1'); };
+    const tick = () => {
+      this._raf = null;
+      const vh = window.innerHeight || 800;
+      document.querySelectorAll('[data-reveal]:not([data-revealed])').forEach(el => {
+        if (!el.style.transition) el.style.transition = 'opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1)';
+        const r = el.getBoundingClientRect();
+        if (this._revealAll || (r.bottom > -80 && r.top < vh * 1.05)) show(el);
+        else if (el.style.opacity === '') { el.style.opacity = '0'; el.style.transform = 'translateY(18px)'; }
+      });
+    };
+    this._schedule = () => { if (!this._raf) this._raf = requestAnimationFrame(tick); };
+    this._scan = this._schedule;
+    tick();
+    window.addEventListener('scroll', this._schedule, { passive: true, capture: true });
+    window.addEventListener('resize', this._schedule, { passive: true });
+    this._poll = setInterval(this._schedule, 250);
+    const icons = () => { if (window.lucide) window.lucide.createIcons(); this._hydrateImgs(); };
+    icons(); setTimeout(icons, 400); setTimeout(icons, 1500);
+    this._safety = setTimeout(() => { this._revealAll = true; this._schedule(); }, 6000);
+    document.addEventListener('scroll', this._schedule, { passive: true, capture: true });
+  }
+
+  _hydrateImgs() {
+    document.querySelectorAll('img[data-src]').forEach(i => {
+      const s = i.getAttribute('data-src');
+      if (s && s.indexOf('{{') < 0 && i.getAttribute('src') !== s) i.setAttribute('src', s);
+    });
+  }
+
+  componentDidUpdate() { if (window.lucide) window.lucide.createIcons(); this._hydrateImgs(); }
+
+  componentWillUnmount() {
+    if (this._poll) clearInterval(this._poll);
+    if (this._raf) cancelAnimationFrame(this._raf);
+    window.removeEventListener('scroll', this._schedule, { capture: true });
+    window.removeEventListener('resize', this._schedule);
+    if (this._safety) clearTimeout(this._safety);
+  }
+
+  chip(active) {
+    return {
+      border: '1px solid ' + (active ? '#1E5B34' : '#DCD8CE'),
+      background: active ? '#1E5B34' : '#FFFFFF',
+      color: active ? '#FBFAF7' : '#4A4E48',
+      padding: '10px 15px',
+      fontSize: '13px',
+      letterSpacing: '0.02em',
+      cursor: 'pointer',
+      transition: 'all 0.2s ease',
+      fontFamily: 'inherit'
+    };
+  }
+
+  _clients() {
+    return [
+        ['Screenshot_20260901151805', 'Coca'],
+        ['Screenshot_20260901151834', 'Zara'],
+        ['Screenshot_20260901151841', 'Initiative'],
+        ['Screenshot_20260901151850', 'Tam Fashion'],
+        ['Screenshot_20260901151858', 'Tim Hortons'],
+        ['Screenshot_20260901151906', 'Aeon'],
+        ['Screenshot_20260901151915', 'Icono'],
+        ['Screenshot_20260901151922', 'Workman'],
+        ['Screenshot_20260901151927', 'Hailys'],
+        ['Screenshot_20260901151937', 'Toyoshima'],
+        ['Screenshot_20260901151943', 'Crazy Line'],
+        ['Screenshot_20260901151952', 'Offtex Switzerland'],
+        ['Screenshot_20260901151959', 'Cody James']
+      ].map(c => ({ src: (window.__resources && window.__resources['client_' + c[0].slice(-6)]) || ('assets/client/' + c[0].slice(-6) + '.png'), alt: c[1] }));
+  }
+
+  renderVals() {
+    const cats = ['Knit & Woven', 'Sweaters', 'Denim', 'Sleepwear', 'Intimates', 'Sportswear', 'Swimwear', 'Outerwear', 'Kidswear', 'Uniform & Workwear', 'Leather / PU', 'Accessories'];
+    const R = window.__resources || {};
+    return {
+      srcFactory: R.factoryImg || 'assets/workwear.png',
+      srcNature: R.natureImg || 'assets/nature.png',
+      srcHeroMain: R.heroMain || 'https://images.unsplash.com/photo-1745284505024-1ac4453a67b2?fm=jpg&q=72&auto=format&fit=crop&crop=entropy&w=1300&h=950',
+      srcFloor: R.floorImg || 'https://images.unsplash.com/photo-1741183392804-a37864e6a6d9?fm=jpg&q=72&auto=format&fit=crop&crop=entropy&w=1300&h=950',
+      imageFit: this.props.imageFit ?? 'cover',
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      stats: [
+        { v: '2019', l: 'Established' },
+        { v: '$20M', l: 'Annual Turnover' },
+        { v: '35+', l: 'Team' }
+      ],
+      steps: [
+        { n: '01', icon: 'layers', t: 'Fabric & Raw Materials', d: 'Sourcing knit, woven and specialty fabrics, trims and accessories against your specification and price target.' },
+        { n: '02', icon: 'pencil-ruler', t: 'Product Development', d: 'Translating a sketch, tech pack or reference garment into a manufacturable product.' },
+        { n: '03', icon: 'scissors', t: 'Sampling', d: 'Proto, fit, size-set and pre-production samples, revised until the fit and hand-feel are approved.' },
+        { n: '04', icon: 'factory', t: 'Manufacturing', d: 'Allocated to the factory in our network best suited to the product type and quantity.' },
+        { n: '05', icon: 'clipboard-check', t: 'Quality Assurance', d: 'In-line and end-line inspection to AQL 1.5 / 2.5 across every production stage.' },
+        { n: '06', icon: 'ship', t: 'Compliance & Shipment', d: 'Documentation, compliance checks and coordinated handover for on-time shipment.' }
+      ],
+      products: [
+        { t: 'Knit & Woven', d: 'Tops and bottoms across weights, from jersey basics to structured wovens.', src: (window.__resources && window.__resources.prod_knit_woven) || 'assets/prod/knit-woven.png', slot: 'p-knit', ph: 'Knit & woven garment' },
+        { t: 'Sweaters', d: 'Sweaters, cardigans and pullovers in a range of gauges and yarns.', src: (window.__resources && window.__resources.prod_sweater) || 'assets/prod/sweater.png', slot: 'p-sweater', ph: 'Sweater / knitwear' },
+        { t: 'Denim', d: 'Denim bottoms and jackets with washes developed to your reference.', src: (window.__resources && window.__resources.prod_denim) || 'assets/prod/denim.png', slot: 'p-denim', ph: 'Denim product shot' },
+        { t: 'Sportswear & Activewear', d: 'Performance, yoga and activewear in technical and blended fabrics.', src: (window.__resources && window.__resources.prod_sportswear) || 'assets/prod/sportswear.png', slot: 'p-sport', ph: 'Activewear editorial' },
+        { t: 'Outerwear', d: 'Jackets and overcoats, including padded and lined constructions.', src: (window.__resources && window.__resources.prod_outerwear) || 'assets/prod/outerwear.png', slot: 'p-outer', ph: 'Outerwear / jacket' },
+        { t: 'Sleepwear & Loungewear', d: 'Soft comfort styles for everyday and seasonal loungewear ranges.', src: (window.__resources && window.__resources.prod_sleepwear) || 'assets/prod/sleepwear.png', slot: 'p-sleep', ph: 'Loungewear set' }
+      ],
+      moreProducts: ['Intimates & Lingerie', 'Swimwear', 'Kidswear', 'Uniform & Workwear', 'Leather & PU', 'Accessories & Handicrafts'],
+      values: [
+        { icon: 'scaling', t: 'Flexible Quantities', d: 'From small quantity trial runs to large repeat programmes.' },
+        { icon: 'badge-check', t: 'Consistent Quality', d: 'Strong QA/QC processes with inspection at multiple production stages.' },
+        { icon: 'clock', t: 'On-Time Delivery', d: 'A process built around reliable production and delivery dates.' },
+        { icon: 'workflow', t: 'End-to-End Support', d: 'From material sourcing and development to manufacturing and shipment.' }
+      ],
+      qc: [
+        { n: '01', icon: 'search', t: 'Analysis', d: 'Review specs, samples and buyer requirements.' },
+        { n: '02', icon: 'clipboard-list', t: 'Production Checklist', d: 'Set standards and prepare stage-by-stage checklists.' },
+        { n: '03', icon: 'scan-search', t: 'Fabric Inspection', d: 'Check fabric quality, colour and defects on arrival.' },
+        { n: '04', icon: 'shirt', t: 'Pre-Production Check', d: 'Verify samples and fit before bulk begins.' },
+        { n: '05', icon: 'settings-2', t: 'During Production Check', d: 'Monitor workmanship and measurements on the line.' },
+        { n: '06', icon: 'ruler', t: 'Pre-Final Inspection', d: 'Full check before the final audit.' },
+        { n: '07', icon: 'package-check', t: 'Final Random Inspection', d: 'Random checks on packed goods before shipment.' }
+      ],
+      certs: [
+        ['Screenshot_20260901151515', 'Accord on Fire and Building Safety in Bangladesh', 'Accord'],
+        ['Screenshot_20260901151536', 'Alliance for Bangladesh Worker Safety', 'Alliance'],
+        ['Screenshot_20260901151543', 'LEED'],
+        ['Screenshot_20260901151552', 'amfori BSCI'],
+        ['Screenshot_20260901151601', 'ISO 9001:2015'],
+        ['Screenshot_20260901151608', 'Global Organic Textile Standard', 'GOTS'],
+        ['Screenshot_20260901151626', 'Better Cotton Initiative', 'BCI'],
+        ['Screenshot_20260901151635', 'Global Recycled Standard'],
+        ['Screenshot_20260901151645', 'Organic 100 Content Standard', 'OCS 100'],
+        ['Screenshot_20260901151655', 'Organic Blended Content Standard', 'OCS Blended'],
+        ['Screenshot_20260901151703', 'Recycled 100 Claim Standard', 'RCS 100'],
+        ['Screenshot_20260901151710', 'Workplace Conditions Assessment', 'WCA'],
+        ['Screenshot_20260901151717', 'OEKO-TEX Standard 100'],
+        ['Screenshot_20260901151723', 'WRAP'],
+        ['Screenshot_20260901151732', 'Sedex'],
+        ['Screenshot_20260901151738', 'C-TPAT']
+      ].map(c => ({ src: (window.__resources && window.__resources['cert_' + c[0].slice(-6)]) || ('assets/cert/' + c[0].slice(-6) + '.png'), alt: c[1], label: c[2] || c[1] })),
+      clients: this._clients(),
+      clientsLoop: (() => { const c = this._clients(); return c.concat(c); })(),
+      sustain: ['Organic cotton', 'Recycling', 'Natural-friendly materials', 'Worker safety', 'Continuous improvement'],
+      credibility: [
+        { l: 'In the apparel industry since', v: '2019' },
+        { l: 'Business model', v: 'Buying house + manufacturing' },
+        { l: 'Annual turnover', v: 'Approx. US$20M' },
+        { l: 'Team', v: '35 people' },
+        { l: 'Quality standard', v: 'AQL 1.5 / 2.5' }
+      ],
+      categoryChips: cats.map(c => ({
+        label: c,
+        style: this.chip(this.state.cats.indexOf(c) !== -1),
+        toggle: () => this.setState(s => ({ cats: s.cats.indexOf(c) !== -1 ? s.cats.filter(x => x !== c) : s.cats.concat([c]) }))
+      })),
+      qtyChips: ['Small', 'Medium', 'Large', 'Not sure'].map(q => ({
+        label: q,
+        style: Object.assign(this.chip(this.state.qty === q), { minWidth: '92px', textAlign: 'center' }),
+        select: () => this.setState({ qty: q })
+      })),
+      submit: () => this.setState({ submitted: true })
+    };
+  }
+}
+</script>
+
+
+</body></html>
