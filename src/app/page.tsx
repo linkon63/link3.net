@@ -66,42 +66,70 @@ function DynamicLucideIcon({ name, style, ...props }: { name: string; style?: Re
 }
 
 
-// GSAP Animated number counter with ScrollTrigger
-function AnimatedCounter({ value, suffix = "", prefix = "" }: { value: number; suffix?: string; prefix?: string }) {
-  const [displayVal, setDisplayVal] = useState(0);
+// GSAP Animated number counter with bidirectional ScrollTrigger
+function AnimatedCounter({
+  value,
+  startVal,
+  suffix = "",
+  prefix = "",
+  duration = 1.8
+}: {
+  value: number;
+  startVal?: number;
+  suffix?: string;
+  prefix?: string;
+  duration?: number;
+}) {
+  const defaultStart = startVal !== undefined ? startVal : (value > 1000 ? value - 60 : 0);
+  const [displayVal, setDisplayVal] = useState(defaultStart);
   const elRef = useRef<HTMLSpanElement>(null);
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
     const el = elRef.current;
     if (!el) return;
 
-    const startVal = value > 1000 ? value - 50 : 0;
-    const obj = { val: startVal };
+    const obj = { val: defaultStart };
+
+    const animateNumber = () => {
+      if (tweenRef.current) tweenRef.current.kill();
+      obj.val = defaultStart;
+      setDisplayVal(defaultStart);
+      tweenRef.current = gsap.to(obj, {
+        val: value,
+        duration: duration,
+        ease: "power2.out",
+        onUpdate: () => {
+          setDisplayVal(Math.round(obj.val));
+        },
+      });
+    };
 
     const trigger = ScrollTrigger.create({
       trigger: el,
-      start: "top 90%",
-      once: true,
-      onEnter: () => {
-        gsap.to(obj, {
-          val: value,
-          duration: 2,
-          ease: "power2.out",
-          onUpdate: () => {
-            setDisplayVal(Math.round(obj.val));
-          },
-        });
+      start: "top 95%",
+      end: "bottom 5%",
+      onEnter: () => animateNumber(),
+      onEnterBack: () => animateNumber(),
+      onLeave: () => {
+        if (tweenRef.current) tweenRef.current.kill();
+        setDisplayVal(defaultStart);
       },
+      onLeaveBack: () => {
+        if (tweenRef.current) tweenRef.current.kill();
+        setDisplayVal(defaultStart);
+      }
     });
 
     return () => {
+      if (tweenRef.current) tweenRef.current.kill();
       trigger.kill();
     };
-  }, [value]);
+  }, [value, defaultStart, duration]);
 
   return (
     <span ref={elRef}>
-      {prefix}{displayVal > 0 ? displayVal : (value > 1000 ? value - 50 : 0)}{suffix}
+      {prefix}{displayVal}{suffix}
     </span>
   );
 }
@@ -231,9 +259,9 @@ export default function Home() {
   const submit = () => setSubmitted(true);
 
   const stats = [
-    { v: "2019", l: "Established" },
-    { v: "$20M", l: "Annual Turnover" },
-    { v: "35+", l: "Team" },
+    { value: 2019, startVal: 1980, prefix: "", suffix: "", l: "Established" },
+    { value: 20, startVal: 0, prefix: "$", suffix: "M", l: "Annual Turnover" },
+    { value: 35, startVal: 0, prefix: "", suffix: "+", l: "Team" },
   ];
 
   const steps = [
@@ -411,13 +439,19 @@ export default function Home() {
         </div>
         <div style={{ "display": "flex", "flexWrap": "wrap", "gap": "36px", "paddingTop": "40px" }}>
           {stats.map((s, idx) => (
-
             <div key={idx} style={{ "minWidth": "0" }}>
-              <div style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "clamp(30px, 3vw, 44px)", "fontWeight": "600", "letterSpacing": "-0.03em", "lineHeight": "1", "color": "#1B1D1A" }}>{s.v}</div>
+              <div style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "clamp(30px, 3vw, 44px)", "fontWeight": "600", "letterSpacing": "-0.03em", "lineHeight": "1", "color": "#1B1D1A" }}>
+                <AnimatedCounter
+                  value={s.value}
+                  startVal={s.startVal}
+                  prefix={s.prefix}
+                  suffix={s.suffix}
+                  duration={2}
+                />
+              </div>
               <div style={{ "fontSize": "11px", "letterSpacing": "0.16em", "textTransform": "uppercase", "color": "#6B6F68", "marginTop": "10px" }}>{s.l}</div>
             </div>
-          
-))}
+          ))}
         </div>
       </div>
 
