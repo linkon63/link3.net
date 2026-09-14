@@ -29,6 +29,12 @@ import {
   Boxes,
   Building2,
   CalendarDays,
+  ArrowUp,
+  Mail,
+  MapPin,
+  Phone,
+  MessageSquare,
+  ChevronRight,
   LucideProps
 } from "lucide-react";
 
@@ -140,11 +146,15 @@ function TypewriterText({
   typingSpeed = 220,
   deletingSpeed = 110,
   pauseTime = 3600,
+  color = "#1E5B34",
+  cursorColor,
 }: {
   words?: string[];
   typingSpeed?: number;
   deletingSpeed?: number;
   pauseTime?: number;
+  color?: string;
+  cursorColor?: string;
 }) {
   const [wordIndex, setWordIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(words[0].length);
@@ -184,11 +194,12 @@ function TypewriterText({
 
   const currentWord = words[wordIndex];
   const displayedText = currentWord.substring(0, subIndex);
+  const activeCursorColor = cursorColor || color;
 
   return (
     <span
       style={{
-        color: "#1E5B34",
+        color: color,
         display: "inline-block",
         position: "relative",
         whiteSpace: "nowrap",
@@ -202,7 +213,7 @@ function TypewriterText({
           display: "inline-block",
           width: "4px",
           height: "0.82em",
-          background: "#1E5B34",
+          background: activeCursorColor,
           marginLeft: "4px",
           verticalAlign: "-0.04em",
           opacity: blink ? 1 : 0,
@@ -213,13 +224,75 @@ function TypewriterText({
   );
 }
 
+// Smooth Infinite Mobile Slider for Certifications (No Buttons, Continuous Loop)
+function CertMobileSlider({ certs }: { certs: Array<{ src: string; alt: string; label?: string }> }) {
+  const doubleCerts = [...certs, ...certs];
+
+  return (
+    <div
+      className="cert-mobile-slider-wrap"
+      style={{
+        width: "100%",
+        overflow: "hidden",
+        position: "relative",
+        padding: "8px 0 16px",
+        maskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+      }}
+    >
+      <div
+        className="cert-marquee-track"
+        style={{
+          display: "flex",
+          width: "max-content",
+          animation: "prasine-marquee 32s linear infinite",
+          gap: "14px",
+        }}
+      >
+        {doubleCerts.map((c, idx) => (
+          <div
+            key={idx}
+            style={{
+              background: "#FFFFFF",
+              border: "1px solid #E7E4DC",
+              borderRadius: "4px",
+              height: "86px",
+              width: "155px",
+              flexShrink: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "14px 18px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
+            }}
+          >
+            <img
+              src={c.src}
+              alt={c.alt}
+              title={c.alt}
+              style={{
+                maxWidth: "100%",
+                maxHeight: "58px",
+                objectFit: "contain",
+                display: "block",
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [cats, setCats] = useState<string[]>([]);
   const [qty, setQty] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
+  const circleRef = useRef<SVGCircleElement | null>(null);
 
   useEffect(() => {
     const sections = [
@@ -248,6 +321,27 @@ export default function Home() {
       }
     };
 
+    const updateScrollProgress = (currentScroll?: number) => {
+      const scrollY =
+        typeof currentScroll === "number"
+          ? currentScroll
+          : (typeof window !== "undefined"
+              ? window.pageYOffset || window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0
+              : 0);
+      const docHeight = Math.max(1, (document.documentElement?.scrollHeight || document.body?.scrollHeight || 2000) - (window.innerHeight || 800));
+      const ratio = Math.min(1, Math.max(0, scrollY / docHeight));
+      const circumference = 135.09;
+      const offset = circumference - ratio * circumference;
+
+      if (circleRef.current) {
+        circleRef.current.style.strokeDashoffset = `${offset}`;
+      }
+      setScrollProgress(Math.round(ratio * 100));
+      // Show back to top button early (as soon as user scrolls down > 60px)
+      setScrolled(scrollY > 60);
+      updateActiveSection();
+    };
+
     // 1. Initialize Lenis Smooth Scrolling
     const lenis = new Lenis({
       duration: 1.2,
@@ -260,9 +354,8 @@ export default function Home() {
 
     lenis.on("scroll", (e: any) => {
       ScrollTrigger.update();
-      const scrollY = typeof e.scroll === "number" ? e.scroll : window.scrollY;
-      setScrolled(scrollY > 20);
-      updateActiveSection();
+      const scrollY = typeof e.scroll === "number" ? e.scroll : (window.pageYOffset || window.scrollY || 0);
+      updateScrollProgress(scrollY);
     });
 
     const updateTicker = (time: number) => {
@@ -271,16 +364,32 @@ export default function Home() {
     gsap.ticker.add(updateTicker);
     gsap.ticker.lagSmoothing(0);
 
-    // 2. Scroll listener for sticky header
+    // 2. Multi-event listeners for desktop and mobile touch devices
     const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-      updateActiveSection();
+      updateScrollProgress();
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    document.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("touchmove", onScroll, { passive: true });
+    updateScrollProgress();
 
     // 3. GSAP ScrollTrigger Animations with prominent float-up and bidirectional repeat
     const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: document.documentElement,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          const ratio = self.progress;
+          const circumference = 135.09;
+          const offset = circumference - ratio * circumference;
+          if (circleRef.current) {
+            circleRef.current.style.strokeDashoffset = `${offset}`;
+          }
+          setScrollProgress(Math.round(ratio * 100));
+          setScrolled(self.scroll() > 120);
+        },
+      });
       document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
         gsap.fromTo(
           el,
@@ -305,6 +414,26 @@ export default function Home() {
         gsap.fromTo(
           el,
           { opacity: 0, x: -75 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1.05,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 90%",
+              end: "bottom 10%",
+              toggleActions: "play reverse play reverse",
+            },
+          }
+        );
+      });
+
+      // Animate from right on scroll with repeat
+      document.querySelectorAll<HTMLElement>("[data-reveal-right]").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { opacity: 0, x: 75 },
           {
             opacity: 1,
             x: 0,
@@ -508,7 +637,7 @@ export default function Home() {
   ];
 
   return (
-<div style={{ "fontFamily": "'Instrument Sans', Helvetica, Arial, sans-serif", "color": "#1B1D1A", "background": "#FBFAF7", "minHeight": "100vh" }}>
+<div style={{ "fontFamily": "'Instrument Sans', Helvetica, Arial, sans-serif", "color": "#1B1D1A", "background": "#FBFAF7", "minHeight": "100vh", "overflowX": "hidden", "width": "100%", "maxWidth": "100vw" }}>
 
   <header style={{
     position: "sticky",
@@ -674,9 +803,9 @@ export default function Home() {
           <span style={{ "fontSize": "11px", "letterSpacing": "0.18em", "textTransform": "uppercase", "color": "#8A8E86" }}>AQL 1.5 / 2.5 inspection</span>
         </div>
         <p style={{ "fontSize": "16px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "22px 0 26px", "textWrap": "pretty" }}>From fabric sourcing and product development to manufacturing, quality assurance and shipment — end-to-end apparel solutions for global buyers.</p>
-        <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap" }}>
-          <a href="#quote" className="hero-btn-primary">Request a Quote</a>
-          <a href="#products" className="hero-btn-secondary">Our Products</a>
+        <div style={{ "display": "flex", "gap": "12px", "flexWrap": "wrap", "alignItems": "center" }}>
+          <a href="#quote" className="hero-btn-primary" style={{ "padding": "16px 26px", "lineHeight": "1", "display": "inline-flex", "alignItems": "center", "justifyContent": "center" }}>Request a Quote</a>
+          <a href="#products" className="hero-btn-secondary" style={{ "padding": "16px 26px", "lineHeight": "1", "display": "inline-flex", "alignItems": "center", "justifyContent": "center" }}>Our Products</a>
         </div>
       </div>
 
@@ -750,17 +879,17 @@ export default function Home() {
       </div>
       <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(390px, 1fr))", "gap": "22px", "alignItems": "stretch" }}>
         {steps.map((st, idx) => (
-
-          <div key={idx} style={{ "background": "#FFFFFF", "padding": "40px 36px 44px", "minWidth": "0", "transition": "transform 0.3s ease, box-shadow 0.3s ease" }}>
+          <div key={idx} className="prasine-step-card">
             <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "marginBottom": "30px" }}>
-              <DynamicLucideIcon name={st.icon} style={{"width": "34px", "height": "34px", "color": "#1E5B34", "strokeWidth": 1.5}} />
-              <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "12px", "letterSpacing": "0.14em", "color": "#C0BCB1", "fontWeight": "600" }}>{st.n}</span>
+              <div className="step-icon-wrap">
+                <DynamicLucideIcon name={st.icon} style={{"width": "34px", "height": "34px", "color": "#1E5B34", "strokeWidth": 1.5}} />
+              </div>
+              <span className="step-num-wrap" style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "12px", "letterSpacing": "0.14em", "color": "#C0BCB1", "fontWeight": "600" }}>{st.n}</span>
             </div>
             <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "19px", "fontWeight": "600", "letterSpacing": "-0.005em", "textTransform": "uppercase", "margin": "0 0 12px" }}>{st.t}</h3>
             <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#6B6F68", "margin": "0", "textWrap": "pretty" }}>{st.d}</p>
           </div>
-        
-))}
+        ))}
       </div>
     </div>
   </section>
@@ -785,30 +914,35 @@ export default function Home() {
       <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(30px, 3.4vw, 48px)", "lineHeight": "1.05", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0" }}>Apparel, developed<br />for your market</h2>
       <p style={{ "fontSize": "16px", "lineHeight": "1.62", "color": "#4A4E48", "margin": "0", "maxWidth": "460px", "textWrap": "pretty" }}>From everyday essentials to performance wear and outerwear, we source and manufacture a diverse range of apparel for global buyers.</p>
     </div>
-    <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(310px, 1fr))", "gap": "22px" }}>
-      {products.map((p, idx) => (
-
-        <a key={idx} href="#quote" style={{ "display": "block", "color": "#1B1D1A", "transition": "opacity 0.3s ease" }}>
-          <div style={{ "position": "relative", "height": "340px", "overflow": "hidden", "background": "#EFEDE6" }}>
-            <img src={p.src} alt={p.ph} style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
-          </div>
-          <div style={{ "display": "flex", "justifyContent": "space-between", "alignItems": "baseline", "gap": "16px", "padding": "18px 2px 6px", "borderBottom": "1px solid #E7E4DC" }}>
-            <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "19px", "fontWeight": "600", "letterSpacing": "-0.005em", "textTransform": "uppercase", "margin": "0" }}>{p.t}</h3>
-            <span style={{ "fontSize": "12px", "letterSpacing": "0.1em", "textTransform": "uppercase", "color": "#1E5B34", "fontWeight": "600", "whiteSpace": "nowrap" }}>Explore →</span>
-          </div>
-          <p style={{ "fontSize": "14px", "lineHeight": "1.55", "color": "#6B6F68", "margin": "12px 2px 0" }}>{p.d}</p>
-        </a>
-      
-))}
+    <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(310px, 1fr))", "gap": "24px" }}>
+      {products.map((p, idx) => {
+        const isLeft = idx % 2 === 0;
+        return (
+          <a
+            key={idx}
+            href="#quote"
+            data-reveal-left={isLeft ? "1" : undefined}
+            data-reveal-right={!isLeft ? "1" : undefined}
+            style={{ "display": "block", "color": "#1B1D1A" }}
+          >
+            <div className="hero-img-wrap" style={{ "position": "relative", "height": "340px", "overflow": "hidden", "background": "#EFEDE6" }}>
+              <img src={p.src} alt={p.ph} style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
+            </div>
+            <div style={{ "display": "flex", "justifyContent": "space-between", "alignItems": "baseline", "gap": "16px", "padding": "18px 2px 6px", "borderBottom": "1px solid #E7E4DC" }}>
+              <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "19px", "fontWeight": "600", "letterSpacing": "-0.005em", "textTransform": "uppercase", "margin": "0" }}>{p.t}</h3>
+              <span className="explore-btn">Explore <span className="explore-arrow">→</span></span>
+            </div>
+            <p style={{ "fontSize": "14px", "lineHeight": "1.55", "color": "#6B6F68", "margin": "12px 2px 0" }}>{p.d}</p>
+          </a>
+        );
+      })}
     </div>
     <div data-reveal="1" style={{ "marginTop": "46px", "borderTop": "1px solid #E7E4DC", "paddingTop": "26px" }}>
       <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#6B6F68", "marginBottom": "18px" }}>Also produced</div>
       <div style={{ "display": "flex", "flexWrap": "wrap", "gap": "10px" }}>
         {moreProducts.map((m, idx) => (
-
-          <a key={idx} href="#quote" style={{ "border": "1px solid #DCD8CE", "padding": "11px 18px", "fontSize": "13px", "letterSpacing": "0.04em", "color": "#1B1D1A", "transition": "border-color 0.25s ease, background 0.25s ease" }}>{m}</a>
-        
-))}
+          <a key={idx} href="#quote" className="also-produced-tag">{m}</a>
+        ))}
       </div>
     </div>
   </section>
@@ -817,16 +951,24 @@ export default function Home() {
     <div data-reveal="1" style={{ "marginBottom": "48px" }}>
       <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(30px, 3.4vw, 48px)", "lineHeight": "1.05", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0" }}>Built around what buyers need</h2>
     </div>
-    <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(250px, 1fr))", "gap": "0 44px", "borderTop": "1px solid #1B1D1A" }}>
-      {values.map((v, idx) => (
-
-        <div key={idx} style={{ "padding": "34px 44px 44px 0", "borderRight": "1px solid #E7E4DC", "minWidth": "0" }}>
-          <DynamicLucideIcon name={v.icon} style={{"width": "32px", "height": "32px", "color": "#1E5B34", "strokeWidth": 1.5, "marginBottom": "24px"}} />
-          <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "17px", "fontWeight": "600", "letterSpacing": "0.02em", "textTransform": "uppercase", "margin": "0 0 12px" }}>{v.t}</h3>
-          <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#6B6F68", "margin": "0", "textWrap": "pretty" }}>{v.d}</p>
-        </div>
-      
-))}
+    <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(250px, 1fr))", "gap": "0 44px", "borderTop": "1px solid #1B1D1A" }}>
+      {values.map((v, idx) => {
+        const isLeft = idx < 2;
+        return (
+          <div
+            key={idx}
+            className="value-feature-card"
+            data-reveal-left={isLeft ? "1" : undefined}
+            data-reveal-right={!isLeft ? "1" : undefined}
+          >
+            <div className="value-icon-wrap">
+              <DynamicLucideIcon name={v.icon} style={{ width: "32px", height: "32px", strokeWidth: 1.5 }} />
+            </div>
+            <h3 style={{ fontFamily: "'Archivo', Helvetica, sans-serif", fontSize: "17px", fontWeight: "600", letterSpacing: "0.02em", textTransform: "uppercase", margin: "0 0 12px" }}>{v.t}</h3>
+            <p style={{ fontSize: "15px", lineHeight: "1.6", color: "#6B6F68", margin: "0", textWrap: "pretty" }}>{v.d}</p>
+          </div>
+        );
+      })}
     </div>
   </section>
 
@@ -843,7 +985,9 @@ export default function Home() {
           </div>
             <span style={{ "fontSize": "11px", "letterSpacing": "0.22em", "textTransform": "uppercase", "color": "#C9A25E", "fontWeight": "600" }}>Quality &amp; Compliance</span>
           </div>
-          <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(30px, 3.4vw, 46px)", "lineHeight": "1.04", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0 0 20px" }}>Quality is built into every stage</h2>
+          <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(30px, 3.4vw, 46px)", "lineHeight": "1.04", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0 0 20px" }}>
+            Quality is built into every <TypewriterText words={["stage"]} color="#C9A25E" typingSpeed={220} deletingSpeed={110} pauseTime={3600} />
+          </h2>
           <p style={{ "fontSize": "16px", "lineHeight": "1.65", "color": "#B9BFB4", "maxWidth": "560px", "margin": "0 0 26px", "textWrap": "pretty" }}>From fabric arrival to the final random check we inspect at every step, so issues are found early and corrected while production can still absorb them.</p>
           <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#8D9389", "maxWidth": "560px", "margin": "0 0 30px" }}>On buyer request we work with third-party institutes including SGS, ITS and Hohenstein, and guide factories towards compliance.</p>
           <a href="#quote" className="prasine-btn-outline" style={{ padding: "16px 28px", borderColor: "#4A5A4E", color: "#F2F0E9" }}>Explore Quality &amp; Compliance</a>
@@ -852,17 +996,17 @@ export default function Home() {
 
       <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(255px, 1fr))", "gap": "16px", "alignItems": "stretch" }}>
         {qc.map((q, idx) => (
-
-          <div key={idx} style={{ "background": "#1B2E22", "border": "1px solid #2C4234", "padding": "30px 26px 32px", "minWidth": "0", "transition": "border-color 0.3s ease, transform 0.3s ease" }}>
+          <div key={idx} className="qc-card" style={{ "background": "#1B2E22", "border": "1px solid #2C4234", "padding": "30px 26px 32px", "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "marginBottom": "26px" }}>
-              <DynamicLucideIcon name={q.icon} style={{"width": "30px", "height": "30px", "color": "#C9A25E", "strokeWidth": 1.5}} />
+              <div className="qc-icon-wrap">
+                <DynamicLucideIcon name={q.icon} style={{"width": "30px", "height": "30px", "strokeWidth": 1.5}} />
+              </div>
               <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "12px", "letterSpacing": "0.14em", "color": "#5E7064", "fontWeight": "600" }}>{q.n}</span>
             </div>
             <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "16px", "fontWeight": "600", "letterSpacing": "0.02em", "textTransform": "uppercase", "margin": "0 0 10px", "lineHeight": "1.25" }}>{q.t}</h3>
             <p style={{ "fontSize": "14px", "lineHeight": "1.55", "color": "#97A099", "margin": "0", "textWrap": "pretty" }}>{q.d}</p>
           </div>
-        
-))}
+        ))}
         <div style={{ "background": "#C9A25E", "color": "#14231A", "padding": "30px 26px 32px", "minWidth": "0", "display": "flex", "flexDirection": "column" }}>
           <div style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "30px", "fontWeight": "600", "letterSpacing": "-0.015em", "marginBottom": "12px" }}>AQL 1.5 / 2.5</div>
           <p style={{ "fontSize": "14px", "lineHeight": "1.55", "color": "#33422F", "margin": "0 0 20px" }}>Acceptable quality levels applied to inspection across production stages.</p>
@@ -878,11 +1022,13 @@ export default function Home() {
 
   <section id="about" style={{ "maxWidth": "1320px", "margin": "0 auto", "padding": "96px 28px 0" }}>
     <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(320px, 1fr))", "gap": "56px", "alignItems": "center" }}>
-      <div style={{ "height": "440px", "position": "relative", "minWidth": "0", "overflow": "hidden" }}>
+      <div className="hero-img-wrap" style={{ "height": "440px", "position": "relative", "minWidth": "0", "overflow": "hidden" }}>
         <img src="/assets/beeb822d-d97f-41b6-80dc-7947fbaab3e5.webp" alt="Factory floor / production line" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
       </div>
       <div>
-        <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(30px, 3.4vw, 46px)", "lineHeight": "1.05", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0 0 22px" }}>Production partners you can trust</h2>
+        <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(30px, 3.4vw, 46px)", "lineHeight": "1.05", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0 0 22px" }}>
+          Production partners you can <TypewriterText words={["trust"]} color="#1E5B34" typingSpeed={220} deletingSpeed={110} pauseTime={3600} />
+        </h2>
         <p style={{ "fontSize": "16px", "lineHeight": "1.65", "color": "#4A4E48", "margin": "0 0 18px", "maxWidth": "520px", "textWrap": "pretty" }}>Prasine works with a network of cooperative factories selected for the product types they do best — knits, wovens, sweaters, denim, outerwear and more — and manages the order on the buyer's behalf from development through shipment.</p>
         <p style={{ "fontSize": "16px", "lineHeight": "1.65", "color": "#4A4E48", "margin": "0 0 26px", "maxWidth": "520px", "textWrap": "pretty" }}>Our factories are certified by multiple internationally recognized organizations. A commitment to worker safety has enabled 100% certification by the RMG Sustainability Council (Accord) and Nirapon (Alliance).</p>
         <div style={{ "marginBottom": "30px" }}></div>
@@ -900,14 +1046,17 @@ export default function Home() {
       <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(28px, 3.2vw, 42px)", "lineHeight": "1.08", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0 0 14px" }}>Our Certifications</h2>
       <p style={{ "fontSize": "16px", "lineHeight": "1.62", "color": "#6B6F68", "margin": "0 auto", "maxWidth": "560px", "textWrap": "pretty" }}>Standards held across our cooperative factory network, covering quality systems, worker safety, chemical compliance and responsible materials.</p>
     </div>
-    <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fill, minmax(190px, 1fr))", "gap": "52px 32px" }}>
+    <div data-reveal="1" data-certs-desktop="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fill, minmax(190px, 1fr))", "gap": "52px 32px" }}>
       {certs.map((c, idx) => (
-
         <div key={idx} className="prasine-cert-item" style={{ "height": "92px", "display": "flex", "alignItems": "center", "justifyContent": "center", "minWidth": "0", "cursor": "pointer" }}>
           <img src={c.src} alt={c.alt} title={c.alt} style={{ "maxWidth": "100%", "maxHeight": "92px", "objectFit": "contain", "display": "block" }} />
         </div>
-      
-))}
+      ))}
+    </div>
+
+    {/* Mobile Certifications Slider */}
+    <div data-reveal="1" data-certs-mobile="1">
+      <CertMobileSlider certs={certs} />
     </div>
   </section>
 
@@ -918,21 +1067,19 @@ export default function Home() {
         <p style={{ "fontSize": "16px", "lineHeight": "1.65", "color": "#4A4E48", "margin": "0", "maxWidth": "440px", "textWrap": "pretty" }}>A steady direction rather than a claim: better materials, less waste, safer workplaces, reviewed order by order.</p>
       </div>
       <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(280px, 1fr))", "gap": "22px", "marginBottom": "40px" }}>
-        <div style={{ "height": "300px", "position": "relative", "minWidth": "0", "overflow": "hidden" }}>
+        <div className="hero-img-wrap" style={{ "height": "300px", "position": "relative", "minWidth": "0", "overflow": "hidden" }}>
           <img src="/assets/e11a0eec-032f-41fd-830b-b8d83cc39f7f.webp" alt="Organic cotton / raw material" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
         </div>
-        <div style={{ "height": "300px", "position": "relative", "minWidth": "0", "overflow": "hidden" }}>
+        <div className="hero-img-wrap" style={{ "height": "300px", "position": "relative", "minWidth": "0", "overflow": "hidden" }}>
           <img src="/assets/37390a98-6dd0-4c7a-88c0-b3fa2387ed02.webp" alt="Natural fabric texture" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
         </div>
         <div style={{ "display": "grid", "gap": "0", "alignContent": "start", "borderTop": "1px solid #CBD5C4" }}>
           {sustain.map((su, idx) => (
-
-            <div key={idx} style={{ "padding": "15px 0", "borderBottom": "1px solid #CBD5C4", "fontSize": "16px", "letterSpacing": "0.01em", "display": "flex", "alignItems": "center", "gap": "14px" }}>
-              <span style={{ "width": "7px", "height": "7px", "background": "#1E5B34", "display": "inline-block", "flexShrink": "0" }}></span>
-              {su}
+            <div key={idx} className="sustain-item">
+              <span className="sustain-dot"></span>
+              <span className="sustain-text">{su}</span>
             </div>
-          
-))}
+          ))}
         </div>
       </div>
       <a data-reveal="1" href="#quote" className="prasine-btn-outline" style={{ padding: "16px 28px", borderColor: "#1E5B34", color: "#1E5B34" }}>Our Approach to Sustainability</a>
@@ -1027,41 +1174,113 @@ export default function Home() {
     </div>
   </section>
 
-  <footer style={{ "background": "#FBFAF7", "padding": "72px 0 40px" }}>
+  <footer style={{ "background": "#FBFAF7", "padding": "76px 0 36px", "borderTop": "1px solid #E7E4DC" }}>
     <div style={{ "maxWidth": "1320px", "margin": "0 auto", "padding": "0 28px" }}>
       <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(240px, 1fr))", "gap": "48px", "paddingBottom": "48px", "borderBottom": "1px solid #E7E4DC" }}>
         <div>
           <img src="/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png" alt="Prasine International Ltd." style={{ "height": "74px", "width": "auto", "display": "block", "mixBlendMode": "multiply", "marginBottom": "18px" }} />
-          <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#6B6F68", "margin": "0", "maxWidth": "260px" }}>Apparel buying house and garment manufacturing partner, active in the industry since 2019.</p>
-        </div>
-        <div>
-          <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "18px" }}>Navigate</div>
-          <div style={{ "display": "grid", "gap": "11px" }}>
-            <a href="#top" style={{ "fontSize": "15px", "color": "#1B1D1A" }}>Home</a>
-            <a href="#about" style={{ "fontSize": "15px", "color": "#1B1D1A" }}>About Us</a>
-            <a href="#capabilities" style={{ "fontSize": "15px", "color": "#1B1D1A" }}>Our Services</a>
-            <a href="#products" style={{ "fontSize": "15px", "color": "#1B1D1A" }}>Production Gallery</a>
-            <a href="#quality" style={{ "fontSize": "15px", "color": "#1B1D1A" }}>Quality and Compliance</a>
-            <a href="#quote" style={{ "fontSize": "15px", "color": "#1B1D1A" }}>Request a Quote</a>
+          <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#6B6F68", "margin": "0 0 20px", "maxWidth": "260px" }}>Apparel buying house and garment manufacturing partner, active in the industry since 2019.</p>
+          <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
+            <span style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 6px)", "gridTemplateRows": "repeat(2, 6px)", "gap": "2px" }}>
+              <span style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></span>
+              <span style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></span>
+              <span style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></span>
+              <span style={{ "background": "#B8863B", "borderRadius": "1px" }}></span>
+            </span>
+            <span style={{ "fontSize": "12px", "letterSpacing": "0.18em", "textTransform": "uppercase", "color": "#1E5B34", "fontWeight": "600" }}>Fashioning You</span>
           </div>
         </div>
+
         <div>
-          <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "18px" }}>Offices</div>
-          <p style={{ "fontSize": "15px", "lineHeight": "1.65", "color": "#4A4E48", "margin": "0 0 16px" }}><span style={{ "display": "block", "fontSize": "12px", "letterSpacing": "0.1em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "4px" }}>Corporate</span>House #13, 3rd Floor, Road #17/A,<br />Sector #12, Uttara,<br />Dhaka-1230, Bangladesh</p>
-          <p style={{ "fontSize": "15px", "lineHeight": "1.65", "color": "#4A4E48", "margin": "0" }}><span style={{ "display": "block", "fontSize": "12px", "letterSpacing": "0.1em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "4px" }}>Chittagong</span>House #53, 5th Floor, Road #05,<br />O/R Nizam Road,<br />Chattogram-4212, Bangladesh</p>
+          <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "18px", "fontWeight": "600" }}>Navigate</div>
+          <div style={{ "display": "grid", "gap": "12px" }}>
+            <a href="#top" className="footer-link">
+              <ChevronRight className="footer-link-icon" />
+              <span>Home</span>
+            </a>
+            <a href="#about" className="footer-link">
+              <ChevronRight className="footer-link-icon" />
+              <span>About Us</span>
+            </a>
+            <a href="#capabilities" className="footer-link">
+              <ChevronRight className="footer-link-icon" />
+              <span>Our Services</span>
+            </a>
+            <a href="#products" className="footer-link">
+              <ChevronRight className="footer-link-icon" />
+              <span>Production Gallery</span>
+            </a>
+            <a href="#quality" className="footer-link">
+              <ChevronRight className="footer-link-icon" />
+              <span>Quality and Compliance</span>
+            </a>
+            <a href="#quote" className="footer-link">
+              <ChevronRight className="footer-link-icon" />
+              <span>Request a Quote</span>
+            </a>
+          </div>
         </div>
+
         <div>
-          <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "18px" }}>Contact</div>
-          <div style={{ "display": "grid", "gap": "11px" }}>
-            <a href="mailto:shameem@prasineint.com" style={{ "fontSize": "15px" }}>shameem@prasineint.com</a>
-            <a href="tel:+8801707691256" style={{ "fontSize": "15px" }}>+8801707-691256</a>
-            <span style={{ "fontSize": "13px", "color": "#8A8E86" }}>Phone / WhatsApp</span>
+          <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "18px", "fontWeight": "600" }}>Offices</div>
+          <div style={{ "display": "grid", "gap": "18px" }}>
+            <div style={{ "display": "flex", "gap": "10px", "alignItems": "flex-start" }}>
+              <MapPin style={{ "width": "18px", "height": "18px", "color": "#1E5B34", "flexShrink": 0, "marginTop": "2px" }} />
+              <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}>
+                <span style={{ "display": "block", "fontSize": "11px", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "4px", "fontWeight": "600" }}>Corporate</span>
+                House #13, 3rd Floor, Road #17/A,<br />Sector #12, Uttara,<br />Dhaka-1230, Bangladesh
+              </p>
+            </div>
+            <div style={{ "display": "flex", "gap": "10px", "alignItems": "flex-start" }}>
+              <MapPin style={{ "width": "18px", "height": "18px", "color": "#1E5B34", "flexShrink": 0, "marginTop": "2px" }} />
+              <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}>
+                <span style={{ "display": "block", "fontSize": "11px", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "4px", "fontWeight": "600" }}>Chittagong</span>
+                House #53, 5th Floor, Road #05,<br />O/R Nizam Road,<br />Chattogram-4212, Bangladesh
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "18px", "fontWeight": "600" }}>Contact</div>
+          <div style={{ "display": "grid", "gap": "14px" }}>
+            <a href="mailto:shameem@prasineint.com" className="footer-link">
+              <Mail style={{ "width": "16px", "height": "16px", "color": "#1E5B34", "flexShrink": 0 }} />
+              <span>shameem@prasineint.com</span>
+            </a>
+            <a href="tel:+8801707691256" className="footer-link">
+              <Phone style={{ "width": "16px", "height": "16px", "color": "#1E5B34", "flexShrink": 0 }} />
+              <span>+8801707-691256</span>
+            </a>
+            <div style={{ "display": "flex", "alignItems": "center", "gap": "8px", "fontSize": "13px", "color": "#8A8E86" }}>
+              <MessageSquare style={{ "width": "14px", "height": "14px", "color": "#7FBF4D" }} />
+              <span>Phone / WhatsApp</span>
+            </div>
           </div>
         </div>
       </div>
-      <div style={{ "display": "flex", "justifyContent": "space-between", "gap": "24px", "flexWrap": "wrap", "paddingTop": "26px" }}>
-        <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "12px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#1B1D1A" }}>Prasine International Ltd.</span>
-        <span style={{ "display": "flex", "alignItems": "center", "gap": "12px", "fontSize": "12px", "letterSpacing": "0.24em", "textTransform": "uppercase", "color": "#B8863B" }}><span style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 6px)", "gridTemplateRows": "repeat(2, 6px)", "gap": "2px" }}><span style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></span><span style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></span><span style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></span><span style={{ "background": "#B8863B", "borderRadius": "1px" }}></span></span>Fashioning You</span>
+
+      {/* Middle Brand Row */}
+      <div style={{ "display": "flex", "justifyContent": "space-between", "gap": "24px", "flexWrap": "wrap", "padding": "24px 0 20px" }}>
+        <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "12px", "letterSpacing": "0.18em", "textTransform": "uppercase", "color": "#1B1D1A", "fontWeight": "600" }}>
+          Prasine International Ltd.
+        </span>
+        <span style={{ "display": "flex", "alignItems": "center", "gap": "12px", "fontSize": "12px", "letterSpacing": "0.24em", "textTransform": "uppercase", "color": "#B8863B" }}>
+          <span style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 6px)", "gridTemplateRows": "repeat(2, 6px)", "gap": "2px" }}>
+            <span style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></span>
+            <span style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></span>
+            <span style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></span>
+            <span style={{ "background": "#B8863B", "borderRadius": "1px" }}></span>
+          </span>
+          Fashioning You
+        </span>
+      </div>
+
+      {/* Bottom Copyright Section */}
+      <div style={{ "borderTop": "1px solid #E7E4DC", "paddingTop": "22px", "textAlign": "center" }}>
+        <p style={{ "fontSize": "13px", "color": "#767A73", "margin": "0" }}>
+          © {new Date().getFullYear()} Prasine International Ltd. All rights reserved.
+        </p>
       </div>
     </div>
   </footer>
@@ -1070,6 +1289,75 @@ export default function Home() {
       <a href="#quote" className="prasine-btn" style={{ flex: "1", textAlign: "center", padding: "16px 18px" }}>Request a Quote</a>
   </div>
   <div data-mobile-cta="1" style={{ "height": "76px" }}></div>
+
+  {/* Floating Action Buttons: Contact Mail & Scroll to Top */}
+  <div className="floating-actions-wrap">
+    <a
+      href="mailto:shameem@prasineint.com"
+      className="floating-btn-mail"
+      title="Contact via Email"
+      aria-label="Contact via Email"
+    >
+      <Mail style={{ width: "20px", height: "20px" }} />
+    </a>
+
+    <button
+      type="button"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="floating-btn-top"
+      title={`Back to top (${Math.round(scrollProgress)}% scrolled)`}
+      aria-label="Back to Top"
+      style={{
+        opacity: scrolled ? 1 : 0,
+        transform: scrolled ? "translateY(0) scale(1)" : "translateY(16px) scale(0.8)",
+        pointerEvents: scrolled ? "auto" : "none",
+      }}
+    >
+      <svg
+        className="scroll-progress-ring"
+        width="48"
+        height="48"
+        viewBox="0 0 48 48"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          transform: "rotate(-90deg)",
+          pointerEvents: "none",
+        }}
+      >
+        {/* Background Track Circle */}
+        <circle
+          cx="24"
+          cy="24"
+          r="21.5"
+          fill="none"
+          stroke="#E7E4DC"
+          strokeWidth="2.5"
+        />
+        {/* Dynamic Scroll Progress Circle */}
+        <circle
+          ref={circleRef}
+          className="scroll-progress-circle"
+          cx="24"
+          cy="24"
+          r="21.5"
+          fill="none"
+          stroke="#1E5B34"
+          strokeWidth="2.5"
+          strokeDasharray={135.09}
+          strokeDashoffset={135.09 - (scrollProgress / 100) * 135.09}
+          strokeLinecap="round"
+          style={{
+            transition: "stroke 0.3s ease",
+          }}
+        />
+      </svg>
+      <ArrowUp className="floating-arrow-icon" style={{ width: "18px", height: "18px", position: "relative", zIndex: 2 }} />
+    </button>
+  </div>
 
 </div>
 
