@@ -279,49 +279,76 @@ export default function Home() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
-    // 3. GSAP ScrollTrigger Animations for data-reveal elements
+    // 3. GSAP ScrollTrigger Animations with prominent float-up and bidirectional repeat
     const ctx = gsap.context(() => {
       document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
         gsap.fromTo(
           el,
-          { opacity: 0, y: 28 },
+          { opacity: 0, y: 52 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.9,
+            duration: 0.95,
             ease: "power3.out",
             scrollTrigger: {
               trigger: el,
-              start: "top 88%",
-              once: true,
+              start: "top 92%",
+              end: "bottom 8%",
+              toggleActions: "play reverse play reverse",
             },
           }
         );
       });
 
-      // Stagger capabilities cards
+      // Stagger capabilities cards with repeat
       ScrollTrigger.batch(".prasine-card", {
-        start: "top 88%",
-        once: true,
+        start: "top 92%",
+        end: "bottom 8%",
         onEnter: (batch) => {
           gsap.fromTo(
             batch,
-            { opacity: 0, y: 26 },
-            { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: "power2.out" }
+            { opacity: 0, y: 48 },
+            { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: "power3.out", overwrite: "auto" }
           );
+        },
+        onEnterBack: (batch) => {
+          gsap.fromTo(
+            batch,
+            { opacity: 0, y: 48 },
+            { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: "power3.out", overwrite: "auto" }
+          );
+        },
+        onLeave: (batch) => {
+          gsap.set(batch, { opacity: 0, y: 48 });
+        },
+        onLeaveBack: (batch) => {
+          gsap.set(batch, { opacity: 0, y: 48 });
         },
       });
 
-      // Stagger certs
+      // Stagger certs with repeat
       ScrollTrigger.batch(".prasine-cert-item", {
-        start: "top 90%",
-        once: true,
+        start: "top 94%",
+        end: "bottom 6%",
         onEnter: (batch) => {
           gsap.fromTo(
             batch,
-            { opacity: 0, y: 18, scale: 0.95 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.04, ease: "power2.out" }
+            { opacity: 0, y: 36, scale: 0.92 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.05, ease: "power3.out", overwrite: "auto" }
           );
+        },
+        onEnterBack: (batch) => {
+          gsap.fromTo(
+            batch,
+            { opacity: 0, y: 36, scale: 0.92 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.05, ease: "power3.out", overwrite: "auto" }
+          );
+        },
+        onLeave: (batch) => {
+          gsap.set(batch, { opacity: 0, y: 36, scale: 0.92 });
+        },
+        onLeaveBack: (batch) => {
+          gsap.set(batch, { opacity: 0, y: 36, scale: 0.92 });
         },
       });
     });
