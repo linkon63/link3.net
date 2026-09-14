@@ -186,8 +186,17 @@ function TypewriterText({
   const displayedText = currentWord.substring(0, subIndex);
 
   return (
-    <span style={{ color: "#1E5B34", display: "inline", position: "relative", whiteSpace: "nowrap" }}>
-      {displayedText}
+    <span
+      style={{
+        color: "#1E5B34",
+        display: "inline-block",
+        position: "relative",
+        whiteSpace: "nowrap",
+        minHeight: "0.96em",
+        lineHeight: "0.96",
+      }}
+    >
+      {displayedText || "\u00A0"}
       <span
         style={{
           display: "inline-block",
@@ -550,7 +559,13 @@ export default function Home() {
         <span style={{ "fontSize": "11px", "letterSpacing": "0.22em", "textTransform": "uppercase", "color": "#B8863B", "fontWeight": "600" }}>Apparel Sourcing &amp; Manufacturing · Bangladesh</span>
       </div>
       <div style={{ "display": "flex", "alignItems": "flex-end", "justifyContent": "space-between", "gap": "40px", "flexWrap": "wrap" }}>
-        <h1 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(40px, 6.4vw, 92px)", "lineHeight": "0.96", "letterSpacing": "-0.035em", "textTransform": "uppercase", "margin": "0", "maxWidth": "15ch", "textWrap": "balance" }}>Masters of apparel <TypewriterText words={["manufacturing"]} typingSpeed={220} deletingSpeed={110} pauseTime={3600} /></h1>
+        <h1 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(40px, 6.4vw, 92px)", "lineHeight": "0.96", "letterSpacing": "-0.035em", "textTransform": "uppercase", "margin": "0", "maxWidth": "16ch" }}>
+          <span>Masters of apparel</span>
+          <br />
+          <span style={{ "display": "inline-block", "minHeight": "1.02em" }}>
+            <TypewriterText words={["manufacturing"]} typingSpeed={220} deletingSpeed={110} pauseTime={3600} />
+          </span>
+        </h1>
         <div style={{ "display": "flex", "gap": "14px", "paddingBottom": "14px", "flexShrink": "0" }}>
           <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 13px)", "gridTemplateRows": "repeat(2, 13px)", "gap": "4px" }}>
             <div style={{ "background": "#1E5B34", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#1E5B34", "borderRadius": "1px" }}></div>
