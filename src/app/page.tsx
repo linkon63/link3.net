@@ -124,7 +124,11 @@ export default function Home() {
       touchMultiplier: 1.5,
     });
 
-    lenis.on("scroll", ScrollTrigger.update);
+    lenis.on("scroll", (e: any) => {
+      ScrollTrigger.update();
+      const scrollY = typeof e.scroll === "number" ? e.scroll : window.scrollY;
+      setScrolled(scrollY > 20);
+    });
 
     const updateTicker = (time: number) => {
       lenis.raf(time * 1000);
@@ -134,7 +138,7 @@ export default function Home() {
 
     // 2. Scroll listener for sticky header
     const onScroll = () => {
-      setScrolled(window.scrollY > 30);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -321,17 +325,19 @@ export default function Home() {
   ];
 
   return (
-<div style={{ "fontFamily": "'Instrument Sans', Helvetica, Arial, sans-serif", "color": "#1B1D1A", "background": "#FBFAF7", "overflowX": "hidden" }}>
+<div style={{ "fontFamily": "'Instrument Sans', Helvetica, Arial, sans-serif", "color": "#1B1D1A", "background": "#FBFAF7", "minHeight": "100vh" }}>
 
   <header style={{
     position: "sticky",
     top: 0,
-    zIndex: 50,
+    left: 0,
+    right: 0,
+    zIndex: 100,
     background: scrolled ? "rgba(251,250,247,0.96)" : "rgba(251,250,247,0.85)",
     backdropFilter: "blur(12px)",
     WebkitBackdropFilter: "blur(12px)",
-    borderBottom: "1px solid #E7E4DC",
-    boxShadow: scrolled ? "0 8px 30px rgba(27, 29, 26, 0.06)" : "none",
+    borderBottom: scrolled ? "1px solid #DCD8CE" : "1px solid #E7E4DC",
+    boxShadow: scrolled ? "0 8px 30px rgba(27, 29, 26, 0.08)" : "none",
     transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
   }}>
     <div style={{
