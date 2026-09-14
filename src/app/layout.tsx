@@ -1,21 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
-  title: "Modern Next.js & shadcn/ui Starter",
-  description: "Next.js latest with Tailwind CSS and shadcn/ui components",
+  title: "Prasine International | Apparel Sourcing & Manufacturing · Bangladesh",
+  description: "Prasine International operates as both an apparel buying house and garment manufacturing partner in Bangladesh, handling roughly US$20M in annual turnover.",
+  icons: {
+    icon: "/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png",
+  },
 };
 
 export default function RootLayout({
@@ -24,18 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background text-foreground font-sans antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+    <html lang="en" style={{ scrollBehavior: "smooth" }}>
+      <body style={{ margin: 0, padding: 0, background: "#FBFAF7", color: "#1B1D1A" }}>
+        {children}
       </body>
     </html>
   );
