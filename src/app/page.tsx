@@ -136,10 +136,10 @@ function AnimatedCounter({
 
 // Typewriter effect component for hero title
 function TypewriterText({
-  words = ["manufacturing", "sourcing", "production", "development"],
-  typingSpeed = 110,
-  deletingSpeed = 55,
-  pauseTime = 2200,
+  words = ["manufacturing"],
+  typingSpeed = 220,
+  deletingSpeed = 110,
+  pauseTime = 3600,
 }: {
   words?: string[];
   typingSpeed?: number;
@@ -550,7 +550,7 @@ export default function Home() {
         <span style={{ "fontSize": "11px", "letterSpacing": "0.22em", "textTransform": "uppercase", "color": "#B8863B", "fontWeight": "600" }}>Apparel Sourcing &amp; Manufacturing · Bangladesh</span>
       </div>
       <div style={{ "display": "flex", "alignItems": "flex-end", "justifyContent": "space-between", "gap": "40px", "flexWrap": "wrap" }}>
-        <h1 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(40px, 6.4vw, 92px)", "lineHeight": "0.96", "letterSpacing": "-0.035em", "textTransform": "uppercase", "margin": "0", "maxWidth": "15ch", "textWrap": "balance" }}>Masters of apparel <TypewriterText words={["manufacturing", "sourcing", "production", "excellence"]} /></h1>
+        <h1 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(40px, 6.4vw, 92px)", "lineHeight": "0.96", "letterSpacing": "-0.035em", "textTransform": "uppercase", "margin": "0", "maxWidth": "15ch", "textWrap": "balance" }}>Masters of apparel <TypewriterText words={["manufacturing"]} typingSpeed={220} deletingSpeed={110} pauseTime={3600} /></h1>
         <div style={{ "display": "flex", "gap": "14px", "paddingBottom": "14px", "flexShrink": "0" }}>
           <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 13px)", "gridTemplateRows": "repeat(2, 13px)", "gap": "4px" }}>
             <div style={{ "background": "#1E5B34", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#1E5B34", "borderRadius": "1px" }}></div>
@@ -567,7 +567,7 @@ export default function Home() {
 
     <div data-hero-grid="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(2, minmax(0, 1fr))", "gap": "28px", "alignItems": "start", "padding": "44px 0 56px" }}>
       <div data-reveal="1" style={{ "minWidth": "0" }}>
-        <div style={{ "height": "460px", "position": "relative", "overflow": "hidden", "borderRadius": "0" }}>
+        <div className="hero-img-wrap" style={{ "height": "460px", "position": "relative", "overflow": "hidden", "borderRadius": "0" }}>
           <img src="/assets/a0f0581d-2baf-4976-936f-db7c98965d0a.webp" alt="Editorial apparel / finished garment shot" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
         </div>
         <div style={{ "display": "flex", "flexWrap": "wrap", "gap": "36px", "paddingTop": "40px" }}>
@@ -590,7 +590,7 @@ export default function Home() {
 
       <div data-reveal="1" data-hero-offset="1" style={{ "minWidth": "0" }}>
         <div style={{ "position": "relative" }}>
-          <div style={{ "height": "460px", "position": "relative", "overflow": "hidden", "borderRadius": "0" }}>
+          <div className="hero-img-wrap" style={{ "height": "460px", "position": "relative", "overflow": "hidden", "borderRadius": "0" }}>
             <img src="/assets/6fa84e0a-d4f8-4ddd-ad5b-a964b43de2e8.webp" alt="Fabric texture close-up" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
           </div>
           <div style={{ "position": "absolute", "top": "-46px", "right": "-34px", "width": "116px", "height": "116px", "borderRadius": "50%", "background": "#14331F", "display": "flex", "alignItems": "center", "justifyContent": "center", "boxShadow": "0 10px 30px rgba(20,51,31,0.28)" }}>

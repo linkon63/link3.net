@@ -281,6 +281,32 @@ a:hover { color: #B8863B; }
   animation-play-state: paused !important;
 }
 
+/* Hero image hover zoom effects */
+.hero-img-wrap {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.hero-img-wrap img {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.hero-img-wrap:hover img {
+  transform: scale(1.06) !important;
+  filter: brightness(1.04) contrast(1.02) !important;
+}
+.hero-img-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(30,91,52,0) 65%, rgba(30,91,52,0.12) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.hero-img-wrap:hover::after {
+  opacity: 1;
+}
+
 @media (min-width: 760px) { [data-mobile-cta] { display: none !important; } }
 @media (max-width: 1079px) { [data-desktop-nav] { display: none !important; } }
 @media (max-width: 1000px) { [data-hero-grid] { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; } [data-hero-offset] { padding-top: 0 !important; } }
