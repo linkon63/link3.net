@@ -183,16 +183,14 @@
 
 * { box-sizing: border-box; }
 html {
-  overflow-x: hidden;
-  max-width: 100%;
+  overflow-x: clip;
 }
 body {
   margin: 0;
   padding: 0;
   background: #FBFAF7;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  max-width: 100%;
+  overflow-x: clip;
   position: relative;
 }
 section, header, footer, main {
@@ -202,6 +200,50 @@ section, header, footer, main {
 a { color: #1E5B34; text-decoration: none; }
 a:hover { color: #B8863B; }
 ::selection { background: #DDE7D6; }
+
+/* Navbar Link Styles with Hover Bold and Color */
+.navbar-link {
+  position: relative;
+  font-size: 13px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #1B1D1A;
+  font-weight: 500;
+  padding: 4px 0;
+  text-decoration: none;
+  display: inline-block;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+.navbar-link:hover {
+  color: #1E5B34 !important;
+  font-weight: 700 !important;
+}
+
+.navbar-link.active {
+  color: #1E5B34 !important;
+  font-weight: 600;
+}
+
+.navbar-link.active:hover {
+  font-weight: 700 !important;
+}
+
+.navbar-indicator {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  background: #1E5B34;
+  border-radius: 2px;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.navbar-link:hover .navbar-indicator {
+  width: 100% !important;
+}
+
 
 @keyframes prasine-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes prasine-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }

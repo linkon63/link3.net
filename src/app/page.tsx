@@ -637,7 +637,7 @@ export default function Home() {
   ];
 
   return (
-<div style={{ "fontFamily": "'Instrument Sans', Helvetica, Arial, sans-serif", "color": "#1B1D1A", "background": "#FBFAF7", "minHeight": "100vh", "overflowX": "hidden", "width": "100%", "maxWidth": "100vw" }}>
+<div style={{ "fontFamily": "'Instrument Sans', Helvetica, Arial, sans-serif", "color": "#1B1D1A", "background": "#FBFAF7", "minHeight": "100vh", "width": "100%" }}>
 
   <header style={{
     position: "sticky",
@@ -689,28 +689,13 @@ export default function Home() {
               <a
                 key={nav.id}
                 href={nav.href}
-                style={{
-                  fontSize: "13px",
-                  letterSpacing: "0.09em",
-                  textTransform: "uppercase",
-                  color: isActive ? "#1E5B34" : "#1B1D1A",
-                  fontWeight: isActive ? "600" : "500",
-                  position: "relative",
-                  padding: "4px 0",
-                  transition: "color 0.25s ease",
-                }}
+                className={`navbar-link ${isActive ? "active" : ""}`}
               >
                 {nav.label}
                 <span
+                  className="navbar-indicator"
                   style={{
-                    position: "absolute",
-                    bottom: "-2px",
-                    left: "0",
                     width: isActive ? "100%" : "0%",
-                    height: "2px",
-                    background: "#1E5B34",
-                    borderRadius: "2px",
-                    transition: "width 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
                   }}
                 />
               </a>
@@ -764,7 +749,7 @@ export default function Home() {
         <div style={{ "display": "flex", "flexWrap": "wrap", "gap": "36px", "paddingTop": "40px" }}>
           {stats.map((s, idx) => (
             <div key={idx} style={{ "minWidth": "0" }}>
-              <div style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "clamp(30px, 3vw, 44px)", "fontWeight": "600", "letterSpacing": "-0.03em", "lineHeight": "1", "color": "#1B1D1A" }}>
+              <div style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "clamp(30px, 3vw, 44px)", "fontWeight": "600", "letterSpacing": "-0.03em", "lineHeight": "1", "color": "#B8863B" }}>
                 <AnimatedCounter
                   value={s.value}
                   startVal={s.startVal}
@@ -826,27 +811,27 @@ export default function Home() {
       </div>
       <div data-reveal="1" style={{ "minWidth": "0" }}>
         <p style={{ "fontSize": "17px", "lineHeight": "1.62", "color": "#4A4E48", "margin": "0 0 34px", "maxWidth": "520px", "textWrap": "pretty" }}>A Bangladesh-based buying house and garment manufacturer, developing and producing apparel for global brands since 2019.</p>
-        <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(150px, 1fr))", "gap": "26px", "paddingBottom": "32px", "borderBottom": "1px solid #E7E4DC", "marginBottom": "32px" }}>
+        <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(140px, 1fr))", "gap": "24px", "paddingBottom": "32px", "borderBottom": "1px solid #E7E4DC", "marginBottom": "32px" }}>
           <div style={{ "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
-              <DynamicLucideIcon name="calendar-days" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5}} />
-              <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "26px", "fontWeight": "600", "letterSpacing": "-0.02em" }}><AnimatedCounter value={2019} /></span>
+              <DynamicLucideIcon name="calendar-days" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5, "flexShrink": 0}} />
+              <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "clamp(20px, 1.8vw, 24px)", "fontWeight": "600", "letterSpacing": "-0.02em", "whiteSpace": "nowrap" }}><AnimatedCounter value={2019} /></span>
             </div>
-            <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px" }}>In the industry since</div>
+            <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px", "whiteSpace": "nowrap" }}>In the industry since</div>
           </div>
           <div style={{ "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
-              <DynamicLucideIcon name="boxes" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5}} />
-              <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "26px", "fontWeight": "600", "letterSpacing": "-0.02em" }}>Small → Large</span>
+              <DynamicLucideIcon name="boxes" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5, "flexShrink": 0}} />
+              <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "clamp(20px, 1.8vw, 24px)", "fontWeight": "600", "letterSpacing": "-0.02em", "whiteSpace": "nowrap" }}>Small → Large</span>
             </div>
-            <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px" }}>Order quantities</div>
+            <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px", "whiteSpace": "nowrap" }}>Order quantities</div>
           </div>
           <div style={{ "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
-              <DynamicLucideIcon name="badge-check" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5}} />
-              <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "26px", "fontWeight": "600", "letterSpacing": "-0.02em" }}>AQL 1.5 / 2.5</span>
+              <DynamicLucideIcon name="badge-check" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5, "flexShrink": 0}} />
+              <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "clamp(20px, 1.8vw, 24px)", "fontWeight": "600", "letterSpacing": "-0.02em", "whiteSpace": "nowrap" }}>AQL 1.5 / 2.5</span>
             </div>
-            <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px" }}>Inspection standard</div>
+            <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px", "whiteSpace": "nowrap" }}>Inspection standard</div>
           </div>
         </div>
         <div style={{ "display": "grid", "gap": "18px", "marginBottom": "30px" }}>
