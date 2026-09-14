@@ -300,6 +300,26 @@ export default function Home() {
         );
       });
 
+      // Animate from left on scroll with repeat
+      document.querySelectorAll<HTMLElement>("[data-reveal-left]").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { opacity: 0, x: -75 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1.05,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 90%",
+              end: "bottom 10%",
+              toggleActions: "play reverse play reverse",
+            },
+          }
+        );
+      });
+
       // Stagger capabilities cards with repeat
       ScrollTrigger.batch(".prasine-card", {
         start: "top 92%",
@@ -669,13 +689,13 @@ export default function Home() {
       
       <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(24px, 2.8vw, 36px)", "lineHeight": "1.1", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0" }}>Apparel development &amp; custom garment manufacturing</h2>
     </div>
-    <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(340px, 1fr))", "gap": "56px", "alignItems": "start" }}>
-      <div style={{ "display": "grid", "gridTemplateColumns": "1fr", "gap": "12px", "minWidth": "0" }}>
-        <div style={{ "height": "380px", "position": "relative", "minWidth": "0", "overflow": "hidden" }}>
-          
-        <img src="/assets/0fa502cf-e7bf-4e9c-becb-382ae1582786.webp" alt="Team / studio / production floor" style={{ "width": "100%", "height": "100%", "objectFit": "contain", "display": "block" }} /></div>
+    <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(340px, 1fr))", "gap": "56px", "alignItems": "start" }}>
+      <div data-reveal-left="1" style={{ "display": "grid", "gridTemplateColumns": "1fr", "gap": "12px", "minWidth": "0" }}>
+        <div className="hero-img-wrap" style={{ "height": "380px", "position": "relative", "minWidth": "0", "overflow": "hidden" }}>
+          <img src="/assets/0fa502cf-e7bf-4e9c-becb-382ae1582786.webp" alt="Team / studio / production floor" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
+        </div>
       </div>
-      <div style={{ "minWidth": "0" }}>
+      <div data-reveal="1" style={{ "minWidth": "0" }}>
         <p style={{ "fontSize": "17px", "lineHeight": "1.62", "color": "#4A4E48", "margin": "0 0 34px", "maxWidth": "520px", "textWrap": "pretty" }}>A Bangladesh-based buying house and garment manufacturer, developing and producing apparel for global brands since 2019.</p>
         <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(150px, 1fr))", "gap": "26px", "paddingBottom": "32px", "borderBottom": "1px solid #E7E4DC", "marginBottom": "32px" }}>
           <div style={{ "minWidth": "0" }}>
