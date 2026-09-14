@@ -1,6 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 import {
   Layers,
   PencilRuler,
@@ -59,49 +66,42 @@ function DynamicLucideIcon({ name, style, ...props }: { name: string; style?: Re
 }
 
 
-// Animated number counter
+// GSAP Animated number counter with ScrollTrigger
 function AnimatedCounter({ value, suffix = "", prefix = "" }: { value: number; suffix?: string; prefix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
+  const [displayVal, setDisplayVal] = useState(0);
+  const elRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const el = ref.current;
+    const el = elRef.current;
     if (!el) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          const duration = 1800;
-          const start = performance.now();
-          const startVal = value > 1000 ? value - 60 : 0;
+    const startVal = value > 1000 ? value - 50 : 0;
+    const obj = { val: startVal };
 
-          const step = (now: number) => {
-            const progress = Math.min((now - start) / duration, 1);
-            // Ease out cubic
-            const ease = 1 - Math.pow(1 - progress, 3);
-            const current = Math.round(startVal + (value - startVal) * ease);
-            setCount(current);
-            if (progress < 1) {
-              requestAnimationFrame(step);
-            } else {
-              setCount(value);
-            }
-          };
-          requestAnimationFrame(step);
-        }
+    const trigger = ScrollTrigger.create({
+      trigger: el,
+      start: "top 90%",
+      once: true,
+      onEnter: () => {
+        gsap.to(obj, {
+          val: value,
+          duration: 2,
+          ease: "power2.out",
+          onUpdate: () => {
+            setDisplayVal(Math.round(obj.val));
+          },
+        });
       },
-      { threshold: 0.2 }
-    );
+    });
 
-    observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      trigger.kill();
+    };
   }, [value]);
 
   return (
-    <span ref={ref}>
-      {prefix}{count > 0 ? count : (value > 1000 ? value - 60 : 0)}{suffix}
+    <span ref={elRef}>
+      {prefix}{displayVal > 0 ? displayVal : (value > 1000 ? value - 50 : 0)}{suffix}
     </span>
   );
 }
@@ -111,43 +111,87 @@ export default function Home() {
   const [qty, setQty] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
+    const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
-    const show = (el: HTMLElement) => {
-      el.style.opacity = "1";
-      el.style.transform = "none";
-      el.setAttribute("data-revealed", "1");
+    // 1. Initialize Lenis Smooth Scrolling
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      gestureOrientation: "vertical",
+      smoothWheel: true,
+      touchMultiplier: 1.5,
+    });
+
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const updateTicker = (time: number) => {
+      lenis.raf(time * 1000);
     };
+    gsap.ticker.add(updateTicker);
+    gsap.ticker.lagSmoothing(0);
 
-    const elements = document.querySelectorAll<HTMLElement>("[data-reveal]");
-    
-    if (typeof IntersectionObserver !== "undefined") {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              show(entry.target as HTMLElement);
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.05, rootMargin: "120px" }
-      );
+    // 2. Scroll listener for sticky header
+    const onScroll = () => {
+      setScrolled(window.scrollY > 30);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
-      elements.forEach((el) => {
-        el.style.transition = "opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1)";
-        if (el.getBoundingClientRect().top < (window.innerHeight || 800) * 1.1) {
-          show(el);
-        } else {
-          el.style.opacity = "0";
-          el.style.transform = "translateY(18px)";
-          observer.observe(el);
-        }
+    // 3. GSAP ScrollTrigger Animations for data-reveal elements
+    const ctx = gsap.context(() => {
+      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              once: true,
+            },
+          }
+        );
       });
 
-      return () => observer.disconnect();
-    } else {
-      elements.forEach(show);
-    }
+      // Stagger capabilities cards
+      ScrollTrigger.batch(".prasine-card", {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) => {
+          gsap.fromTo(
+            batch,
+            { opacity: 0, y: 26 },
+            { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: "power2.out" }
+          );
+        },
+      });
+
+      // Stagger certs
+      ScrollTrigger.batch(".prasine-cert-item", {
+        start: "top 90%",
+        once: true,
+        onEnter: (batch) => {
+          gsap.fromTo(
+            batch,
+            { opacity: 0, y: 18, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.04, ease: "power2.out" }
+          );
+        },
+      });
+    });
+
+    return () => {
+      ctx.revert();
+      gsap.ticker.remove(updateTicker);
+      lenis.destroy();
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   const chip = (active: boolean): React.CSSProperties => ({
@@ -279,20 +323,49 @@ export default function Home() {
   return (
 <div style={{ "fontFamily": "'Instrument Sans', Helvetica, Arial, sans-serif", "color": "#1B1D1A", "background": "#FBFAF7", "overflowX": "hidden" }}>
 
-  <header style={{ "position": "sticky", "top": "0", "zIndex": "50", "background": "rgba(251,250,247,0.92)", "backdropFilter": "blur(10px)", "borderBottom": "1px solid #E7E4DC" }}>
-    <div style={{ "maxWidth": "1320px", "margin": "0 auto", "padding": "14px 28px", "display": "flex", "alignItems": "center", "gap": "28px", "justifyContent": "space-between" }}>
-      <a href="#top" style={{ "display": "flex", "alignItems": "center", "flexShrink": "0" }}>
-        <img src="/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png" alt="Prasine International Ltd." style={{ "height": "54px", "width": "auto", "display": "block", "mixBlendMode": "multiply" }} />
+  <header style={{
+    position: "sticky",
+    top: 0,
+    zIndex: 50,
+    background: scrolled ? "rgba(251,250,247,0.96)" : "rgba(251,250,247,0.85)",
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
+    borderBottom: "1px solid #E7E4DC",
+    boxShadow: scrolled ? "0 8px 30px rgba(27, 29, 26, 0.06)" : "none",
+    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
+  }}>
+    <div style={{
+      maxWidth: "1320px",
+      margin: "0 auto",
+      padding: scrolled ? "10px 28px" : "16px 28px",
+      display: "flex",
+      alignItems: "center",
+      gap: "28px",
+      justifyContent: "space-between",
+      transition: "padding 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
+    }}>
+      <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+        <img
+          src="/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png"
+          alt="Prasine International Ltd."
+          style={{
+            height: scrolled ? "46px" : "54px",
+            width: "auto",
+            display: "block",
+            mixBlendMode: "multiply",
+            transition: "height 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
+          }}
+        />
       </a>
-      <nav style={{ "display": "flex", "alignItems": "center", "gap": "30px", "flexWrap": "wrap", "justifyContent": "flex-end" }}>
-        <div data-desktop-nav="1" style={{ "display": "flex", "alignItems": "center", "gap": "30px" }}>
-            <a href="#top" style={{ "fontSize": "13px", "letterSpacing": "0.09em", "textTransform": "uppercase", "color": "#1B1D1A", "fontWeight": "500" }}>Home</a>
-            <a href="#about" style={{ "fontSize": "13px", "letterSpacing": "0.09em", "textTransform": "uppercase", "color": "#1B1D1A", "fontWeight": "500" }}>About Us</a>
-            <a href="#capabilities" style={{ "fontSize": "13px", "letterSpacing": "0.09em", "textTransform": "uppercase", "color": "#1B1D1A", "fontWeight": "500" }}>Our Services</a>
-            <a href="#products" style={{ "fontSize": "13px", "letterSpacing": "0.09em", "textTransform": "uppercase", "color": "#1B1D1A", "fontWeight": "500" }}>Production Gallery</a>
-            <a href="#quality" style={{ "fontSize": "13px", "letterSpacing": "0.09em", "textTransform": "uppercase", "color": "#1B1D1A", "fontWeight": "500" }}>Quality and Compliance</a>
+      <nav style={{ display: "flex", alignItems: "center", gap: "30px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+        <div data-desktop-nav="1" style={{ display: "flex", alignItems: "center", gap: "30px" }}>
+            <a href="#top" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>Home</a>
+            <a href="#about" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>About Us</a>
+            <a href="#capabilities" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>Our Services</a>
+            <a href="#products" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>Production Gallery</a>
+            <a href="#quality" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>Quality and Compliance</a>
         </div>
-        <a href="#quote" className="prasine-btn" style={{ "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "13px 22px", "display": "inline-block", "transition": "background 0.25s ease" }}>Request a Quote</a>
+        <a href="#quote" className="prasine-btn" style={{ background: "#1E5B34", color: "#FBFAF7", fontSize: "12px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: "600", padding: scrolled ? "11px 20px" : "13px 22px", display: "inline-block", transition: "all 0.25s ease" }}>Request a Quote</a>
       </nav>
     </div>
   </header>
@@ -393,7 +466,7 @@ export default function Home() {
           <div style={{ "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
               <DynamicLucideIcon name="calendar-days" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5}} />
-              <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "26px", "fontWeight": "600", "letterSpacing": "-0.02em" }}>2019</span>
+              <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "26px", "fontWeight": "600", "letterSpacing": "-0.02em" }}><AnimatedCounter value={2019} /></span>
             </div>
             <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px" }}>In the industry since</div>
           </div>
