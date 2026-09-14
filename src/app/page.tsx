@@ -284,6 +284,141 @@ function CertMobileSlider({ certs }: { certs: Array<{ src: string; alt: string; 
   );
 }
 
+function StepsMobileMarquee({ items }: { items: { n: string; icon: string; t: string; d: string }[] }) {
+  const doubleSteps = [...items, ...items];
+
+  return (
+    <div
+      className="steps-mobile-slider-wrap"
+      style={{
+        width: "100%",
+        overflow: "hidden",
+        position: "relative",
+        padding: "8px 0 16px",
+        maskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+      }}
+    >
+      <div
+        className="cert-marquee-track"
+        style={{
+          display: "flex",
+          width: "max-content",
+          animation: "prasine-marquee 38s linear infinite",
+          gap: "16px",
+        }}
+      >
+        {doubleSteps.map((st, idx) => (
+          <div
+            key={idx}
+            className="prasine-step-card"
+            style={{
+              width: "285px",
+              flexShrink: 0,
+              padding: "28px 24px 32px",
+              boxSizing: "border-box",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+              <div className="step-icon-wrap">
+                <DynamicLucideIcon name={st.icon} style={{ width: "30px", height: "30px", color: "#1E5B34", strokeWidth: 1.5 }} />
+              </div>
+              <span className="step-num-wrap" style={{ fontFamily: "'Archivo', Helvetica, sans-serif", fontSize: "12px", letterSpacing: "0.14em", color: "#C0BCB1", fontWeight: "600" }}>{st.n}</span>
+            </div>
+            <h3 style={{ fontFamily: "'Archivo', Helvetica, sans-serif", fontSize: "17px", fontWeight: "600", letterSpacing: "-0.005em", textTransform: "uppercase", margin: "0 0 10px" }}>{st.t}</h3>
+            <p style={{ fontSize: "14px", lineHeight: "1.55", color: "#6B6F68", margin: "0", textWrap: "pretty" }}>{st.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function QcMobileMarquee({ items }: { items: { n: string; icon: string; t: string; d: string }[] }) {
+  const allCards = [
+    ...items.map((item) => ({ type: "step" as const, data: item })),
+    { type: "aql" as const, data: null },
+  ];
+  const doubleCards = [...allCards, ...allCards];
+
+  return (
+    <div
+      className="qc-mobile-slider-wrap"
+      style={{
+        width: "100%",
+        overflow: "hidden",
+        position: "relative",
+        padding: "8px 0 16px",
+        maskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+      }}
+    >
+      <div
+        className="cert-marquee-track"
+        style={{
+          display: "flex",
+          width: "max-content",
+          animation: "prasine-marquee 42s linear infinite",
+          gap: "16px",
+        }}
+      >
+        {doubleCards.map((card, idx) => {
+          if (card.type === "aql") {
+            return (
+              <div
+                key={idx}
+                style={{
+                  background: "#C9A25E",
+                  color: "#14231A",
+                  padding: "28px 24px 30px",
+                  width: "270px",
+                  flexShrink: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div style={{ fontFamily: "'Archivo', Helvetica, sans-serif", fontSize: "26px", fontWeight: "600", letterSpacing: "-0.015em", marginBottom: "10px" }}>AQL 1.5 / 2.5</div>
+                <p style={{ fontSize: "13px", lineHeight: "1.5", color: "#33422F", margin: "0 0 16px" }}>Acceptable quality levels applied to inspection across production stages.</p>
+                <div style={{ display: "grid", gap: "8px", marginTop: "auto" }}>
+                  <span style={{ fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: "600" }}>Quality</span>
+                  <span style={{ fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: "600" }}>Safety</span>
+                  <span style={{ fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: "600" }}>Compliance</span>
+                </div>
+              </div>
+            );
+          }
+
+          const q = card.data!;
+          return (
+            <div
+              key={idx}
+              className="qc-card"
+              style={{
+                background: "#1B2E22",
+                border: "1px solid #2C4234",
+                padding: "28px 24px 30px",
+                width: "270px",
+                flexShrink: 0,
+                boxSizing: "border-box",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "22px" }}>
+                <div className="qc-icon-wrap">
+                  <DynamicLucideIcon name={q.icon} style={{ width: "26px", height: "26px", strokeWidth: 1.5 }} />
+                </div>
+                <span style={{ fontFamily: "'Archivo', Helvetica, sans-serif", fontSize: "12px", letterSpacing: "0.14em", color: "#5E7064", fontWeight: "600" }}>{q.n}</span>
+              </div>
+              <h3 style={{ fontFamily: "'Archivo', Helvetica, sans-serif", fontSize: "16px", fontWeight: "600", letterSpacing: "0.02em", textTransform: "uppercase", margin: "0 0 10px", lineHeight: "1.25" }}>{q.t}</h3>
+              <p style={{ fontSize: "13px", lineHeight: "1.55", color: "#97A099", margin: "0", textWrap: "pretty" }}>{q.d}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [cats, setCats] = useState<string[]>([]);
   const [qty, setQty] = useState<string | null>(null);
@@ -811,7 +946,7 @@ export default function Home() {
       </div>
       <div data-reveal="1" style={{ "minWidth": "0" }}>
         <p style={{ "fontSize": "17px", "lineHeight": "1.62", "color": "#4A4E48", "margin": "0 0 34px", "maxWidth": "520px", "textWrap": "pretty" }}>A Bangladesh-based buying house and garment manufacturer, developing and producing apparel for global brands since 2019.</p>
-        <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(140px, 1fr))", "gap": "24px", "paddingBottom": "32px", "borderBottom": "1px solid #E7E4DC", "marginBottom": "32px" }}>
+        <div className="who-we-are-stats-grid">
           <div style={{ "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
               <DynamicLucideIcon name="calendar-days" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5, "flexShrink": 0}} />
@@ -826,7 +961,7 @@ export default function Home() {
             </div>
             <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px", "whiteSpace": "nowrap" }}>Order quantities</div>
           </div>
-          <div style={{ "minWidth": "0" }}>
+          <div className="who-we-are-stat-last" style={{ "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
               <DynamicLucideIcon name="badge-check" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5, "flexShrink": 0}} />
               <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "clamp(20px, 1.8vw, 24px)", "fontWeight": "600", "letterSpacing": "-0.02em", "whiteSpace": "nowrap" }}>AQL 1.5 / 2.5</span>
@@ -848,7 +983,10 @@ export default function Home() {
             <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}><strong style={{ "fontWeight": "600", "color": "#1B1D1A" }}>How we do it</strong> — fabric sourcing › development › sampling › manufacturing › inspection › compliance › shipment.</p>
           </div>
         </div>
-        <a href="#capabilities" style={{ "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "color": "#1E5B34", "borderBottom": "1px solid #C9C5BA", "paddingBottom": "3px" }}>Learn More →</a>
+        <a href="#capabilities" className="learn-more-btn">
+          <span className="learn-more-default">Learn More →</span>
+          <span className="learn-more-hover">Coming Soon</span>
+        </a>
       </div>
     </div>
   </section>
@@ -862,7 +1000,7 @@ export default function Home() {
         <p style={{ "fontSize": "16px", "lineHeight": "1.62", "color": "#4A4E48", "margin": "0 auto 30px", "maxWidth": "480px", "textWrap": "pretty" }}>One accountable partner from the first fabric enquiry to the loaded container.</p>
         <a href="#quote" className="prasine-btn-outline" style={{ padding: "15px 28px" }}>Discuss Your Requirements</a>
       </div>
-      <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(390px, 1fr))", "gap": "22px", "alignItems": "stretch" }}>
+      <div data-reveal="1" data-steps-desktop="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(390px, 1fr))", "gap": "22px", "alignItems": "stretch" }}>
         {steps.map((st, idx) => (
           <div key={idx} className="prasine-step-card">
             <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "marginBottom": "30px" }}>
@@ -875,6 +1013,9 @@ export default function Home() {
             <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#6B6F68", "margin": "0", "textWrap": "pretty" }}>{st.d}</p>
           </div>
         ))}
+      </div>
+      <div data-reveal="1" data-steps-mobile="1">
+        <StepsMobileMarquee items={steps} />
       </div>
     </div>
   </section>
@@ -924,7 +1065,7 @@ export default function Home() {
     </div>
     <div data-reveal="1" style={{ "marginTop": "46px", "borderTop": "1px solid #E7E4DC", "paddingTop": "26px" }}>
       <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#6B6F68", "marginBottom": "18px" }}>Also produced</div>
-      <div style={{ "display": "flex", "flexWrap": "wrap", "gap": "10px" }}>
+      <div className="also-produced-wrap">
         {moreProducts.map((m, idx) => (
           <a key={idx} href="#quote" className="also-produced-tag">{m}</a>
         ))}
@@ -979,7 +1120,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(255px, 1fr))", "gap": "16px", "alignItems": "stretch" }}>
+      <div data-reveal="1" data-qc-desktop="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(255px, 1fr))", "gap": "16px", "alignItems": "stretch" }}>
         {qc.map((q, idx) => (
           <div key={idx} className="qc-card" style={{ "background": "#1B2E22", "border": "1px solid #2C4234", "padding": "30px 26px 32px", "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "marginBottom": "26px" }}>
@@ -1001,6 +1142,9 @@ export default function Home() {
             <span style={{ "fontSize": "13px", "letterSpacing": "0.1em", "textTransform": "uppercase", "fontWeight": "600" }}>Compliance</span>
           </div>
         </div>
+      </div>
+      <div data-reveal="1" data-qc-mobile="1">
+        <QcMobileMarquee items={qc} />
       </div>
     </div>
   </section>

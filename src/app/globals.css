@@ -491,10 +491,78 @@ a:hover .explore-btn .explore-arrow {
   transform: translateX(4px);
 }
 
-/* Also produced tags hover highlight */
+/* Learn More button with Coming Soon hover effect */
+.learn-more-btn {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #1E5B34;
+  border-bottom: 1px solid #C9C5BA;
+  padding-bottom: 3px;
+  text-decoration: none;
+  cursor: pointer;
+  height: 22px;
+  line-height: 1.2;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.learn-more-btn:hover {
+  border-bottom-color: #B8863B !important;
+  color: #B8863B !important;
+}
+
+.learn-more-btn .learn-more-default,
+.learn-more-btn .learn-more-hover {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.learn-more-btn .learn-more-default {
+  display: inline-flex;
+  align-items: center;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.learn-more-btn .learn-more-hover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  transform: translateY(100%);
+  opacity: 0;
+  color: #B8863B;
+  font-weight: 600;
+}
+
+.learn-more-btn:hover .learn-more-default {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.learn-more-btn:hover .learn-more-hover {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Also produced tags */
+.also-produced-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .also-produced-tag {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   border: 1px solid #DCD8CE;
   background: #FFFFFF;
   color: #1B1D1A;
@@ -504,6 +572,27 @@ a:hover .explore-btn .explore-arrow {
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@media (max-width: 640px) {
+  .also-produced-wrap {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .also-produced-tag {
+    width: 100% !important;
+    padding: 12px 10px !important;
+    font-size: 12.5px !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .also-produced-wrap {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 .also-produced-tag:hover {
@@ -755,20 +844,50 @@ html.lenis, html.lenis body {
   transform: translateX(2px) !important;
 }
 
-/* Certifications Responsive Display: Desktop Grid vs Mobile Slider */
-[data-certs-desktop] {
+/* Responsive Display: Desktop Grid vs Mobile Slider */
+[data-certs-desktop],
+[data-steps-desktop],
+[data-qc-desktop] {
   display: grid !important;
 }
-[data-certs-mobile] {
+[data-certs-mobile],
+[data-steps-mobile],
+[data-qc-mobile] {
   display: none !important;
 }
 
 @media (max-width: 767px) {
-  [data-certs-desktop] {
+  [data-certs-desktop],
+  [data-steps-desktop],
+  [data-qc-desktop] {
     display: none !important;
   }
-  [data-certs-mobile] {
+  [data-certs-mobile],
+  [data-steps-mobile],
+  [data-qc-mobile] {
     display: block !important;
+  }
+}
+
+/* Who We Are Stats Grid Responsive */
+.who-we-are-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #E7E4DC;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 639px) {
+  .who-we-are-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+    justify-items: center;
+  }
+  .who-we-are-stat-last {
+    grid-column: 1 / -1;
+    justify-self: center;
   }
 }
 
