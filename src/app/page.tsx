@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Layers,
   PencilRuler,
@@ -56,6 +56,54 @@ function DynamicLucideIcon({ name, style, ...props }: { name: string; style?: Re
     case "calendar-days": return <CalendarDays {...iconProps} />;
     default: return <Boxes {...iconProps} />;
   }
+}
+
+
+// Animated number counter
+function AnimatedCounter({ value, suffix = "", prefix = "" }: { value: number; suffix?: string; prefix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const duration = 1800;
+          const start = performance.now();
+          const startVal = value > 1000 ? value - 60 : 0;
+
+          const step = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1);
+            // Ease out cubic
+            const ease = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(startVal + (value - startVal) * ease);
+            setCount(current);
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              setCount(value);
+            }
+          };
+          requestAnimationFrame(step);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return (
+    <span ref={ref}>
+      {prefix}{count > 0 ? count : (value > 1000 ? value - 60 : 0)}{suffix}
+    </span>
+  );
 }
 
 export default function Home() {
@@ -244,7 +292,7 @@ export default function Home() {
             <a href="#products" style={{ "fontSize": "13px", "letterSpacing": "0.09em", "textTransform": "uppercase", "color": "#1B1D1A", "fontWeight": "500" }}>Production Gallery</a>
             <a href="#quality" style={{ "fontSize": "13px", "letterSpacing": "0.09em", "textTransform": "uppercase", "color": "#1B1D1A", "fontWeight": "500" }}>Quality and Compliance</a>
         </div>
-        <a href="#quote" style={{ "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "13px 22px", "display": "inline-block", "transition": "background 0.25s ease" }}>Request a Quote</a>
+        <a href="#quote" className="prasine-btn" style={{ "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "13px 22px", "display": "inline-block", "transition": "background 0.25s ease" }}>Request a Quote</a>
       </nav>
     </div>
   </header>
@@ -319,7 +367,7 @@ export default function Home() {
         </div>
         <p style={{ "fontSize": "16px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "22px 0 26px", "textWrap": "pretty" }}>From fabric sourcing and product development to manufacturing, quality assurance and shipment — end-to-end apparel solutions for global buyers.</p>
         <div style={{ "display": "flex", "gap": "12px", "flexWrap": "wrap" }}>
-          <a href="#quote" style={{ "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 26px", "transition": "background 0.25s ease" }}>Request a Quote</a>
+          <a href="#quote" className="prasine-btn" style={{ "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 26px", "transition": "background 0.25s ease" }}>Request a Quote</a>
           <a href="#products" style={{ "border": "1px solid #C9C5BA", "color": "#1B1D1A", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 26px", "transition": "border-color 0.25s ease" }}>Our Products</a>
         </div>
       </div>
@@ -412,11 +460,11 @@ export default function Home() {
   <section style={{ "marginTop": "88px", "borderTop": "1px solid #E7E4DC", "borderBottom": "1px solid #E7E4DC", "padding": "44px 0", "overflow": "hidden" }}>
     <div style={{ "maxWidth": "1320px", "margin": "0 auto 28px", "padding": "0 28px", "textAlign": "center", "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86" }}>Brands we produce for</div>
     <div style={{ "position": "relative", "overflow": "hidden", "WebkitMaskImage": "linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent)", "maskImage": "linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent)" }}>
-      <div style={{ "display": "flex", "width": "max-content", "animation": "prasine-marquee 42s linear infinite" }}>
+      <div className="prasine-marquee-track" style={{ "display": "flex", "width": "max-content", "animation": "prasine-marquee 42s linear infinite" }}>
         {clientsLoop.map((cl, idx) => (
 
           <div key={idx} style={{ "width": "190px", "height": "62px", "display": "flex", "alignItems": "center", "justifyContent": "center", "padding": "0 22px", "flexShrink": "0" }}>
-            <img src={cl.src} alt={cl.alt} title={cl.alt} style={{ "maxWidth": "100%", "maxHeight": "62px", "objectFit": "contain", "display": "block", "filter": "grayscale(1)", "opacity": "0.62", "transition": "filter 0.3s ease, opacity 0.3s ease" }} />
+            <img className="prasine-logo-item" src={cl.src} alt={cl.alt} title={cl.alt} style={{ "maxWidth": "100%", "maxHeight": "62px", "objectFit": "contain", "display": "block", "filter": "grayscale(1)", "opacity": "0.62" }} />
           </div>
         
 ))}
@@ -531,7 +579,7 @@ export default function Home() {
         <p style={{ "fontSize": "16px", "lineHeight": "1.65", "color": "#4A4E48", "margin": "0 0 26px", "maxWidth": "520px", "textWrap": "pretty" }}>Our factories are certified by multiple internationally recognized organizations. A commitment to worker safety has enabled 100% certification by the RMG Sustainability Council (Accord) and Nirapon (Alliance).</p>
         <div style={{ "marginBottom": "30px" }}></div>
         <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap" }}>
-          <a href="#quote" style={{ "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 28px", "transition": "background 0.25s ease" }}>Explore Our Factory Network</a>
+          <a href="#quote" className="prasine-btn" style={{ "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 28px", "transition": "background 0.25s ease" }}>Explore Our Factory Network</a>
           <a href="#quote" style={{ "border": "1px solid #C9C5BA", "color": "#1B1D1A", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 28px", "transition": "border-color 0.25s ease" }}>Discuss Your Requirements</a>
         </div>
       </div>
@@ -547,7 +595,7 @@ export default function Home() {
     <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fill, minmax(190px, 1fr))", "gap": "52px 32px" }}>
       {certs.map((c, idx) => (
 
-        <div key={idx} style={{ "height": "92px", "display": "flex", "alignItems": "center", "justifyContent": "center", "minWidth": "0" }}>
+        <div key={idx} className="prasine-cert-item" style={{ "height": "92px", "display": "flex", "alignItems": "center", "justifyContent": "center", "minWidth": "0", "cursor": "pointer" }}>
           <img src={c.src} alt={c.alt} title={c.alt} style={{ "maxWidth": "100%", "maxHeight": "92px", "objectFit": "contain", "display": "block" }} />
         </div>
       
@@ -617,13 +665,16 @@ export default function Home() {
 
       <div data-reveal="1" style={{ "background": "#FBFAF7", "color": "#1B1D1A", "padding": "38px 34px 34px" }}>
         {submitted ? (
-      
           <div style={{ "padding": "40px 0", "textAlign": "left" }}>
+            <div style={{ "display": "inline-flex", "alignItems": "center", "justifyContent": "center", "width": "54px", "height": "54px", "borderRadius": "50%", "background": "#E8F4EC", "color": "#1E5B34", "marginBottom": "18px" }}>
+              <svg style={{ "width": "28px", "height": "28px" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 6L9 17l-5-5" style={{ "animation": "checkmark-draw 0.6s ease-in-out forwards" }} />
+              </svg>
+            </div>
             <div style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "24px", "fontWeight": "600", "textTransform": "uppercase", "letterSpacing": "-0.01em", "marginBottom": "14px" }}>Thank you — enquiry received</div>
             <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}>Our sourcing team will reply to your business email shortly.</p>
           </div>
-        
-    ) : (
+        ) : (
       
           <div>
             <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "22px", "fontWeight": "600", "letterSpacing": "0.01em", "textTransform": "uppercase", "margin": "0 0 28px" }}>Request a Quote</h3>
@@ -632,7 +683,7 @@ export default function Home() {
             <div style={{ "display": "flex", "flexWrap": "wrap", "gap": "8px", "marginBottom": "26px" }}>
               {categoryChips.map((ch, idx) => (
 
-                <button key={idx} type="button" onClick={ch.toggle} style={ch.style}>{ch.label}</button>
+                <button key={idx} type="button" className="prasine-chip" onClick={ch.toggle} style={ch.style}>{ch.label}</button>
               
 ))}
             </div>
@@ -641,7 +692,7 @@ export default function Home() {
             <div style={{ "display": "flex", "flexWrap": "wrap", "gap": "8px", "marginBottom": "26px" }}>
               {qtyChips.map((q, idx) => (
 
-                <button key={idx} type="button" onClick={q.select} style={q.style}>{q.label}</button>
+                <button key={idx} type="button" className="prasine-chip" onClick={q.select} style={q.style}>{q.label}</button>
               
 ))}
             </div>
@@ -658,7 +709,7 @@ export default function Home() {
             </div>
 
             <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap", "alignItems": "center" }}>
-              <button type="button" onClick={submit} style={{ "background": "#1E5B34", "color": "#FBFAF7", "border": "none", "fontSize": "13px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "17px 32px", "cursor": "pointer", "transition": "background 0.25s ease" }}>Request a Quote</button>
+              <button type="button" onClick={submit} className="prasine-btn" style={{ "background": "#1E5B34", "color": "#FBFAF7", "border": "none", "fontSize": "13px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "17px 32px", "cursor": "pointer", "transition": "background 0.25s ease" }}>Request a Quote</button>
               <a href="mailto:shameem@prasineint.com" style={{ "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "color": "#1B1D1A", "borderBottom": "1px solid #C9C5BA", "paddingBottom": "3px" }}>Talk to Our Team</a>
             </div>
           </div>

@@ -186,10 +186,104 @@ body { margin: 0; background: #FBFAF7; -webkit-font-smoothing: antialiased; }
 a { color: #1E5B34; text-decoration: none; }
 a:hover { color: #B8863B; }
 ::selection { background: #DDE7D6; }
+
 @keyframes prasine-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes prasine-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+@keyframes checkmark-draw {
+  0% { stroke-dashoffset: 50; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Premium Card & Element Hover Animations */
+.prasine-card {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.prasine-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 16px 36px rgba(27, 29, 26, 0.08) !important;
+}
+
+.prasine-card-dark {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.prasine-card-dark:hover {
+  transform: translateY(-4px) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.prasine-product-card {
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.prasine-product-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 16px 32px rgba(27, 29, 26, 0.06) !important;
+}
+.prasine-product-card img {
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.prasine-product-card:hover img {
+  transform: scale(1.06) !important;
+}
+
+.prasine-logo-item {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.prasine-logo-item:hover {
+  filter: grayscale(0) !important;
+  opacity: 1 !important;
+  transform: scale(1.12) !important;
+}
+
+.prasine-cert-item {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.prasine-cert-item:hover {
+  transform: translateY(-5px) scale(1.06) !important;
+}
+
+.prasine-btn {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.prasine-btn:hover {
+  background: #164326 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(30, 91, 52, 0.22) !important;
+}
+
+.prasine-btn-outline {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.prasine-btn-outline:hover {
+  background: #1B1D1A !important;
+  color: #F3F1EA !important;
+  transform: translateY(-1px) !important;
+}
+
+.prasine-chip {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.prasine-chip:hover {
+  border-color: #1E5B34 !important;
+  transform: translateY(-1px) !important;
+}
+.prasine-chip:active {
+  transform: scale(0.96) !important;
+}
+
+.prasine-marquee-track:hover {
+  animation-play-state: paused !important;
+}
+
 @media (min-width: 760px) { [data-mobile-cta] { display: none !important; } }
 @media (max-width: 1079px) { [data-desktop-nav] { display: none !important; } }
 @media (max-width: 1000px) { [data-hero-grid] { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; } [data-hero-offset] { padding-top: 0 !important; } }
+
 input, textarea, button { font-family: inherit; }
 html { scroll-behavior: smooth; }
