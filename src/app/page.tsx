@@ -726,7 +726,7 @@ export default function Home() {
         <div style={{ "fontSize": "11px", "letterSpacing": "0.22em", "textTransform": "uppercase", "color": "#B8863B", "fontWeight": "600", "marginBottom": "18px" }}>Full Service</div>
         <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(30px, 3.4vw, 46px)", "lineHeight": "1.04", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0 0 18px" }}>From source to shipment</h2>
         <p style={{ "fontSize": "16px", "lineHeight": "1.62", "color": "#4A4E48", "margin": "0 auto 30px", "maxWidth": "480px", "textWrap": "pretty" }}>One accountable partner from the first fabric enquiry to the loaded container.</p>
-        <a href="#quote" style={{ "border": "1px solid #1B1D1A", "color": "#1B1D1A", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "15px 26px", "display": "inline-block", "transition": "background 0.25s ease, color 0.25s ease" }}>Discuss Your Requirements</a>
+        <a href="#quote" className="prasine-btn-outline" style={{ padding: "15px 28px" }}>Discuss Your Requirements</a>
       </div>
       <div data-reveal="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(390px, 1fr))", "gap": "22px", "alignItems": "stretch" }}>
         {steps.map((st, idx) => (
@@ -826,7 +826,7 @@ export default function Home() {
           <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(30px, 3.4vw, 46px)", "lineHeight": "1.04", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0 0 20px" }}>Quality is built into every stage</h2>
           <p style={{ "fontSize": "16px", "lineHeight": "1.65", "color": "#B9BFB4", "maxWidth": "560px", "margin": "0 0 26px", "textWrap": "pretty" }}>From fabric arrival to the final random check we inspect at every step, so issues are found early and corrected while production can still absorb them.</p>
           <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#8D9389", "maxWidth": "560px", "margin": "0 0 30px" }}>On buyer request we work with third-party institutes including SGS, ITS and Hohenstein, and guide factories towards compliance.</p>
-          <a href="#quote" style={{ "border": "1px solid #4A5A4E", "color": "#F2F0E9", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 28px", "display": "inline-block", "transition": "background 0.25s ease, border-color 0.25s ease" }}>Explore Quality &amp; Compliance</a>
+          <a href="#quote" className="prasine-btn-outline" style={{ padding: "16px 28px", borderColor: "#4A5A4E", color: "#F2F0E9" }}>Explore Quality &amp; Compliance</a>
         </div>
       </div>
 
@@ -867,8 +867,8 @@ export default function Home() {
         <p style={{ "fontSize": "16px", "lineHeight": "1.65", "color": "#4A4E48", "margin": "0 0 26px", "maxWidth": "520px", "textWrap": "pretty" }}>Our factories are certified by multiple internationally recognized organizations. A commitment to worker safety has enabled 100% certification by the RMG Sustainability Council (Accord) and Nirapon (Alliance).</p>
         <div style={{ "marginBottom": "30px" }}></div>
         <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap" }}>
-          <a href="#quote" className="prasine-btn" style={{ "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 28px", "transition": "background 0.25s ease" }}>Explore Our Factory Network</a>
-          <a href="#quote" style={{ "border": "1px solid #C9C5BA", "color": "#1B1D1A", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 28px", "transition": "border-color 0.25s ease" }}>Discuss Your Requirements</a>
+          <a href="#quote" className="prasine-btn" style={{ padding: "16px 28px" }}>Explore Our Factory Network</a>
+          <a href="#quote" className="prasine-btn-outline" style={{ padding: "16px 28px" }}>Discuss Your Requirements</a>
         </div>
       </div>
     </div>
@@ -915,7 +915,7 @@ export default function Home() {
 ))}
         </div>
       </div>
-      <a data-reveal="1" href="#quote" style={{ "border": "1px solid #1E5B34", "color": "#1E5B34", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 28px", "display": "inline-block", "transition": "background 0.25s ease, color 0.25s ease" }}>Our Approach to Sustainability</a>
+      <a data-reveal="1" href="#quote" className="prasine-btn-outline" style={{ padding: "16px 28px", borderColor: "#1E5B34", color: "#1E5B34" }}>Our Approach to Sustainability</a>
     </div>
   </section>
 
@@ -997,7 +997,7 @@ export default function Home() {
             </div>
 
             <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap", "alignItems": "center" }}>
-              <button type="button" onClick={submit} className="prasine-btn" style={{ "background": "#1E5B34", "color": "#FBFAF7", "border": "none", "fontSize": "13px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "17px 32px", "cursor": "pointer", "transition": "background 0.25s ease" }}>Request a Quote</button>
+              <button type="button" onClick={submit} className="prasine-btn" style={{ padding: "17px 34px" }}>Request a Quote</button>
               <a href="mailto:shameem@prasineint.com" style={{ "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "color": "#1B1D1A", "borderBottom": "1px solid #C9C5BA", "paddingBottom": "3px" }}>Talk to Our Team</a>
             </div>
           </div>
@@ -1047,7 +1047,7 @@ export default function Home() {
   </footer>
 
   <div data-mobile-cta="1" style={{ "position": "fixed", "left": "0", "right": "0", "bottom": "0", "zIndex": "60", "background": "rgba(251,250,247,0.96)", "backdropFilter": "blur(10px)", "borderTop": "1px solid #E7E4DC", "padding": "12px 16px", "display": "flex", "gap": "12px" }}>
-      <a href="#quote" style={{ "flex": "1", "textAlign": "center", "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "13px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 18px" }}>Request a Quote</a>
+      <a href="#quote" className="prasine-btn" style={{ flex: "1", textAlign: "center", padding: "16px 18px" }}>Request a Quote</a>
   </div>
   <div data-mobile-cta="1" style={{ "height": "76px" }}></div>
 
