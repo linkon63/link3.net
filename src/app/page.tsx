@@ -209,9 +209,36 @@ export default function Home() {
   const [qty, setQty] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
-    const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("top");
 
   useEffect(() => {
+    const sections = [
+      { id: "top", nav: "top" },
+      { id: "who-we-are", nav: "about" },
+      { id: "capabilities", nav: "capabilities" },
+      { id: "products", nav: "products" },
+      { id: "quality", nav: "quality" },
+      { id: "about", nav: "about" },
+      { id: "certifications", nav: "quality" },
+      { id: "sustainability", nav: "quality" },
+      { id: "quote", nav: "quote" },
+    ];
+
+    const updateActiveSection = () => {
+      const scrollPos = window.scrollY + 180;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i].id);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPos >= top) {
+            setActiveSection(sections[i].nav);
+            break;
+          }
+        }
+      }
+    };
+
     // 1. Initialize Lenis Smooth Scrolling
     const lenis = new Lenis({
       duration: 1.2,
@@ -226,6 +253,7 @@ export default function Home() {
       ScrollTrigger.update();
       const scrollY = typeof e.scroll === "number" ? e.scroll : window.scrollY;
       setScrolled(scrollY > 20);
+      updateActiveSection();
     });
 
     const updateTicker = (time: number) => {
@@ -237,6 +265,7 @@ export default function Home() {
     // 2. Scroll listener for sticky header
     const onScroll = () => {
       setScrolled(window.scrollY > 20);
+      updateActiveSection();
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -461,13 +490,47 @@ export default function Home() {
           }}
         />
       </a>
-      <nav style={{ display: "flex", alignItems: "center", gap: "30px", flexWrap: "wrap", justifyContent: "flex-end" }}>
-        <div data-desktop-nav="1" style={{ display: "flex", alignItems: "center", gap: "30px" }}>
-            <a href="#top" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>Home</a>
-            <a href="#about" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>About Us</a>
-            <a href="#capabilities" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>Our Services</a>
-            <a href="#products" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>Production Gallery</a>
-            <a href="#quality" style={{ fontSize: "13px", letterSpacing: "0.09em", textTransform: "uppercase", color: "#1B1D1A", fontWeight: "500" }}>Quality and Compliance</a>
+      <nav style={{ display: "flex", alignItems: "center", gap: "28px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+        <div data-desktop-nav="1" style={{ display: "flex", alignItems: "center", gap: "26px" }}>
+          {[
+            { href: "#top", id: "top", label: "Home" },
+            { href: "#who-we-are", id: "about", label: "About Us" },
+            { href: "#capabilities", id: "capabilities", label: "Our Services" },
+            { href: "#products", id: "products", label: "Production Gallery" },
+            { href: "#quality", id: "quality", label: "Quality and Compliance" },
+          ].map((nav) => {
+            const isActive = activeSection === nav.id;
+            return (
+              <a
+                key={nav.id}
+                href={nav.href}
+                style={{
+                  fontSize: "13px",
+                  letterSpacing: "0.09em",
+                  textTransform: "uppercase",
+                  color: isActive ? "#1E5B34" : "#1B1D1A",
+                  fontWeight: isActive ? "600" : "500",
+                  position: "relative",
+                  padding: "4px 0",
+                  transition: "color 0.25s ease",
+                }}
+              >
+                {nav.label}
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: "-2px",
+                    left: "0",
+                    width: isActive ? "100%" : "0%",
+                    height: "2px",
+                    background: "#1E5B34",
+                    borderRadius: "2px",
+                    transition: "width 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+                  }}
+                />
+              </a>
+            );
+          })}
         </div>
         <a href="#quote" className="prasine-btn" style={{ background: "#1E5B34", color: "#FBFAF7", fontSize: "12px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: "600", padding: scrolled ? "11px 20px" : "13px 22px", display: "inline-block", transition: "all 0.25s ease" }}>Request a Quote</a>
       </nav>
