@@ -64,54 +64,42 @@ export default function Home() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    let revealAll = false;
     const show = (el: HTMLElement) => {
       el.style.opacity = "1";
       el.style.transform = "none";
       el.setAttribute("data-revealed", "1");
     };
-    const tick = () => {
-      const vh = window.innerHeight || 800;
-      document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-revealed])").forEach((el) => {
-        if (!el.style.transition) {
-          el.style.transition = "opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1)";
-        }
-        const r = el.getBoundingClientRect();
-        if (revealAll || (r.bottom > -80 && r.top < vh * 1.05)) {
+
+    const elements = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    
+    if (typeof IntersectionObserver !== "undefined") {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              show(entry.target as HTMLElement);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.05, rootMargin: "120px" }
+      );
+
+      elements.forEach((el) => {
+        el.style.transition = "opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1)";
+        if (el.getBoundingClientRect().top < (window.innerHeight || 800) * 1.1) {
           show(el);
-        } else if (el.style.opacity === "") {
+        } else {
           el.style.opacity = "0";
           el.style.transform = "translateY(18px)";
+          observer.observe(el);
         }
       });
-    };
 
-    let rafId: number | null = null;
-    const schedule = () => {
-      if (!rafId) {
-        rafId = requestAnimationFrame(() => {
-          rafId = null;
-          tick();
-        });
-      }
-    };
-
-    tick();
-    window.addEventListener("scroll", schedule, { passive: true, capture: true });
-    window.addEventListener("resize", schedule, { passive: true });
-    const poll = setInterval(schedule, 250);
-    const safety = setTimeout(() => {
-      revealAll = true;
-      schedule();
-    }, 4000);
-
-    return () => {
-      if (poll) clearInterval(poll);
-      if (rafId) cancelAnimationFrame(rafId);
-      if (safety) clearTimeout(safety);
-      window.removeEventListener("scroll", schedule, { capture: true });
-      window.removeEventListener("resize", schedule);
-    };
+      return () => observer.disconnect();
+    } else {
+      elements.forEach(show);
+    }
   }, []);
 
   const chip = (active: boolean): React.CSSProperties => ({
