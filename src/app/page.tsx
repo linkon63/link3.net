@@ -25,30 +25,36 @@ import {
   LucideProps
 } from "lucide-react";
 
-// Dynamic Lucide icon mapping
-function DynamicLucideIcon({ name, ...props }: { name: string } & LucideProps) {
+// Dynamic Lucide icon mapping with precise styling
+function DynamicLucideIcon({ name, style, ...props }: { name: string; style?: React.CSSProperties } & LucideProps) {
+  const iconProps: LucideProps = {
+    style: { display: "block", ...style },
+    strokeWidth: (style as any)?.strokeWidth ?? 1.5,
+    ...props
+  };
+
   switch (name) {
-    case "layers": return <Layers {...props} />;
-    case "pencil-ruler": return <PencilRuler {...props} />;
-    case "scissors": return <Scissors {...props} />;
-    case "factory": return <Factory {...props} />;
-    case "clipboard-check": return <ClipboardCheck {...props} />;
-    case "ship": return <Ship {...props} />;
-    case "scaling": return <Scaling {...props} />;
-    case "badge-check": return <BadgeCheck {...props} />;
-    case "clock": return <Clock {...props} />;
-    case "workflow": return <Workflow {...props} />;
-    case "search": return <Search {...props} />;
-    case "clipboard-list": return <ClipboardList {...props} />;
-    case "scan-search": return <ScanSearch {...props} />;
-    case "shirt": return <Shirt {...props} />;
-    case "settings-2": return <Settings2 {...props} />;
-    case "ruler": return <Ruler {...props} />;
-    case "package-check": return <PackageCheck {...props} />;
-    case "boxes": return <Boxes {...props} />;
-    case "building-2": return <Building2 {...props} />;
-    case "calendar-days": return <CalendarDays {...props} />;
-    default: return <Boxes {...props} />;
+    case "layers": return <Layers {...iconProps} />;
+    case "pencil-ruler": return <PencilRuler {...iconProps} />;
+    case "scissors": return <Scissors {...iconProps} />;
+    case "factory": return <Factory {...iconProps} />;
+    case "clipboard-check": return <ClipboardCheck {...iconProps} />;
+    case "ship": return <Ship {...iconProps} />;
+    case "scaling": return <Scaling {...iconProps} />;
+    case "badge-check": return <BadgeCheck {...iconProps} />;
+    case "clock": return <Clock {...iconProps} />;
+    case "workflow": return <Workflow {...iconProps} />;
+    case "search": return <Search {...iconProps} />;
+    case "clipboard-list": return <ClipboardList {...iconProps} />;
+    case "scan-search": return <ScanSearch {...iconProps} />;
+    case "shirt": return <Shirt {...iconProps} />;
+    case "settings-2": return <Settings2 {...iconProps} />;
+    case "ruler": return <Ruler {...iconProps} />;
+    case "package-check": return <PackageCheck {...iconProps} />;
+    case "boxes": return <Boxes {...iconProps} />;
+    case "building-2": return <Building2 {...iconProps} />;
+    case "calendar-days": return <CalendarDays {...iconProps} />;
+    default: return <Boxes {...iconProps} />;
   }
 }
 
@@ -350,21 +356,21 @@ export default function Home() {
         <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(150px, 1fr))", "gap": "26px", "paddingBottom": "32px", "borderBottom": "1px solid #E7E4DC", "marginBottom": "32px" }}>
           <div style={{ "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
-              <DynamicLucideIcon name="calendar-days" style={{ width: "22px", height: "22px", display: "block" }} />
+              <DynamicLucideIcon name="calendar-days" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5}} />
               <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "26px", "fontWeight": "600", "letterSpacing": "-0.02em" }}>2019</span>
             </div>
             <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px" }}>In the industry since</div>
           </div>
           <div style={{ "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
-              <DynamicLucideIcon name="boxes" style={{ width: "22px", height: "22px", display: "block" }} />
+              <DynamicLucideIcon name="boxes" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5}} />
               <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "26px", "fontWeight": "600", "letterSpacing": "-0.02em" }}>Small → Large</span>
             </div>
             <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px" }}>Order quantities</div>
           </div>
           <div style={{ "minWidth": "0" }}>
             <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
-              <DynamicLucideIcon name="badge-check" style={{ width: "22px", height: "22px", display: "block" }} />
+              <DynamicLucideIcon name="badge-check" style={{"width": "22px", "height": "22px", "color": "#1E5B34", "strokeWidth": 1.5}} />
               <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "26px", "fontWeight": "600", "letterSpacing": "-0.02em" }}>AQL 1.5 / 2.5</span>
             </div>
             <div style={{ "fontSize": "13px", "color": "#6B6F68", "marginTop": "6px" }}>Inspection standard</div>
@@ -372,15 +378,15 @@ export default function Home() {
         </div>
         <div style={{ "display": "grid", "gap": "18px", "marginBottom": "30px" }}>
           <div style={{ "display": "grid", "gridTemplateColumns": "24px 1fr", "gap": "14px", "alignItems": "start" }}>
-            <DynamicLucideIcon name="building-2" style={{ width: "22px", height: "22px", display: "block" }} />
+            <DynamicLucideIcon name="building-2" style={{"width": "20px", "height": "20px", "color": "#B8863B", "strokeWidth": 1.5, "marginTop": "3px"}} />
             <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}><strong style={{ "fontWeight": "600", "color": "#1B1D1A" }}>Who we are</strong> — an apparel buying house and garment manufacturer based in Dhaka, Bangladesh.</p>
           </div>
           <div style={{ "display": "grid", "gridTemplateColumns": "24px 1fr", "gap": "14px", "alignItems": "start" }}>
-            <DynamicLucideIcon name="shirt" style={{ width: "22px", height: "22px", display: "block" }} />
+            <DynamicLucideIcon name="shirt" style={{"width": "20px", "height": "20px", "color": "#B8863B", "strokeWidth": 1.5, "marginTop": "3px"}} />
             <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}><strong style={{ "fontWeight": "600", "color": "#1B1D1A" }}>What we do</strong> — knit &amp; woven, sweaters, denim, sleepwear, intimates, sportswear, swimwear, outerwear, kidswear, workwear, leather / PU and accessories.</p>
           </div>
           <div style={{ "display": "grid", "gridTemplateColumns": "24px 1fr", "gap": "14px", "alignItems": "start" }}>
-            <DynamicLucideIcon name="workflow" style={{ width: "22px", height: "22px", display: "block" }} />
+            <DynamicLucideIcon name="workflow" style={{"width": "20px", "height": "20px", "color": "#B8863B", "strokeWidth": 1.5, "marginTop": "3px"}} />
             <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}><strong style={{ "fontWeight": "600", "color": "#1B1D1A" }}>How we do it</strong> — fabric sourcing › development › sampling › manufacturing › inspection › compliance › shipment.</p>
           </div>
         </div>
@@ -403,7 +409,7 @@ export default function Home() {
 
           <div key={idx} style={{ "background": "#FFFFFF", "padding": "40px 36px 44px", "minWidth": "0", "transition": "transform 0.3s ease, box-shadow 0.3s ease" }}>
             <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "marginBottom": "30px" }}>
-              <DynamicLucideIcon name={st.icon} style={{ width: "22px", height: "22px", display: "block" }} />
+              <DynamicLucideIcon name={st.icon} style={{"width": "34px", "height": "34px", "color": "#1E5B34", "strokeWidth": 1.5}} />
               <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "12px", "letterSpacing": "0.14em", "color": "#C0BCB1", "fontWeight": "600" }}>{st.n}</span>
             </div>
             <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "19px", "fontWeight": "600", "letterSpacing": "-0.005em", "textTransform": "uppercase", "margin": "0 0 12px" }}>{st.t}</h3>
@@ -422,7 +428,7 @@ export default function Home() {
         {clientsLoop.map((cl, idx) => (
 
           <div key={idx} style={{ "width": "190px", "height": "62px", "display": "flex", "alignItems": "center", "justifyContent": "center", "padding": "0 22px", "flexShrink": "0" }}>
-            <img data-src="{cl.src}" alt="{cl.alt}" title="{cl.alt}" style={{ "maxWidth": "100%", "maxHeight": "62px", "objectFit": "contain", "display": "block", "filter": "grayscale(1)", "opacity": "0.62", "transition": "filter 0.3s ease, opacity 0.3s ease" }} />
+            <img src={cl.src} alt={cl.alt} title={cl.alt} style={{ "maxWidth": "100%", "maxHeight": "62px", "objectFit": "contain", "display": "block", "filter": "grayscale(1)", "opacity": "0.62", "transition": "filter 0.3s ease, opacity 0.3s ease" }} />
           </div>
         
 ))}
@@ -471,7 +477,7 @@ export default function Home() {
       {values.map((v, idx) => (
 
         <div key={idx} style={{ "padding": "34px 44px 44px 0", "borderRight": "1px solid #E7E4DC", "minWidth": "0" }}>
-          <DynamicLucideIcon name={v.icon} style={{ width: "22px", height: "22px", display: "block" }} />
+          <DynamicLucideIcon name={v.icon} style={{"width": "32px", "height": "32px", "color": "#1E5B34", "strokeWidth": 1.5, "marginBottom": "24px"}} />
           <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "17px", "fontWeight": "600", "letterSpacing": "0.02em", "textTransform": "uppercase", "margin": "0 0 12px" }}>{v.t}</h3>
           <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#6B6F68", "margin": "0", "textWrap": "pretty" }}>{v.d}</p>
         </div>
@@ -505,7 +511,7 @@ export default function Home() {
 
           <div key={idx} style={{ "background": "#1B2E22", "border": "1px solid #2C4234", "padding": "30px 26px 32px", "minWidth": "0", "transition": "border-color 0.3s ease, transform 0.3s ease" }}>
             <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "marginBottom": "26px" }}>
-              <DynamicLucideIcon name={q.icon} style={{ width: "22px", height: "22px", display: "block" }} />
+              <DynamicLucideIcon name={q.icon} style={{"width": "30px", "height": "30px", "color": "#C9A25E", "strokeWidth": 1.5}} />
               <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "12px", "letterSpacing": "0.14em", "color": "#5E7064", "fontWeight": "600" }}>{q.n}</span>
             </div>
             <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "16px", "fontWeight": "600", "letterSpacing": "0.02em", "textTransform": "uppercase", "margin": "0 0 10px", "lineHeight": "1.25" }}>{q.t}</h3>
@@ -554,7 +560,7 @@ export default function Home() {
       {certs.map((c, idx) => (
 
         <div key={idx} style={{ "height": "92px", "display": "flex", "alignItems": "center", "justifyContent": "center", "minWidth": "0" }}>
-          <img data-src="{c.src}" alt="{c.alt}" title="{c.alt}" style={{ "maxWidth": "100%", "maxHeight": "92px", "objectFit": "contain", "display": "block" }} />
+          <img src={c.src} alt={c.alt} title={c.alt} style={{ "maxWidth": "100%", "maxHeight": "92px", "objectFit": "contain", "display": "block" }} />
         </div>
       
 ))}
