@@ -627,9 +627,9 @@ export default function Home() {
           <span style={{ "fontSize": "11px", "letterSpacing": "0.18em", "textTransform": "uppercase", "color": "#8A8E86" }}>AQL 1.5 / 2.5 inspection</span>
         </div>
         <p style={{ "fontSize": "16px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "22px 0 26px", "textWrap": "pretty" }}>From fabric sourcing and product development to manufacturing, quality assurance and shipment — end-to-end apparel solutions for global buyers.</p>
-        <div style={{ "display": "flex", "gap": "12px", "flexWrap": "wrap" }}>
-          <a href="#quote" className="prasine-btn" style={{ "background": "#1E5B34", "color": "#FBFAF7", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 26px", "transition": "background 0.25s ease" }}>Request a Quote</a>
-          <a href="#products" style={{ "border": "1px solid #C9C5BA", "color": "#1B1D1A", "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "padding": "16px 26px", "transition": "border-color 0.25s ease" }}>Our Products</a>
+        <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap" }}>
+          <a href="#quote" className="hero-btn-primary">Request a Quote</a>
+          <a href="#products" className="hero-btn-secondary">Our Products</a>
         </div>
       </div>
 
