@@ -134,6 +134,76 @@ function AnimatedCounter({
   );
 }
 
+// Typewriter effect component for hero title
+function TypewriterText({
+  words = ["manufacturing", "sourcing", "production", "development"],
+  typingSpeed = 110,
+  deletingSpeed = 55,
+  pauseTime = 2200,
+}: {
+  words?: string[];
+  typingSpeed?: number;
+  deletingSpeed?: number;
+  pauseTime?: number;
+}) {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(words[0].length);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [blink, setBlink] = useState(true);
+
+  // Blinking cursor
+  useEffect(() => {
+    const blinkInterval = setInterval(() => {
+      setBlink((prev) => !prev);
+    }, 500);
+    return () => clearInterval(blinkInterval);
+  }, []);
+
+  useEffect(() => {
+    const currentWord = words[wordIndex];
+
+    if (!isDeleting && subIndex === currentWord.length) {
+      const timeout = setTimeout(() => {
+        setIsDeleting(true);
+      }, pauseTime);
+      return () => clearTimeout(timeout);
+    }
+
+    if (isDeleting && subIndex === 0) {
+      setIsDeleting(false);
+      setWordIndex((prev) => (prev + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (isDeleting ? -1 : 1));
+    }, isDeleting ? deletingSpeed : typingSpeed);
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, isDeleting, wordIndex, words, typingSpeed, deletingSpeed, pauseTime]);
+
+  const currentWord = words[wordIndex];
+  const displayedText = currentWord.substring(0, subIndex);
+
+  return (
+    <span style={{ color: "#1E5B34", display: "inline", position: "relative", whiteSpace: "nowrap" }}>
+      {displayedText}
+      <span
+        style={{
+          display: "inline-block",
+          width: "4px",
+          height: "0.82em",
+          background: "#1E5B34",
+          marginLeft: "4px",
+          verticalAlign: "-0.04em",
+          opacity: blink ? 1 : 0,
+          transition: "opacity 0.15s ease",
+        }}
+      />
+    </span>
+  );
+}
+
 export default function Home() {
   const [cats, setCats] = useState<string[]>([]);
   const [qty, setQty] = useState<string | null>(null);
@@ -417,7 +487,7 @@ export default function Home() {
         <span style={{ "fontSize": "11px", "letterSpacing": "0.22em", "textTransform": "uppercase", "color": "#B8863B", "fontWeight": "600" }}>Apparel Sourcing &amp; Manufacturing · Bangladesh</span>
       </div>
       <div style={{ "display": "flex", "alignItems": "flex-end", "justifyContent": "space-between", "gap": "40px", "flexWrap": "wrap" }}>
-        <h1 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(40px, 6.4vw, 92px)", "lineHeight": "0.96", "letterSpacing": "-0.035em", "textTransform": "uppercase", "margin": "0", "maxWidth": "15ch", "textWrap": "balance" }}>Masters of apparel <span style={{ "color": "#1E5B34" }}>manufacturing</span></h1>
+        <h1 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(40px, 6.4vw, 92px)", "lineHeight": "0.96", "letterSpacing": "-0.035em", "textTransform": "uppercase", "margin": "0", "maxWidth": "15ch", "textWrap": "balance" }}>Masters of apparel <TypewriterText words={["manufacturing", "sourcing", "production", "excellence"]} /></h1>
         <div style={{ "display": "flex", "gap": "14px", "paddingBottom": "14px", "flexShrink": "0" }}>
           <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 13px)", "gridTemplateRows": "repeat(2, 13px)", "gap": "4px" }}>
             <div style={{ "background": "#1E5B34", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#1E5B34", "borderRadius": "1px" }}></div>
