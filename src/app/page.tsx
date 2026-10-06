@@ -31,10 +31,6 @@ import {
   CalendarDays,
   ArrowUp,
   Mail,
-  MapPin,
-  Phone,
-  MessageSquare,
-  ChevronRight,
   LucideProps
 } from "lucide-react";
 
@@ -426,37 +422,41 @@ export default function Home() {
 
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [activeSection, setActiveSection] = useState("top");
   const circleRef = useRef<SVGCircleElement | null>(null);
 
+
+  const [heroIndex, setHeroIndex] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
+  const [heroSnap, setHeroSnap] = useState(false); // suppresses transition on wrap
+  const heroIndexRef = useRef(0);
+
+  const HERO_SLIDE_COUNT = 3;
+  const HERO_DWELL_MS = 2000;
+
   useEffect(() => {
-    const sections = [
-      { id: "top", nav: "top" },
-      { id: "who-we-are", nav: "about" },
-      { id: "capabilities", nav: "capabilities" },
-      { id: "products", nav: "products" },
-      { id: "quality", nav: "quality" },
-      { id: "about", nav: "about" },
-      { id: "certifications", nav: "quality" },
-      { id: "sustainability", nav: "quality" },
-      { id: "quote", nav: "quote" },
-    ];
+    if (heroPaused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const updateActiveSection = () => {
-      const scrollPos = window.scrollY + 180;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i].id);
-        if (el) {
-          const top = el.offsetTop;
-          if (scrollPos >= top) {
-            setActiveSection(sections[i].nav);
-            break;
-          }
-        }
+    const id = setInterval(() => {
+      const current = heroIndexRef.current;
+      const next = current + 1;
+
+      if (current >= HERO_SLIDE_COUNT) {
+        setHeroSnap(true);
+        heroIndexRef.current = 0;
+        setHeroIndex(0);
+        requestAnimationFrame(() => requestAnimationFrame(() => setHeroSnap(false)));
+      } else {
+        heroIndexRef.current = next;
+        setHeroIndex(next);
       }
-    };
+    }, HERO_DWELL_MS);
 
-    const updateScrollProgress = (currentScroll?: number) => {
+    return () => clearInterval(id);
+  }, [heroPaused]);
+
+  useEffect(() => {
+        const updateScrollProgress = (currentScroll?: number) => {
       const scrollY =
         typeof currentScroll === "number"
           ? currentScroll
@@ -474,7 +474,6 @@ export default function Home() {
       setScrollProgress(Math.round(ratio * 100));
       // Show back to top button early (as soon as user scrolls down > 60px)
       setScrolled(scrollY > 60);
-      updateActiveSection();
     };
 
     // 1. Initialize Lenis Smooth Scrolling
@@ -683,6 +682,12 @@ export default function Home() {
     { value: 35, startVal: 0, prefix: "", suffix: "+", l: "Team" },
   ];
 
+  const heroSlides = [
+    { src: "/images/hero-slider/merchandiing-work.webp", alt: "Merchandising work" },
+    { src: "/images/hero-slider/weekly-meeting-2.webp", alt: "Weekly team meeting" },
+    { src: "/images/hero-slider/weekly-meeting.webp", alt: "Weekly production meeting" },
+  ];
+
   const steps = [
     { n: "01", icon: "layers", t: "Fabric & Raw Materials", d: "Sourcing knit, woven and specialty fabrics, trims and accessories against your specification and price target." },
     { n: "02", icon: "pencil-ruler", t: "Product Development", d: "Translating a sketch, tech pack or reference garment into a manufacturable product." },
@@ -774,74 +779,6 @@ export default function Home() {
   return (
 <div style={{ "fontFamily": "'Instrument Sans', Helvetica, Arial, sans-serif", "color": "#1B1D1A", "background": "#FBFAF7", "minHeight": "100vh", "width": "100%" }}>
 
-  <header style={{
-    position: "sticky",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 100,
-    background: scrolled ? "rgba(251,250,247,0.96)" : "rgba(251,250,247,0.85)",
-    backdropFilter: "blur(12px)",
-    WebkitBackdropFilter: "blur(12px)",
-    borderBottom: scrolled ? "1px solid #DCD8CE" : "1px solid #E7E4DC",
-    boxShadow: scrolled ? "0 8px 30px rgba(27, 29, 26, 0.08)" : "none",
-    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
-  }}>
-    <div style={{
-      maxWidth: "1320px",
-      margin: "0 auto",
-      padding: scrolled ? "10px 28px" : "16px 28px",
-      display: "flex",
-      alignItems: "center",
-      gap: "28px",
-      justifyContent: "space-between",
-      transition: "padding 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
-    }}>
-      <a href="#top" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
-        <img
-          src="/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png"
-          alt="Prasine International Ltd."
-          style={{
-            height: scrolled ? "46px" : "54px",
-            width: "auto",
-            display: "block",
-            mixBlendMode: "multiply",
-            transition: "height 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
-          }}
-        />
-      </a>
-      <nav style={{ display: "flex", alignItems: "center", gap: "28px", flexWrap: "wrap", justifyContent: "flex-end" }}>
-        <div data-desktop-nav="1" style={{ display: "flex", alignItems: "center", gap: "26px" }}>
-          {[
-            { href: "#top", id: "top", label: "Home" },
-            { href: "#who-we-are", id: "about", label: "About Us" },
-            { href: "#capabilities", id: "capabilities", label: "Our Services" },
-            { href: "#products", id: "products", label: "Production Gallery" },
-            { href: "#quality", id: "quality", label: "Quality and Compliance" },
-          ].map((nav) => {
-            const isActive = activeSection === nav.id;
-            return (
-              <a
-                key={nav.id}
-                href={nav.href}
-                className={`navbar-link ${isActive ? "active" : ""}`}
-              >
-                {nav.label}
-                <span
-                  className="navbar-indicator"
-                  style={{
-                    width: isActive ? "100%" : "0%",
-                  }}
-                />
-              </a>
-            );
-          })}
-        </div>
-        <a href="#quote" className="prasine-btn" style={{ background: "#1E5B34", color: "#FBFAF7", fontSize: "12px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: "600", padding: scrolled ? "11px 20px" : "13px 22px", display: "inline-block", transition: "all 0.25s ease" }}>Request a Quote</a>
-      </nav>
-    </div>
-  </header>
-
   <section id="top" style={{ "background": "linear-gradient(165deg, #FDF6EC 0%, #FBFAF7 46%, #F4F6F1 100%)" }}>
     <div style={{ "maxWidth": "1320px", "margin": "0 auto", "padding": "0 28px" }}>
     <div data-reveal="1" style={{ "padding": "64px 0 0" }}>
@@ -862,25 +799,67 @@ export default function Home() {
             <TypewriterText words={["manufacturing"]} typingSpeed={220} deletingSpeed={110} pauseTime={3600} />
           </span>
         </h1>
-        <div style={{ "display": "flex", "gap": "14px", "paddingBottom": "14px", "flexShrink": "0" }}>
-          <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 13px)", "gridTemplateRows": "repeat(2, 13px)", "gap": "4px" }}>
-            <div style={{ "background": "#1E5B34", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#1E5B34", "borderRadius": "1px" }}></div>
-          </div>
-          <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 13px)", "gridTemplateRows": "repeat(2, 13px)", "gap": "4px" }}>
-            <div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div><div style={{ "background": "#B8863B", "borderRadius": "1px" }}></div><div style={{ "background": "#B8863B", "borderRadius": "1px" }}></div><div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div>
-          </div>
-          <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 13px)", "gridTemplateRows": "repeat(2, 13px)", "gap": "4px" }}>
-            <div style={{ "background": "#D6CFC0", "borderRadius": "1px" }}></div><div style={{ "background": "#C9C5BA", "borderRadius": "1px" }}></div><div style={{ "background": "#C9C5BA", "borderRadius": "1px" }}></div><div style={{ "background": "#D6CFC0", "borderRadius": "1px" }}></div>
-          </div>
+        <div className="hero-img-wrap prasine-hero-ornament">
+          <img
+            src="/images/hero-top.jpeg"
+            alt="Apparel manufacturing detail shot"
+            title="Prasine International"
+            width={1280}
+            height={960}
+            style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }}
+          />
         </div>
       </div>
     </div>
 
     <div data-hero-grid="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(2, minmax(0, 1fr))", "gap": "28px", "alignItems": "start", "padding": "44px 0 56px" }}>
-      <div data-reveal="1" style={{ "minWidth": "0" }}>
-        <div className="hero-img-wrap" style={{ "height": "460px", "position": "relative", "overflow": "hidden", "borderRadius": "0" }}>
-          <img src="/assets/a0f0581d-2baf-4976-936f-db7c98965d0a.webp" alt="Editorial apparel / finished garment shot" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
+      {/* Carousel spans both columns — 3 slides, 2 visible, 2s dwell */}
+      <div
+        data-hero-slider="1"
+        className="prasine-hero-slider"
+        style={{ "gridColumn": "1 / -1", "minWidth": "0" }}
+        role="group"
+        aria-roledescription="carousel"
+        aria-label="Company highlights"
+        onMouseEnter={() => setHeroPaused(true)}
+        onMouseLeave={() => setHeroPaused(false)}
+      >
+        <div className="prasine-hero-viewport">
+          <div
+            className="prasine-hero-track"
+            data-snap={heroSnap ? "1" : undefined}
+            style={{ "--hero-index": heroIndex } as React.CSSProperties}
+          >
+            {[...heroSlides, heroSlides[0], heroSlides[1]].map((s, j) => (
+              <div
+                key={j}
+                className="prasine-hero-slide"
+                aria-hidden={j < heroIndex || j > heroIndex + 1 ? "true" : undefined}
+              >
+                <div className="hero-img-wrap" style={{ "height": "460px", "position": "relative", "overflow": "hidden", "borderRadius": "0" }}>
+                  <img src={s.src} alt={s.alt} title="Prasine International" width={1600} height={887} style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        <div className="prasine-hero-badge" aria-hidden="true">
+          <div style={{ "position": "absolute", "inset": "0", "animation": "prasine-spin 18s linear infinite" }}>
+            <svg viewBox="0 0 116 116" style={{ "width": "100%", "height": "100%", "display": "block" }}>
+              <defs><path id="prasine-badge-arc" d="M 58,58 m -43,0 a 43,43 0 1,1 86,0 a 43,43 0 1,1 -86,0"></path></defs>
+              <text fill="#C79A4A" style={{ "fontFamily": "'Instrument Sans', sans-serif", "fontSize": "10.5px", "letterSpacing": "0.24em", "textTransform": "uppercase", "fontWeight": "600" }}>
+                <textPath href="#prasine-badge-arc" startOffset="0%">Ethical · Compliant · On Time · </textPath>
+              </text>
+            </svg>
+          </div>
+          <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 10px)", "gridTemplateRows": "repeat(2, 10px)", "gap": "3px" }}>
+            <div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div><div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal="1" style={{ "minWidth": "0" }}>
         <div style={{ "display": "flex", "flexWrap": "wrap", "gap": "36px", "paddingTop": "40px" }}>
           {stats.map((s, idx) => (
             <div key={idx} style={{ "minWidth": "0" }}>
@@ -899,26 +878,8 @@ export default function Home() {
         </div>
       </div>
 
-      <div data-reveal="1" data-hero-offset="1" style={{ "minWidth": "0" }}>
-        <div style={{ "position": "relative" }}>
-          <div className="hero-img-wrap" style={{ "height": "460px", "position": "relative", "overflow": "hidden", "borderRadius": "0" }}>
-            <img src="/assets/6fa84e0a-d4f8-4ddd-ad5b-a964b43de2e8.webp" alt="Fabric texture close-up" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
-          </div>
-          <div style={{ "position": "absolute", "top": "-46px", "right": "-34px", "width": "116px", "height": "116px", "borderRadius": "50%", "background": "#14331F", "display": "flex", "alignItems": "center", "justifyContent": "center", "boxShadow": "0 10px 30px rgba(20,51,31,0.28)" }}>
-            <div style={{ "position": "absolute", "inset": "0", "animation": "prasine-spin 18s linear infinite" }}>
-              <svg viewBox="0 0 116 116" style={{ "width": "100%", "height": "100%", "display": "block" }}>
-                <defs><path id="prasine-badge-arc" d="M 58,58 m -43,0 a 43,43 0 1,1 86,0 a 43,43 0 1,1 -86,0"></path></defs>
-                <text fill="#C79A4A" style={{ "fontFamily": "'Instrument Sans', sans-serif", "fontSize": "10.5px", "letterSpacing": "0.24em", "textTransform": "uppercase", "fontWeight": "600" }}>
-                  <textPath href="#prasine-badge-arc" startOffset="0%">Ethical · Compliant · On Time · </textPath>
-                </text>
-              </svg>
-            </div>
-            <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 10px)", "gridTemplateRows": "repeat(2, 10px)", "gap": "3px" }}>
-              <div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div><div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div><div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div><div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div>
-            </div>
-          </div>
-        </div>
-        <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "paddingTop": "26px" }}>
+      <div data-reveal="1" style={{ "minWidth": "0" }}>
+        <div style={{ "display": "flex", "alignItems": "center", "gap": "10px" }}>
           <div style={{ "width": "34px", "height": "1px", "background": "#C9C5BA" }}></div>
           <span style={{ "fontSize": "11px", "letterSpacing": "0.18em", "textTransform": "uppercase", "color": "#8A8E86" }}>AQL 1.5 / 2.5 inspection</span>
         </div>
@@ -941,7 +902,7 @@ export default function Home() {
     <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(340px, 1fr))", "gap": "56px", "alignItems": "start" }}>
       <div data-reveal-left="1" style={{ "display": "grid", "gridTemplateColumns": "1fr", "gap": "12px", "minWidth": "0" }}>
         <div className="hero-img-wrap" style={{ "height": "380px", "position": "relative", "minWidth": "0", "overflow": "hidden" }}>
-          <img src="/assets/0fa502cf-e7bf-4e9c-becb-382ae1582786.webp" alt="Team / studio / production floor" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
+          <img src="/images/apparel-development.webp" alt="Apparel development" style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
         </div>
       </div>
       <div data-reveal="1" style={{ "minWidth": "0" }}>
@@ -1303,107 +1264,6 @@ export default function Home() {
     </div>
   </section>
 
-  <footer style={{ "background": "#FBFAF7", "padding": "76px 0 36px", "borderTop": "1px solid #E7E4DC" }}>
-    <div style={{ "maxWidth": "1320px", "margin": "0 auto", "padding": "0 28px" }}>
-      <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(240px, 1fr))", "gap": "48px", "paddingBottom": "48px", "borderBottom": "1px solid #E7E4DC" }}>
-        <div>
-          <img src="/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png" alt="Prasine International Ltd." style={{ "height": "74px", "width": "auto", "display": "block", "mixBlendMode": "multiply", "marginBottom": "18px" }} />
-          <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#6B6F68", "margin": "0", "maxWidth": "260px" }}>Apparel buying house and garment manufacturing partner, active in the industry since 2019.</p>
-        </div>
-
-        <div>
-          <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "18px", "fontWeight": "600" }}>Navigate</div>
-          <div style={{ "display": "grid", "gap": "12px" }}>
-            <a href="#top" className="footer-link">
-              <ChevronRight className="footer-link-icon" />
-              <span>Home</span>
-            </a>
-            <a href="#about" className="footer-link">
-              <ChevronRight className="footer-link-icon" />
-              <span>About Us</span>
-            </a>
-            <a href="#capabilities" className="footer-link">
-              <ChevronRight className="footer-link-icon" />
-              <span>Our Services</span>
-            </a>
-            <a href="#products" className="footer-link">
-              <ChevronRight className="footer-link-icon" />
-              <span>Production Gallery</span>
-            </a>
-            <a href="#quality" className="footer-link">
-              <ChevronRight className="footer-link-icon" />
-              <span>Quality and Compliance</span>
-            </a>
-            <a href="#quote" className="footer-link">
-              <ChevronRight className="footer-link-icon" />
-              <span>Request a Quote</span>
-            </a>
-          </div>
-        </div>
-
-        <div>
-          <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "18px", "fontWeight": "600" }}>Offices</div>
-          <div style={{ "display": "grid", "gap": "18px" }}>
-            <div style={{ "display": "flex", "gap": "10px", "alignItems": "flex-start" }}>
-              <MapPin style={{ "width": "18px", "height": "18px", "color": "#1E5B34", "flexShrink": 0, "marginTop": "2px" }} />
-              <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}>
-                <span style={{ "display": "block", "fontSize": "11px", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "4px", "fontWeight": "600" }}>Corporate</span>
-                House #13, 3rd Floor, Road #17/A,<br />Sector #12, Uttara,<br />Dhaka-1230, Bangladesh
-              </p>
-            </div>
-            <div style={{ "display": "flex", "gap": "10px", "alignItems": "flex-start" }}>
-              <MapPin style={{ "width": "18px", "height": "18px", "color": "#1E5B34", "flexShrink": 0, "marginTop": "2px" }} />
-              <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}>
-                <span style={{ "display": "block", "fontSize": "11px", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "4px", "fontWeight": "600" }}>Chittagong</span>
-                House #53, 5th Floor, Road #05,<br />O/R Nizam Road,<br />Chattogram-4212, Bangladesh
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div style={{ "fontSize": "11px", "letterSpacing": "0.2em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "18px", "fontWeight": "600" }}>Contact</div>
-          <div style={{ "display": "grid", "gap": "14px" }}>
-            <a href="mailto:shameem@prasineint.com" className="footer-link">
-              <Mail style={{ "width": "16px", "height": "16px", "color": "#1E5B34", "flexShrink": 0 }} />
-              <span>shameem@prasineint.com</span>
-            </a>
-            <a href="tel:+8801707691256" className="footer-link">
-              <Phone style={{ "width": "16px", "height": "16px", "color": "#1E5B34", "flexShrink": 0 }} />
-              <span>+8801707-691256</span>
-            </a>
-            <div style={{ "display": "flex", "alignItems": "center", "gap": "8px", "fontSize": "13px", "color": "#8A8E86" }}>
-              <MessageSquare style={{ "width": "14px", "height": "14px", "color": "#7FBF4D" }} />
-              <span>Phone / WhatsApp</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Middle Brand Row */}
-      <div style={{ "display": "flex", "justifyContent": "space-between", "gap": "24px", "flexWrap": "wrap", "padding": "24px 0 20px" }}>
-        <span style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "12px", "letterSpacing": "0.18em", "textTransform": "uppercase", "color": "#1B1D1A", "fontWeight": "600" }}>
-          Prasine International Ltd.
-        </span>
-        <span style={{ "display": "flex", "alignItems": "center", "gap": "12px", "fontSize": "12px", "letterSpacing": "0.24em", "textTransform": "uppercase", "color": "#B8863B" }}>
-          <span style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 6px)", "gridTemplateRows": "repeat(2, 6px)", "gap": "2px" }}>
-            <span style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></span>
-            <span style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></span>
-            <span style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></span>
-            <span style={{ "background": "#B8863B", "borderRadius": "1px" }}></span>
-          </span>
-          Fashioning You
-        </span>
-      </div>
-
-      {/* Bottom Copyright Section */}
-      <div style={{ "borderTop": "1px solid #E7E4DC", "paddingTop": "22px", "textAlign": "center" }}>
-        <p style={{ "fontSize": "13px", "color": "#767A73", "margin": "0" }}>
-          © {new Date().getFullYear()} Prasine International Ltd. All rights reserved.
-        </p>
-      </div>
-    </div>
-  </footer>
 
   <div data-mobile-cta="1" style={{ "position": "fixed", "left": "0", "right": "0", "bottom": "0", "zIndex": "60", "background": "rgba(251,250,247,0.96)", "backdropFilter": "blur(10px)", "borderTop": "1px solid #E7E4DC", "padding": "12px 16px", "display": "flex", "gap": "12px" }}>
       <a href="#quote" className="prasine-btn" style={{ flex: "1", textAlign: "center", padding: "16px 18px" }}>Request a Quote</a>

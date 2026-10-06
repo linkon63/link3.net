@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import SiteHeader from "@/components/site-header";
+import SiteFooter from "@/components/site-footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,8 +18,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" style={{ scrollBehavior: "smooth" }}>
-      <body style={{ margin: 0, padding: 0, background: "#FBFAF7", color: "#1B1D1A" }}>
+      <body
+        style={{
+          margin: 0,
+          padding: 0,
+          background: "#FBFAF7",
+          color: "#1B1D1A",
+          fontFamily: "'Instrument Sans', Helvetica, Arial, sans-serif",
+        }}
+      >
+        <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );
