@@ -64,7 +64,7 @@ export default function SiteFooter() {
                 <MapPin style={{ "width": "18px", "height": "18px", "color": "#1E5B34", "flexShrink": 0, "marginTop": "2px" }} />
                 <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}>
                   <span style={{ "display": "block", "fontSize": "11px", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#8A8E86", "marginBottom": "4px", "fontWeight": "600" }}>Corporate</span>
-                  House #13, 3rd Floor, Road #17/A,<br />Sector #12, Uttara,<br />Dhaka-1230, Bangladesh
+                  Plot No. 14, Road No. 13,<br />Sector No. 04, Uttara Model Town,<br />Dhaka-1230, Bangladesh
                 </p>
               </div>
               <div style={{ "display": "flex", "gap": "10px", "alignItems": "flex-start" }}>
