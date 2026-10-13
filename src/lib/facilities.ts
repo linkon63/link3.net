@@ -278,6 +278,7 @@ export const facilities: Facility[] = [
       { k: "Supervision", v: "Audited partner units" },
     ],
     gallery: WASH_GALLERY,
+    galleryTitle: "Where the order gets wash",
   },
 ];
 
