@@ -813,11 +813,16 @@ export default function Home() {
     </div>
 
     <div data-hero-grid="1" style={{ "display": "grid", "gridTemplateColumns": "repeat(2, minmax(0, 1fr))", "gap": "28px", "alignItems": "start", "padding": "44px 0 56px" }}>
-      {/* Carousel spans both columns — 3 slides, 2 visible, 2s dwell */}
+      {/* Fixed left image — pairs with the auto-advancing slider on the right */}
+      <div data-reveal-left="1" className="hero-img-wrap prasine-hero-media" style={{ "minWidth": "0" }}>
+        <img src="/images/hero-section-left.webp" alt="Apparel development and garment manufacturing" title="Prasine International" width={1200} height={848} style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
+      </div>
+
+      {/* Right slider — 3 slides, 1 visible, 2s dwell */}
       <div
         data-hero-slider="1"
         className="prasine-hero-slider"
-        style={{ "gridColumn": "1 / -1", "minWidth": "0" }}
+        style={{ "minWidth": "0", "--hero-visible": 1, "--hero-gap": "0px" } as React.CSSProperties}
         role="group"
         aria-roledescription="carousel"
         aria-label="Company highlights"
@@ -830,13 +835,13 @@ export default function Home() {
             data-snap={heroSnap ? "1" : undefined}
             style={{ "--hero-index": heroIndex } as React.CSSProperties}
           >
-            {[...heroSlides, heroSlides[0], heroSlides[1]].map((s, j) => (
+            {[...heroSlides, heroSlides[0]].map((s, j) => (
               <div
                 key={j}
                 className="prasine-hero-slide"
-                aria-hidden={j < heroIndex || j > heroIndex + 1 ? "true" : undefined}
+                aria-hidden={j !== heroIndex ? "true" : undefined}
               >
-                <div className="hero-img-wrap" style={{ "height": "460px", "position": "relative", "overflow": "hidden", "borderRadius": "0" }}>
+                <div className="hero-img-wrap prasine-hero-media">
                   <img src={s.src} alt={s.alt} title="Prasine International" width={1600} height={887} style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }} />
                 </div>
               </div>

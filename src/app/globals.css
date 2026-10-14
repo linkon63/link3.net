@@ -1339,6 +1339,18 @@ a:hover .explore-btn .explore-arrow {
   .prasine-hero-ornament { display: none; }
 }
 
+/* Hero media box — desktop 460px, tightened on mobile so landscape art is not
+   side-cropped by object-fit: cover inside a near-square column. */
+.prasine-hero-media {
+  position: relative;
+  height: 460px;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+@media (max-width: 640px) {
+  .prasine-hero-media { height: 240px; }
+}
 
 .prasine-hero-slider {
   --hero-visible: 2;
