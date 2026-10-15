@@ -136,7 +136,7 @@ function AnimatedCounter({
   );
 }
 
-// Typewriter effect component for hero title
+// Typewriter effect component for accent words in section headings
 function TypewriterText({
   words = ["manufacturing"],
   typingSpeed = 220,
@@ -157,6 +157,9 @@ function TypewriterText({
   const [isDeleting, setIsDeleting] = useState(false);
   const [blink, setBlink] = useState(true);
 
+  const currentWord = words[wordIndex] ?? "";
+  const wordCount = words.length;
+
   // Blinking cursor
   useEffect(() => {
     const blinkInterval = setInterval(() => {
@@ -166,8 +169,6 @@ function TypewriterText({
   }, []);
 
   useEffect(() => {
-    const currentWord = words[wordIndex];
-
     if (!isDeleting && subIndex === currentWord.length) {
       const timeout = setTimeout(() => {
         setIsDeleting(true);
@@ -177,7 +178,7 @@ function TypewriterText({
 
     if (isDeleting && subIndex === 0) {
       setIsDeleting(false);
-      setWordIndex((prev) => (prev + 1) % words.length);
+      setWordIndex((prev) => (prev + 1) % wordCount);
       return;
     }
 
@@ -186,9 +187,8 @@ function TypewriterText({
     }, isDeleting ? deletingSpeed : typingSpeed);
 
     return () => clearTimeout(timeout);
-  }, [subIndex, isDeleting, wordIndex, words, typingSpeed, deletingSpeed, pauseTime]);
+  }, [subIndex, isDeleting, currentWord, wordCount, typingSpeed, deletingSpeed, pauseTime]);
 
-  const currentWord = words[wordIndex];
   const displayedText = currentWord.substring(0, subIndex);
   const activeCursorColor = cursorColor || color;
 
@@ -710,6 +710,11 @@ export default function Home() {
     "Intimates & Lingerie", "Swimwear", "Kidswear", "Uniform & Workwear", "Leather & PU", "Accessories & Handicrafts"
   ];
 
+  const gallery = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => ({
+    src: `/images/gallery/${n}.webp`,
+    alt: `Prasine International showroom display — view ${n}`,
+  }));
+
   const values = [
     { icon: "scaling", t: "Flexible Quantities", d: "From small quantity trial runs to large repeat programmes." },
     { icon: "badge-check", t: "Consistent Quality", d: "Strong QA/QC processes with inspection at multiple production stages." },
@@ -782,23 +787,25 @@ export default function Home() {
   <section id="top" style={{ "background": "linear-gradient(165deg, #FDF6EC 0%, #FBFAF7 46%, #F4F6F1 100%)" }}>
     <div style={{ "maxWidth": "1320px", "margin": "0 auto", "padding": "0 28px" }}>
     <div data-reveal="1" style={{ "padding": "64px 0 0" }}>
-      <div style={{ "display": "flex", "alignItems": "center", "gap": "12px", "marginBottom": "22px" }}>
-        <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 7px)", "gridTemplateRows": "repeat(2, 7px)", "gap": "3px", "flexShrink": "0" }}>
-          <div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div>
-          <div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div>
-          <div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div>
-          <div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div>
+      <div className="home-hero-intro" style={{ "display": "grid", "gridTemplateColumns": "minmax(0, 1fr) minmax(0, 340px)", "gap": "40px", "alignItems": "stretch" }}>
+        <div className="home-hero-welcome" style={{ "minWidth": "0" }}>
+          <div style={{ "display": "flex", "alignItems": "center", "gap": "12px", "marginBottom": "22px" }}>
+            <div style={{ "display": "grid", "gridTemplateColumns": "repeat(2, 7px)", "gridTemplateRows": "repeat(2, 7px)", "gap": "3px", "flexShrink": "0" }}>
+              <div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div>
+              <div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div>
+              <div style={{ "background": "#7FBF4D", "borderRadius": "1px" }}></div>
+              <div style={{ "background": "#3E8E4A", "borderRadius": "1px" }}></div>
+            </div>
+            <span style={{ "fontSize": "13px", "letterSpacing": "0.22em", "textTransform": "uppercase", "color": "#B8863B", "fontWeight": "600" }}>Apparel Sourcing &amp; Manufacturing · Bangladesh</span>
+          </div>
+          <h1 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(26px, 3vw, 42px)", "lineHeight": "1.08", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0" }}>
+            <span style={{ "display": "block" }}>Welcome to</span>
+            <span className="home-hero-title-accent" style={{ "display": "block", "color": "#1E5B34" }}>{"Prasine "}<TypewriterText words={["International"]} color="#1E5B34" typingSpeed={220} deletingSpeed={110} pauseTime={3600} /></span>
+          </h1>
+          <p style={{ "fontSize": "16px", "lineHeight": "1.62", "color": "#4A4E48", "margin": "20px 0 0", "maxWidth": "46ch", "textWrap": "pretty" }}>
+            A Bangladesh-based apparel buying house and garment manufacturer — your end-to-end partner from fabric sourcing and development to manufacturing, quality assurance and shipment.
+          </p>
         </div>
-        <span style={{ "fontSize": "11px", "letterSpacing": "0.22em", "textTransform": "uppercase", "color": "#B8863B", "fontWeight": "600" }}>Apparel Sourcing &amp; Manufacturing · Bangladesh</span>
-      </div>
-      <div style={{ "display": "flex", "alignItems": "flex-end", "justifyContent": "space-between", "gap": "40px", "flexWrap": "wrap" }}>
-        <h1 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(40px, 6.4vw, 92px)", "lineHeight": "0.96", "letterSpacing": "-0.035em", "textTransform": "uppercase", "margin": "0", "maxWidth": "16ch" }}>
-          <span>Masters of apparel</span>
-          <br />
-          <span style={{ "display": "inline-block", "minHeight": "1.02em" }}>
-            <TypewriterText words={["manufacturing"]} typingSpeed={220} deletingSpeed={110} pauseTime={3600} />
-          </span>
-        </h1>
         <div className="hero-img-wrap prasine-hero-ornament">
           <img
             src="/images/hero-top.jpeg"
@@ -1037,6 +1044,36 @@ export default function Home() {
         ))}
       </div>
     </div>
+
+    <div data-reveal="1" style={{ "marginTop": "64px", "borderTop": "1px solid #E7E4DC", "paddingTop": "34px" }}>
+      <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(300px, 1fr))", "gap": "40px", "alignItems": "end", "marginBottom": "48px" }}>
+        <h2 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontWeight": "600", "fontSize": "clamp(24px, 2.8vw, 36px)", "lineHeight": "1.1", "letterSpacing": "-0.02em", "textTransform": "uppercase", "margin": "0" }}>A look inside</h2>
+        <p style={{ "fontSize": "16px", "lineHeight": "1.62", "color": "#4A4E48", "margin": "0", "maxWidth": "460px", "textWrap": "pretty" }}>A curated display showcasing the styles, fabrics and finishes we deliver for global buyers.</p>
+      </div>
+    </div>
+    <div className="home-gallery-grid">
+        {gallery.map((g, idx) => {
+          const isLeft = idx % 2 === 0;
+          return (
+            <div
+              key={idx}
+              className="home-gallery-frame"
+              data-reveal-left={isLeft ? "1" : undefined}
+              data-reveal-right={!isLeft ? "1" : undefined}
+            >
+              <img
+                src={g.src}
+                alt={g.alt}
+                title="Prasine International"
+                width={1000}
+                height={700}
+                loading="lazy"
+                style={{ "width": "100%", "height": "100%", "objectFit": "cover", "display": "block" }}
+              />
+            </div>
+          );
+        })}
+      </div>
   </section>
 
   <section style={{ "maxWidth": "1320px", "margin": "0 auto", "padding": "96px 28px 0" }}>

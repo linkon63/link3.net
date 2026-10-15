@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ChevronRight,
@@ -34,14 +35,22 @@ export default function SiteFooter() {
                 <ChevronRight className="footer-link-icon" />
                 <span>Home</span>
               </a>
-              <a href={itemHref("/#about")} className="footer-link">
+              <a href={itemHref("/#who-we-are")} className="footer-link">
                 <ChevronRight className="footer-link-icon" />
-                <span>About Us</span>
+                <span>About</span>
               </a>
+              <Link href="/management" className="footer-link">
+                <ChevronRight className="footer-link-icon" />
+                <span>Management</span>
+              </Link>
               <a href={itemHref("/#capabilities")} className="footer-link">
                 <ChevronRight className="footer-link-icon" />
-                <span>Our Services</span>
+                <span>Services</span>
               </a>
+              <Link href="/production-facilities/woven" className="footer-link">
+                <ChevronRight className="footer-link-icon" />
+                <span>Production Facilities</span>
+              </Link>
               <a href={itemHref("/#products")} className="footer-link">
                 <ChevronRight className="footer-link-icon" />
                 <span>Production Gallery</span>
