@@ -850,6 +850,54 @@ a:hover { color: #B8863B; }
   }
 }
 
+/* Home display gallery — "A look inside" */
+.home-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 0;
+}
+
+.home-gallery-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #EFEDE6;
+}
+
+.home-gallery-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.home-gallery-frame:hover img {
+  transform: scale(1.06);
+  filter: brightness(1.04) contrast(1.02);
+}
+
+@media (max-width: 1000px) {
+  .home-gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+  .home-gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  .home-gallery-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-gallery-frame img,
+  .home-gallery-frame:hover img {
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
 @keyframes prasine-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes prasine-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
@@ -1328,15 +1376,33 @@ a:hover .explore-btn .explore-arrow {
 }
 
 .prasine-hero-ornament {
-  width: 200px;
-  height: 150px;
-  flex-shrink: 0;
-  align-self: flex-start; /* row is align-items: flex-end; overrides per-item */
+  width: 100%;
+  height: 100%;
   cursor: default;        /* not a link, unlike other .hero-img-wrap uses */
 }
 
-@media (max-width: 640px) {
-  .prasine-hero-ornament { display: none; }
+
+.prasine-hero-ornament img {
+  position: absolute;
+  inset: 0;
+}
+
+.home-hero-welcome {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+
+@media (max-width: 900px) {
+  .home-hero-intro { grid-template-columns: minmax(0, 1fr) !important; }
+  .prasine-hero-ornament { min-height: 220px; }
+}
+
+/* Keep the accent line on a single line in the two-column layout. */
+@media (min-width: 901px) {
+  .home-hero-title-accent { white-space: nowrap; }
 }
 
 /* Hero media box — desktop 460px, tightened on mobile so landscape art is not
