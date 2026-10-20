@@ -170,6 +170,7 @@ export default function SiteHeader() {
             style={{
               height: scrolled ? "46px" : "54px",
               width: "auto",
+              aspectRatio: "1672 / 941",
               display: "block",
               mixBlendMode: "multiply",
               transition: "height 0.3s cubic-bezier(0.16, 1, 0.3, 1)",

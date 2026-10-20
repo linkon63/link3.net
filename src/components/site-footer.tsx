@@ -24,7 +24,7 @@ export default function SiteFooter() {
       <div style={{ "maxWidth": "1320px", "margin": "0 auto", "padding": "0 28px" }}>
         <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(240px, 1fr))", "gap": "48px", "paddingBottom": "48px", "borderBottom": "1px solid #E7E4DC" }}>
           <div>
-            <img src="/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png" alt="Prasine International Ltd." style={{ "height": "74px", "width": "auto", "display": "block", "mixBlendMode": "multiply", "marginBottom": "18px" }} />
+            <img src="/assets/844fc14a-38b8-4ea1-98d4-6e6b4a2fb083.png" alt="Prasine International Ltd." style={{ "height": "74px", "width": "auto", "aspectRatio": "1672 / 941", "display": "block", "mixBlendMode": "multiply", "marginBottom": "18px" }} />
             <p style={{ "fontSize": "14px", "lineHeight": "1.6", "color": "#6B6F68", "margin": "0", "maxWidth": "260px" }}>Apparel buying house and garment manufacturing partner, active in the industry since 2019.</p>
           </div>
 

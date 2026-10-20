@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { toast } from "sonner";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -68,7 +69,11 @@ function DynamicLucideIcon({ name, style, ...props }: { name: string; style?: Re
 }
 
 
-// GSAP Animated number counter with bidirectional ScrollTrigger
+// GSAP Animated number counter — plays once on first enter and keeps its final
+// value. The rendered string is overlaid on a hidden full-width sizer with
+// tabular numerals so the element's width never changes while counting; the old
+// leave/leaveBack reset changed text width ("$0M" vs "$20M"), which flipped the
+// hero stats row's flex wrap on narrow screens and shifted the whole page.
 function AnimatedCounter({
   value,
   startVal,
@@ -86,6 +91,7 @@ function AnimatedCounter({
   const [displayVal, setDisplayVal] = useState(defaultStart);
   const elRef = useRef<HTMLSpanElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
     const el = elRef.current;
@@ -93,34 +99,23 @@ function AnimatedCounter({
 
     const obj = { val: defaultStart };
 
-    const animateNumber = () => {
-      if (tweenRef.current) tweenRef.current.kill();
-      obj.val = defaultStart;
-      setDisplayVal(defaultStart);
-      tweenRef.current = gsap.to(obj, {
-        val: value,
-        duration: duration,
-        ease: "power2.out",
-        onUpdate: () => {
-          setDisplayVal(Math.round(obj.val));
-        },
-      });
-    };
-
     const trigger = ScrollTrigger.create({
       trigger: el,
       start: "top 95%",
-      end: "bottom 5%",
-      onEnter: () => animateNumber(),
-      onEnterBack: () => animateNumber(),
-      onLeave: () => {
+      onEnter: () => {
+        if (hasAnimatedRef.current) return;
+        hasAnimatedRef.current = true;
         if (tweenRef.current) tweenRef.current.kill();
-        setDisplayVal(defaultStart);
+        obj.val = defaultStart;
+        tweenRef.current = gsap.to(obj, {
+          val: value,
+          duration: duration,
+          ease: "power2.out",
+          onUpdate: () => {
+            setDisplayVal(Math.round(obj.val));
+          },
+        });
       },
-      onLeaveBack: () => {
-        if (tweenRef.current) tweenRef.current.kill();
-        setDisplayVal(defaultStart);
-      }
     });
 
     return () => {
@@ -130,8 +125,11 @@ function AnimatedCounter({
   }, [value, defaultStart, duration]);
 
   return (
-    <span ref={elRef}>
-      {prefix}{displayVal}{suffix}
+    <span ref={elRef} style={{ fontVariantNumeric: "tabular-nums", position: "relative", display: "inline-block" }}>
+      <span style={{ visibility: "hidden" }} aria-hidden="true">{prefix}{value}{suffix}</span>
+      <span style={{ position: "absolute", left: 0, top: 0, whiteSpace: "nowrap" }}>
+        {prefix}{displayVal}{suffix}
+      </span>
     </span>
   );
 }
@@ -191,6 +189,10 @@ function TypewriterText({
 
   const displayedText = currentWord.substring(0, subIndex);
   const activeCursorColor = cursorColor || color;
+  // Reserve the widest word's width so typing/deleting can never change the
+  // line box: without the sizer, headings re-wrap as the word shrinks/grows,
+  // which changes section height and makes the page jump while scrolling.
+  const widestWord = words.reduce((a, b) => (b.length > a.length ? b : a), words[0] ?? "");
 
   return (
     <span
@@ -199,23 +201,32 @@ function TypewriterText({
         display: "inline-block",
         position: "relative",
         whiteSpace: "nowrap",
-        minHeight: "0.96em",
         lineHeight: "0.96",
       }}
     >
-      {displayedText || "\u00A0"}
+      <span style={{ visibility: "hidden" }} aria-hidden="true">{widestWord || "\u00A0"}</span>
       <span
         style={{
-          display: "inline-block",
-          width: "4px",
-          height: "0.82em",
-          background: activeCursorColor,
-          marginLeft: "4px",
-          verticalAlign: "-0.04em",
-          opacity: blink ? 1 : 0,
-          transition: "opacity 0.15s ease",
+          position: "absolute",
+          left: 0,
+          top: 0,
+          whiteSpace: "nowrap",
         }}
-      />
+      >
+        {displayedText || "\u00A0"}
+        <span
+          style={{
+            display: "inline-block",
+            width: "4px",
+            height: "0.82em",
+            background: activeCursorColor,
+            marginLeft: "4px",
+            verticalAlign: "-0.04em",
+            opacity: blink ? 1 : 0,
+            transition: "opacity 0.15s ease",
+          }}
+        />
+      </span>
     </span>
   );
 }
@@ -418,7 +429,17 @@ function QcMobileMarquee({ items }: { items: { n: string; icon: string; t: strin
 export default function Home() {
   const [cats, setCats] = useState<string[]>([]);
   const [qty, setQty] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [quoteSending, setQuoteSending] = useState(false);
+  const sendingRef = useRef(false);
+  const [formValues, setFormValues] = useState({
+    requirement: "",
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    country: "",
+  });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -486,6 +507,8 @@ export default function Home() {
       touchMultiplier: 1.5,
     });
 
+    // One consistent scroll source: Lenis drives ScrollTrigger updates and the
+    // progress UI (it also emits on native scrolls, e.g. scrollbar drags).
     lenis.on("scroll", (e: any) => {
       ScrollTrigger.update();
       const scrollY = typeof e.scroll === "number" ? e.scroll : (window.pageYOffset || window.scrollY || 0);
@@ -497,33 +520,13 @@ export default function Home() {
     };
     gsap.ticker.add(updateTicker);
     gsap.ticker.lagSmoothing(0);
-
-    // 2. Multi-event listeners for desktop and mobile touch devices
-    const onScroll = () => {
-      updateScrollProgress();
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    document.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("touchmove", onScroll, { passive: true });
     updateScrollProgress();
 
-    // 3. GSAP ScrollTrigger Animations with prominent float-up and bidirectional repeat
+    // 3. GSAP ScrollTrigger animations. All reveals play once and stay put —
+    // the previous "play reverse play reverse" toggles + batch onLeave resets
+    // slid elements back by 48-75px on every scroll-direction change, which
+    // read as the page jumping while scrolling.
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: document.documentElement,
-        start: "top top",
-        end: "bottom bottom",
-        onUpdate: (self) => {
-          const ratio = self.progress;
-          const circumference = 135.09;
-          const offset = circumference - ratio * circumference;
-          if (circleRef.current) {
-            circleRef.current.style.strokeDashoffset = `${offset}`;
-          }
-          setScrollProgress(Math.round(ratio * 100));
-          setScrolled(self.scroll() > 120);
-        },
-      });
       document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
         gsap.fromTo(
           el,
@@ -536,14 +539,13 @@ export default function Home() {
             scrollTrigger: {
               trigger: el,
               start: "top 92%",
-              end: "bottom 8%",
-              toggleActions: "play reverse play reverse",
+              toggleActions: "play none none none",
             },
           }
         );
       });
 
-      // Animate from left on scroll with repeat
+      // Animate from left on scroll, once
       document.querySelectorAll<HTMLElement>("[data-reveal-left]").forEach((el) => {
         gsap.fromTo(
           el,
@@ -556,14 +558,13 @@ export default function Home() {
             scrollTrigger: {
               trigger: el,
               start: "top 90%",
-              end: "bottom 10%",
-              toggleActions: "play reverse play reverse",
+              toggleActions: "play none none none",
             },
           }
         );
       });
 
-      // Animate from right on scroll with repeat
+      // Animate from right on scroll, once
       document.querySelectorAll<HTMLElement>("[data-reveal-right]").forEach((el) => {
         gsap.fromTo(
           el,
@@ -576,62 +577,35 @@ export default function Home() {
             scrollTrigger: {
               trigger: el,
               start: "top 90%",
-              end: "bottom 10%",
-              toggleActions: "play reverse play reverse",
+              toggleActions: "play none none none",
             },
           }
         );
       });
 
-      // Stagger capabilities cards with repeat
+      // Stagger capabilities cards once
       ScrollTrigger.batch(".prasine-card", {
         start: "top 92%",
-        end: "bottom 8%",
+        once: true,
         onEnter: (batch) => {
           gsap.fromTo(
             batch,
             { opacity: 0, y: 48 },
             { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: "power3.out", overwrite: "auto" }
           );
-        },
-        onEnterBack: (batch) => {
-          gsap.fromTo(
-            batch,
-            { opacity: 0, y: 48 },
-            { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: "power3.out", overwrite: "auto" }
-          );
-        },
-        onLeave: (batch) => {
-          gsap.set(batch, { opacity: 0, y: 48 });
-        },
-        onLeaveBack: (batch) => {
-          gsap.set(batch, { opacity: 0, y: 48 });
         },
       });
 
-      // Stagger certs with repeat
+      // Stagger certs once
       ScrollTrigger.batch(".prasine-cert-item", {
         start: "top 94%",
-        end: "bottom 6%",
+        once: true,
         onEnter: (batch) => {
           gsap.fromTo(
             batch,
             { opacity: 0, y: 36, scale: 0.92 },
             { opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.05, ease: "power3.out", overwrite: "auto" }
           );
-        },
-        onEnterBack: (batch) => {
-          gsap.fromTo(
-            batch,
-            { opacity: 0, y: 36, scale: 0.92 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.05, ease: "power3.out", overwrite: "auto" }
-          );
-        },
-        onLeave: (batch) => {
-          gsap.set(batch, { opacity: 0, y: 36, scale: 0.92 });
-        },
-        onLeaveBack: (batch) => {
-          gsap.set(batch, { opacity: 0, y: 36, scale: 0.92 });
         },
       });
     });
@@ -640,7 +614,6 @@ export default function Home() {
       ctx.revert();
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
-      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
@@ -674,7 +647,103 @@ export default function Home() {
     select: () => setQty(q),
   }));
 
-  const submit = () => setSubmitted(true);
+  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Guard against double submits (double click / Enter while in flight).
+    if (sendingRef.current) return;
+
+    const errors: Record<string, string> = {};
+    const requirement = formValues.requirement.trim();
+    const name = formValues.name.trim();
+    const email = formValues.email.trim();
+    const phone = formValues.phone.trim();
+
+    if (!requirement) errors.requirement = "Please tell us about your requirement.";
+    if (!name) errors.name = "Please enter your name.";
+    if (!email) {
+      errors.email = "Please enter your business email.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = "Please enter a valid email address.";
+    }
+    if (!phone) errors.phone = "Please enter a phone or WhatsApp number.";
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      toast.error("Please fix the highlighted fields and try again.");
+      return;
+    }
+
+    const payload = {
+      name,
+      company: formValues.company.trim(),
+      email,
+      phone,
+      country: formValues.country.trim(),
+      categories: cats.join(", ") || "Not selected",
+      quantity: qty || "Not selected",
+      message: requirement,
+      botcheck: "",
+    };
+
+    sendingRef.current = true;
+    setQuoteSending(true);
+    try {
+      const response = await fetch("/api/submit-quote.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        if (result.saved) {
+          setFormValues({ requirement: "", name: "", company: "", email: "", phone: "", country: "" });
+          setCats([]);
+          setQty(null);
+          setFormErrors({});
+          toast.error("Your request was saved, but the email notification failed. Please contact us directly.");
+          return;
+        }
+        throw new Error("Quote request failed");
+      }
+
+      // Only reset after the API confirms success.
+      setFormValues({ requirement: "", name: "", company: "", email: "", phone: "", country: "" });
+      setCats([]);
+      setQty(null);
+      setFormErrors({});
+      toast.success("Enquiry received — our team will contact you within 24 hours.");
+    } catch {
+      // Keep every value and selection so the buyer doesn't retype anything.
+      toast.error("We couldn't send your request. Please try again or email us directly.");
+    } finally {
+      sendingRef.current = false;
+      setQuoteSending(false);
+    }
+  };
+
+  const requiredBorder = (field: string) =>
+    formErrors[field] ? "#B42318" : "#DCD8CE";
+
+  const updateField = (field: keyof typeof formValues, value: string) => {
+    setFormValues((prev) => ({ ...prev, [field]: value }));
+    setFormErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  };
+
+  const fieldError = (field: string) =>
+    formErrors[field] ? (
+      <p
+        id={`${field}-error`}
+        role="alert"
+        style={{ color: "#B42318", fontSize: "13px", lineHeight: "1.4", margin: "6px 0 0" }}
+      >
+        {formErrors[field]}
+      </p>
+    ) : null;
 
   const stats = [
     { value: 2019, startVal: 1980, prefix: "", suffix: "", l: "Established" },
@@ -1251,19 +1320,7 @@ export default function Home() {
       </div>
 
       <div data-reveal="1" style={{ "background": "#FBFAF7", "color": "#1B1D1A", "padding": "38px 34px 34px" }}>
-        {submitted ? (
-          <div style={{ "padding": "40px 0", "textAlign": "left" }}>
-            <div style={{ "display": "inline-flex", "alignItems": "center", "justifyContent": "center", "width": "54px", "height": "54px", "borderRadius": "50%", "background": "#E8F4EC", "color": "#1E5B34", "marginBottom": "18px" }}>
-              <svg style={{ "width": "28px", "height": "28px" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 6L9 17l-5-5" style={{ "animation": "checkmark-draw 0.6s ease-in-out forwards" }} />
-              </svg>
-            </div>
-            <div style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "24px", "fontWeight": "600", "textTransform": "uppercase", "letterSpacing": "-0.01em", "marginBottom": "14px" }}>Thank you — enquiry received</div>
-            <p style={{ "fontSize": "15px", "lineHeight": "1.6", "color": "#4A4E48", "margin": "0" }}>Our sourcing team will reply to your business email shortly.</p>
-          </div>
-        ) : (
-      
-          <div>
+        <form onSubmit={submit} noValidate>
             <h3 style={{ "fontFamily": "'Archivo', Helvetica, sans-serif", "fontSize": "22px", "fontWeight": "600", "letterSpacing": "0.01em", "textTransform": "uppercase", "margin": "0 0 28px" }}>Request a Quote</h3>
 
             <div style={{ "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#6B6F68", "marginBottom": "12px" }}>What are you looking to manufacture?</div>
@@ -1285,23 +1342,86 @@ export default function Home() {
             </div>
 
             <div style={{ "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#6B6F68", "marginBottom": "10px" }}>Tell us about your requirement</div>
-            <textarea rows={4} placeholder="Product type, fabric, target price, quantity, delivery window…" style={{ "width": "100%", "border": "1px solid #DCD8CE", "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "color": "#1B1D1A", "resize": "vertical", "marginBottom": "22px", "outline": "none" }}></textarea>
+            <div style={{ marginBottom: "22px" }}>
+              <textarea
+                name="requirement"
+                value={formValues.requirement}
+                onChange={(e) => updateField("requirement", e.target.value)}
+                rows={4}
+                placeholder="Product type, fabric, target price, quantity, delivery window…"
+                aria-invalid={formErrors.requirement ? true : undefined}
+                aria-describedby={formErrors.requirement ? "requirement-error" : undefined}
+                style={{ "width": "100%", "border": `1px solid ${requiredBorder("requirement")}`, "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "color": "#1B1D1A", "resize": "vertical", "outline": "none" }}
+              />
+              {fieldError("requirement")}
+            </div>
 
             <div style={{ "display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(180px, 1fr))", "gap": "12px", "marginBottom": "26px" }}>
-              <input placeholder="Name" style={{ "border": "1px solid #DCD8CE", "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none" }} />
-              <input placeholder="Company" style={{ "border": "1px solid #DCD8CE", "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none" }} />
-              <input placeholder="Business email" style={{ "border": "1px solid #DCD8CE", "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none" }} />
-              <input placeholder="Phone / WhatsApp" style={{ "border": "1px solid #DCD8CE", "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none" }} />
-              <input placeholder="Country" style={{ "border": "1px solid #DCD8CE", "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none", "gridColumn": "1 / -1" }} />
+              <div style={{ minWidth: 0 }}>
+                <input
+                  name="name"
+                  placeholder="Name"
+                  maxLength={100}
+                  value={formValues.name}
+                  onChange={(e) => updateField("name", e.target.value)}
+                  aria-invalid={formErrors.name ? true : undefined}
+                  aria-describedby={formErrors.name ? "name-error" : undefined}
+                  style={{ "width": "100%", "border": `1px solid ${requiredBorder("name")}`, "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none" }}
+                />
+                {fieldError("name")}
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <input
+                  name="company"
+                  placeholder="Company"
+                  value={formValues.company}
+                  onChange={(e) => updateField("company", e.target.value)}
+                  style={{ "width": "100%", "border": "1px solid #DCD8CE", "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none" }}
+                />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Business email"
+                  maxLength={320}
+                  value={formValues.email}
+                  onChange={(e) => updateField("email", e.target.value)}
+                  aria-invalid={formErrors.email ? true : undefined}
+                  aria-describedby={formErrors.email ? "email-error" : undefined}
+                  style={{ "width": "100%", "border": `1px solid ${requiredBorder("email")}`, "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none" }}
+                />
+                {fieldError("email")}
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder="Phone / WhatsApp"
+                  value={formValues.phone}
+                  onChange={(e) => updateField("phone", e.target.value)}
+                  aria-invalid={formErrors.phone ? true : undefined}
+                  aria-describedby={formErrors.phone ? "phone-error" : undefined}
+                  style={{ "width": "100%", "border": `1px solid ${requiredBorder("phone")}`, "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none" }}
+                />
+                {fieldError("phone")}
+              </div>
+              <div style={{ minWidth: 0, gridColumn: "1 / -1" }}>
+                <input
+                  name="country"
+                  placeholder="Country"
+                  value={formValues.country}
+                  onChange={(e) => updateField("country", e.target.value)}
+                  style={{ "width": "100%", "border": "1px solid #DCD8CE", "background": "#FFFFFF", "padding": "13px 14px", "fontSize": "15px", "outline": "none" }}
+                />
+              </div>
             </div>
 
             <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap", "alignItems": "center" }}>
-              <button type="button" onClick={submit} className="prasine-btn" style={{ padding: "17px 34px" }}>Request a Quote</button>
+              <button type="submit" disabled={quoteSending} className="prasine-btn" style={{ padding: "17px 34px", opacity: quoteSending ? 0.7 : 1 }}>{quoteSending ? "Sending…" : "Request a Quote"}</button>
               <a href="mailto:shameem@prasineint.com" style={{ "fontSize": "12px", "letterSpacing": "0.12em", "textTransform": "uppercase", "fontWeight": "600", "color": "#1B1D1A", "borderBottom": "1px solid #C9C5BA", "paddingBottom": "3px" }}>Talk to Our Team</a>
             </div>
-          </div>
-        
-    )}
+          </form>
       </div>
     </div>
   </section>
