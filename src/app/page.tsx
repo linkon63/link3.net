@@ -674,6 +674,8 @@ export default function Home() {
     }
 
     const payload = {
+      subject: "New quote request from Prasine International",
+      from_name: "Prasine International Website",
       name,
       company: formValues.company.trim(),
       email,
@@ -684,37 +686,39 @@ export default function Home() {
       message: requirement,
       botcheck: "",
     };
-
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey) {
+      toast.error("The quote form is not configured yet. Please email us directly.");
+      return;
+    }
     sendingRef.current = true;
     setQuoteSending(true);
     try {
-      const response = await fetch("/api/submit-quote.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
-      if (!response.ok || !result.success) {
-        if (result.saved) {
-          setFormValues({ requirement: "", name: "", company: "", email: "", phone: "", country: "" });
-          setCats([]);
-          setQty(null);
-          setFormErrors({});
-          toast.error("Your request was saved, but the email notification failed. Please contact us directly.");
-          return;
-        }
-        throw new Error("Quote request failed");
-      }
+      const [saveOutcome, emailOutcome] = await Promise.allSettled([
+        fetch("/api/submit-quote.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload),
+        }).then(async (response) => response.ok && (await response.json()).success === true),
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ access_key: accessKey, ...payload }),
+        }).then(async (response) => response.ok && (await response.json()).success === true),
+      ]);
 
-      // Only reset after the API confirms success.
+      const saved = saveOutcome.status === "fulfilled" && saveOutcome.value;
+      const emailed = emailOutcome.status === "fulfilled" && emailOutcome.value;
+      if (!saved && !emailed) throw new Error("Both quote delivery methods failed");
+
       setFormValues({ requirement: "", name: "", company: "", email: "", phone: "", country: "" });
       setCats([]);
       setQty(null);
       setFormErrors({});
       toast.success("Enquiry received — our team will contact you within 24 hours.");
     } catch {
-      // Keep every value and selection so the buyer doesn't retype anything.
-      toast.error("We couldn't send your request. Please try again or email us directly.");
+      // Keep the form data only when both saving and email delivery fail.
+      toast.error("We couldn't send or save your request. Please try again or email us directly.");
     } finally {
       sendingRef.current = false;
       setQuoteSending(false);
